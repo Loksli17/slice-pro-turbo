@@ -1,2 +1,0 @@
-C:\Users\ASUS\Desktop\develop\different\slice-pro-turbo\slice-pro-turbo\x64\Debug\slice-pro-turbo.exe
-C:\Users\ASUS\Desktop\develop\different\slice-pro-turbo\slice-pro-turbo\x64\Debug\slice-pro-turbo.pdb
