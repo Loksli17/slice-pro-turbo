@@ -9,5 +9,6 @@ int main(int argc, char *argv[])
     Widget w;
     w.show();
     qDebug()<<"Моя жопа";
+    qDebug() << "РУКАВ ВСЕ ЕЩЕ ХУ*";
     return a.exec();
 }
