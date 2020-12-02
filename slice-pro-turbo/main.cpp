@@ -11,5 +11,6 @@ int main(int argc, char *argv[])
     qDebug()<<"Моя жопа";
     qDebug() << "РУКАВ ВСЕ ЕЩЕ ХУ*";
     qDebug() << "HAHAHAHA";
+    qDebug() << "а у мя работает :)";
     return a.exec();
 }
