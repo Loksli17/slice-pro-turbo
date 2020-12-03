@@ -11,39 +11,58 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "glwidget.h"
 
 QT_BEGIN_NAMESPACE
 
 class Ui_Widget
 {
 public:
-    QGridLayout *gridLayout;
-    QLabel *label;
+    QHBoxLayout *horizontalLayout;
+    GLWidget *widget;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
     void setupUi(QWidget *Widget)
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QString::fromUtf8("Widget"));
-        Widget->resize(800, 600);
-        gridLayout = new QGridLayout(Widget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        label = new QLabel(Widget);
-        label->setObjectName(QString::fromUtf8("label"));
+        Widget->resize(627, 368);
+        horizontalLayout = new QHBoxLayout(Widget);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        widget = new GLWidget(Widget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy);
 
-        gridLayout->addWidget(label, 0, 0, 1, 1);
+        horizontalLayout->addWidget(widget);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
 
         pushButton = new QPushButton(Widget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
-        gridLayout->addWidget(pushButton, 1, 0, 1, 1);
+        verticalLayout->addWidget(pushButton);
+
+
+        horizontalLayout->addLayout(verticalLayout);
 
 
         retranslateUi(Widget);
+        QObject::connect(pushButton, SIGNAL(clicked()), Widget, SLOT(close()));
 
         QMetaObject::connectSlotsByName(Widget);
     } // setupUi
@@ -51,8 +70,7 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Widget", nullptr));
-        label->setText(QCoreApplication::translate("Widget", "TextLabel", nullptr));
-        pushButton->setText(QCoreApplication::translate("Widget", "\320\240\320\243\320\232\320\220\320\222 \320\245\320\243*", nullptr));
+        pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
 
 };
