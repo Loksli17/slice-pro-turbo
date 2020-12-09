@@ -26,9 +26,8 @@ void Widget::on_pushButton_2_clicked()
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "title", "Файл не был открыт");
-    }
-
-    QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
+        return;
+    } else QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
 
     QTextStream in(&file);
     QString text = in.readAll();

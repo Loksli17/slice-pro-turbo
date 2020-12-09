@@ -75,7 +75,7 @@ public:
 
     void retranslateUi(QWidget *Widget)
     {
-        Widget->setWindowTitle(QCoreApplication::translate("Widget", "Widget", nullptr));
+        Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
