@@ -18,6 +18,8 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
+    void keyPressEvent(QKeyEvent *event);
+
 public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
@@ -34,6 +36,8 @@ private:
     int xRot;
     int yRot;
     int zRot;
+    double xPos;
+    double yPos;
     float zoomScale;
     QPoint lastPos;
 

@@ -7,12 +7,14 @@
 GLWidget::GLWidget(QWidget *parent)
 {
     xRot = yRot = zRot = 0;
+    xPos = yPos = 0;
     zoomScale = 1;
 }
 
 /// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
+    setFocus();
     glClearColor(0.5, 0.5, 0.5, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -48,13 +50,13 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    glTranslated(0.0, 0.0, -10.0);
+    glTranslated(xPos, yPos, -10.0);
 
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
-    glLineWidth(1);
+//    gluLookAt(xPos, yPos, 0.0, 0.0, 0.0, -10.0, 0.0, 1.0, 0.0);
 
     glPushMatrix();
     glScalef(zoomScale, zoomScale, zoomScale);
@@ -84,6 +86,7 @@ void GLWidget::paintGL()
     glEnable(GL_LIGHTING);
     // Конец отрисовки оси координат
 
+    glLineWidth(1);
 }
 
 /// Window resize handler
@@ -121,26 +124,45 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
+//    setFocus();
     int dx = event->x() - lastPos.x();
     int dy = event->y() - lastPos.y();
 
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() == Qt::LeftButton) {
         setXRotation(xRot + 8 * dy);
         setYRotation(yRot + 8 * dx);
-    } else if (event->buttons() & Qt::RightButton) {
+    } else if (event->buttons() == Qt::RightButton) {
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
+    } else if (event->buttons() == Qt::MiddleButton) {
+        xPos += dx / 500.0;
+        yPos -= dy / 500.0;
+        updateGL();
     }
+
     lastPos = event->pos();
 }
 
+/// reset all camera movements
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
+//    setFocus();
     QPoint numDegrees = event->angleDelta();
     if (numDegrees.y() < 0) zoomScale = zoomScale / 1.5;
     if (numDegrees.y() > 0) zoomScale = zoomScale * 1.5;
 
     updateGL();
+}
+
+void GLWidget::keyPressEvent(QKeyEvent *event)
+{
+    setFocusPolicy(Qt::StrongFocus);
+    if (event->key() == Qt::Key_R) {
+        xPos = yPos = 0;
+        xRot = yRot = zRot = 0;
+        zoomScale = 1;
+        updateGL();
+    }
 }
 
 void GLWidget::setXRotation(int angle)
