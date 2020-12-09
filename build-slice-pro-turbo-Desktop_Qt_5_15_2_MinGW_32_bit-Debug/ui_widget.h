@@ -75,7 +75,7 @@ public:
 
     void retranslateUi(QWidget *Widget)
     {
-        Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition", nullptr));
+        Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition Featuring Dante & Knuckles from Devil May Cry series, with new Funky Mode", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi

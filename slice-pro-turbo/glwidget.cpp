@@ -10,11 +10,12 @@ GLWidget::GLWidget(QWidget *parent)
     zoomScale = 1;
 }
 
+/// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
-    glClearColor(1, 1, 1, 1);
-//    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    glClearColor(0.5, 0.5, 0.5, 1.0);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     // Настройки глута - нужны для верного отображения
     glEnable(GL_DEPTH_TEST);
@@ -26,7 +27,7 @@ void GLWidget::initializeGL()
 
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
+//    glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
 
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -41,51 +42,51 @@ void GLWidget::initializeGL()
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 }
 
+/// Render method, everything gets rendered here
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
     glTranslated(0.0, 0.0, -10.0);
-    glScalef(zoomScale, zoomScale, zoomScale);
+
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
     glLineWidth(1);
-    glutSolidTeapot(1.0);
 
+    glPushMatrix();
+    glScalef(zoomScale, zoomScale, zoomScale);
+    glutSolidTeapot(1.0);
+    glPopMatrix();
+
+    // Отрисовка оси координат
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    glDisable(GL_LIGHTING);
     glLineWidth(4);
     glBegin(GL_LINES);
-        glNormal3f(0,0,1);
-        glColor4f(1,0,0,1);
-        glVertex3f(-0.3,0,0);
-        glVertex3f(1,0,0);
-        glColor4f(0,1,0,1);
-        glVertex3f(0,-0.3,0);
-        glVertex3f(0,1,0);
-        glColor4f(0,0,1,1);
-        glVertex3f(0,0,-0.3);
-        glVertex3f(0,0,1);
+        glNormal3f(0, 0, 1);
+
+        glColor4f(1.0, 0.0, 0.0, 0.2);
+        glVertex3f(-5.0,  0.0,  0.0);
+        glVertex3f( 5.0,  0.0,  0.0);
+
+        glColor4f(0.0, 1.0, 0.0, 0.5);
+        glVertex3f( 0.0, -5.0, 0.0);
+        glVertex3f( 0.0,  5.0, 0.0);
+
+        glColor4f(0.0, 0.0, 1.0, 0.5);
+        glVertex3f( 0.0,  0.0, -5.0);
+        glVertex3f( 0.0,  0.0,  5.0);
     glEnd();
+    glEnable(GL_LIGHTING);
+    // Конец отрисовки оси координат
 
-
-//    glColor3f(1, 0, 0);
-//    glBegin(GL_TRIANGLES);
-//        glColor3f(1, 0, 0);
-//        glVertex3f(-1.0, -0.7, 0);
-
-//        glColor3f(0, 1, 0);
-//        glVertex3f(-0.5, -0.7, 0);
-
-//        glColor3f(0, 0, 1);
-//        glVertex3f(-0.5, -0.2, 0);
-
-//    glEnd();
-
-//    swapBuffers();
 }
 
+/// Window resize handler
 void GLWidget::resizeGL(int w, int h)
 {
     int side = qMin(w, h);
