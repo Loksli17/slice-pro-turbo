@@ -135,8 +135,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     } else if (event->buttons() == Qt::MiddleButton) {
-        xPos += dx / 180.0;
-        yPos -= dy / 180.0;
+        xPos += dx / ((double)width() / 3.0);
+        yPos -= dy / ((double)height() / 2.0);
         updateGL();
     }
 
