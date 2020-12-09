@@ -1,4 +1,6 @@
 QT       += widgets core gui opengl
+
+
 LIBS += -lglu32 -lopengl32
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -27,3 +29,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+
+win32:CONFIG(release, debug|release): LIBS += -L"C:/Qt/5.15.2/mingw81_32/lib/" -lglut32
+else:win32:CONFIG(debug, debug|release): LIBS += -L"C:/Qt/5.15.2/mingw81_32/lib/" -lglut32
+
+INCLUDEPATH += C:/Qt/5.15.2/mingw81_32/include
+DEPENDPATH += C:/Qt/5.15.2/mingw81_32/include

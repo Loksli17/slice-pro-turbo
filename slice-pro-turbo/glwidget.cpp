@@ -1,5 +1,6 @@
 #include "glwidget.h"
 #include "GL/glu.h"
+#include "GL/glut.h"
 #include <QMouseEvent>
 
 GLWidget::GLWidget(QWidget *parent)
@@ -10,9 +11,9 @@ GLWidget::GLWidget(QWidget *parent)
 void GLWidget::initializeGL()
 {
     glClearColor(0.2, 0.2, 0.2, 1);
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_LIGHT0);
-//    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
 }
 
 void GLWidget::paintGL()
@@ -25,17 +26,20 @@ void GLWidget::paintGL()
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
-    glColor3f(1, 0, 0);
-    glBegin(GL_TRIANGLES);
-        glColor3f(1, 0, 0);
-        glVertex3f(-1.0, -0.7, 0);
+    glutSolidCube(0.7);
+//    glColor3f(1, 0, 0);
+//    glBegin(GL_TRIANGLES);
+//        glColor3f(1, 0, 0);
+//        glVertex3f(-1.0, -0.7, 0);
 
-        glColor3f(0, 1, 0);
-        glVertex3f(-0.5, -0.7, 0);
+//        glColor3f(0, 1, 0);
+//        glVertex3f(-0.5, -0.7, 0);
 
-        glColor3f(0, 0, 1);
-        glVertex3f(-0.5, -0.2, 0);
-    glEnd();
+//        glColor3f(0, 0, 1);
+//        glVertex3f(-0.5, -0.2, 0);
+
+//    glEnd();
+//    swapBuffers();
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -45,7 +49,7 @@ void GLWidget::resizeGL(int w, int h)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0);
+    glOrtho(-1.0, +1.0, +1.0, -1.0, 4.0, 15.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
