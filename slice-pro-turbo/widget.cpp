@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "glwidget.h"
 #include "ui_widget.h"
 #include <QFileDialog>
 #include <QMessageBox>
@@ -12,6 +13,9 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    glWidget = new GLWidget();
+    connect(this, SIGNAL(stlOpened(QString)), glWidget, SLOT(getStl(QString)));
+//    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
 Widget::~Widget()

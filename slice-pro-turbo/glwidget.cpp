@@ -6,15 +6,21 @@
 
 GLWidget::GLWidget(QWidget *parent)
 {
+    setFocusPolicy(Qt::StrongFocus);
     xRot = yRot = zRot = 0;
+    yRot = 720;
+    xRot = 480;
     xPos = yPos = 0;
-    zoomScale = 1;
+    zoomScale = 0.5;
+
+    setXRotation(xRot);
+    setYRotation(yRot);
+    setZRotation(zRot);
 }
 
 /// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
-    setFocus();
     glClearColor(0.5, 0.5, 0.5, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -56,35 +62,19 @@ void GLWidget::paintGL()
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
+
 //    gluLookAt(xPos, yPos, 0.0, 0.0, 0.0, -10.0, 0.0, 1.0, 0.0);
 
+    // Отрисовка модели и сетки
     glPushMatrix();
-    glScalef(zoomScale, zoomScale, zoomScale);
-    glutSolidTeapot(1.0);
+        glScalef(zoomScale, zoomScale, zoomScale);
+        drawGrid();
+
+        glutSolidTeapot(1.0);
     glPopMatrix();
 
-    // Отрисовка оси координат
-    glClear(GL_DEPTH_BUFFER_BIT);
-
-    glDisable(GL_LIGHTING);
-    glLineWidth(4);
-    glBegin(GL_LINES);
-        glNormal3f(0, 0, 1);
-
-        glColor4f(1.0, 0.0, 0.0, 0.2);
-        glVertex3f(-5.0,  0.0,  0.0);
-        glVertex3f( 5.0,  0.0,  0.0);
-
-        glColor4f(0.0, 1.0, 0.0, 0.5);
-        glVertex3f( 0.0, -5.0, 0.0);
-        glVertex3f( 0.0,  5.0, 0.0);
-
-        glColor4f(0.0, 0.0, 1.0, 0.5);
-        glVertex3f( 0.0,  0.0, -5.0);
-        glVertex3f( 0.0,  0.0,  5.0);
-    glEnd();
-    glEnable(GL_LIGHTING);
-    // Конец отрисовки оси координат
+    // Отрисовка оси координат поверх всего
+    drawOrigin();
 
     glLineWidth(1);
 }
@@ -107,18 +97,53 @@ void GLWidget::resizeGL(int w, int h)
 //    glViewport(0, 0, w, h);
 //    glMatrixMode(GL_PROJECTION);
 //    glLoadIdentity();
-//    gluPerspective(45, (float)w/h, 0.01, 10.0);
+//    gluPerspective(45, (float)w/h, 0.01, 100.0);
 //    glMatrixMode(GL_MODELVIEW);
 //    glLoadIdentity();
 //    gluLookAt(
 //                0, 0, 5,
 //                0, 0, 0,
 //                0, 1, 0
-//                );
+//                    );
+}
+
+void GLWidget::drawOrigin()
+{
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_LIGHTING);
+    glLineWidth(4);
+    glBegin(GL_LINES);
+        glNormal3f(0, 0, 1);
+        // X
+        glColor4f(1.0, 0.0, 0.0, 0.2);
+        glVertex3f(-5.0,  0.0,  0.0);
+        glVertex3f( 5.0,  0.0,  0.0);
+        // Y
+        glColor4f(0.0, 1.0, 0.0, 0.5);
+        glVertex3f( 0.0, -5.0, 0.0);
+        glVertex3f( 0.0,  5.0, 0.0);
+        // Z
+        glColor4f(0.0, 0.0, 1.0, 0.5);
+        glVertex3f( 0.0,  0.0, -5.0);
+        glVertex3f( 0.0,  0.0,  5.0);
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
+void GLWidget::drawGrid()
+{
+    glColor4f(0.5, 0.5, 0.5, 1.0);
+    glBegin(GL_LINES);
+    for (GLfloat i = -2.5; i <= 2.5; i += 0.25) {
+        glVertex3f(i, 0, 2.5); glVertex3f(i, 0, -2.5);
+        glVertex3f(2.5, 0, i); glVertex3f(-2.5, 0, i);
+    }
+    glEnd();
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
+//    setFocus();
     lastPos = event->pos();
 }
 
@@ -137,10 +162,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     } else if (event->buttons() == Qt::MiddleButton) {
         xPos += dx / ((double)width() / 3.0);
         yPos -= dy / ((double)height() / 2.0);
-        updateGL();
     }
 
     lastPos = event->pos();
+    updateGL();
 }
 
 /// reset all camera movements
@@ -156,13 +181,24 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
 {
-    setFocusPolicy(Qt::StrongFocus);
+
     if (event->key() == Qt::Key_R) {
+        yRot = 720;
+        xRot = 480;
+        zRot = 0;
+
         xPos = yPos = 0;
-        xRot = yRot = zRot = 0;
-        zoomScale = 1;
-        updateGL();
+        zoomScale = 0.5;
+
+        setXRotation(xRot);
+        setYRotation(yRot);
+        setZRotation(zRot);
+    } else if (event->key() == Qt::Key_W) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else if (event->key() == Qt::Key_E) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+    updateGL();
 }
 
 void GLWidget::setXRotation(int angle)
@@ -171,7 +207,7 @@ void GLWidget::setXRotation(int angle)
     if (angle != xRot) {
         xRot = angle;
         emit xRotationChanged(angle);
-        updateGL();
+//        updateGL();
     }
 }
 
@@ -181,7 +217,7 @@ void GLWidget::setYRotation(int angle)
     if (angle != yRot) {
         yRot = angle;
         emit yRotationChanged(angle);
-        updateGL();
+//        updateGL();
     }
 }
 
@@ -191,8 +227,13 @@ void GLWidget::setZRotation(int angle)
     if (angle != zRot) {
         zRot = angle;
         emit zRotationChanged(angle);
-        updateGL();
+//        updateGL();
     }
+}
+
+void GLWidget::getStl(QString stl)
+{
+    qDebug()<<stl;
 }
 
 void GLWidget::normalizeAngle(int *angle)

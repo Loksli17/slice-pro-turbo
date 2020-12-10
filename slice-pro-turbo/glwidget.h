@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include <QObject>
+#include <QString>
 
 class GLWidget : public QGLWidget
 {
@@ -14,6 +15,9 @@ public:
     void paintGL();
     void resizeGL(int w, int h);
 
+    void drawOrigin();
+    void drawGrid();
+
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -24,6 +28,8 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
+
+    void getStl(QString stl);
 
 signals:
     void xRotationChanged(int angle);

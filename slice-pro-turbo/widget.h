@@ -8,6 +8,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
 
+class GLWidget;
+
 class Widget : public QWidget
 {
     Q_OBJECT
@@ -19,7 +21,12 @@ public:
 private slots:
     void on_pushButton_2_clicked();
 
+signals:
+    void stlOpened(QString stl);
+
 private:
     Ui::Widget *ui;
+
+    GLWidget *glWidget;
 };
 #endif // WIDGET_H
