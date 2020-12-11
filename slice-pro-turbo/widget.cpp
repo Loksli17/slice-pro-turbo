@@ -39,5 +39,7 @@ void Widget::on_pushButton_2_clicked()
 
     //text parser here
 
-    qDebug() << text;
+
+    emit stlOpened(text);
+//    qDebug() << text;
 }
