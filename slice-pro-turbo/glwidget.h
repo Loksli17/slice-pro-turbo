@@ -4,6 +4,8 @@
 #include <QGLWidget>
 #include <QObject>
 #include <QString>
+#include <QFile>
+
 
 class GLWidget : public QGLWidget
 {
@@ -29,7 +31,7 @@ public slots:
     void setYRotation(int angle);
     void setZRotation(int angle);
 
-    void getStl(QString stl);
+    void getStl(QFile* file);
 
 signals:
     void xRotationChanged(int angle);

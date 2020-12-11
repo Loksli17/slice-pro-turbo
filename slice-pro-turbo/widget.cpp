@@ -14,7 +14,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     glWidget = new GLWidget();
-    connect(this, SIGNAL(stlOpened(QString)), glWidget, SLOT(getStl(QString)));
+    connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -33,13 +33,9 @@ void Widget::on_pushButton_2_clicked()
         return;
     } else QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
 
-    QTextStream in(&file);
-    QString text = in.readAll();
-    file.close();
+//    QTextStream in(&file);
+//    QString text = in.readAll();
+//    file.close();
 
-    //text parser here
-
-
-    emit stlOpened(text);
-//    qDebug() << text;
+    emit stlOpened(&file);
 }

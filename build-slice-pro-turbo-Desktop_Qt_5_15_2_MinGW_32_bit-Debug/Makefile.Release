@@ -238,9 +238,10 @@ release/moc_glwidget.cpp: ../slice-pro-turbo/glwidget.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtGui/qsurfaceformat.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QObject \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QString \
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QFile \
 		release/moc_predefs.h \
 		C:/Qt/5.15.2/mingw81_32/bin/moc.exe
-	C:\Qt\5.15.2\mingw81_32\bin\moc.exe $(DEFINES) --include D:/repos/slice-pro-turbo/build-slice-pro-turbo-Desktop_Qt_5_15_2_MinGW_32_bit-Debug/release/moc_predefs.h -IC:/Qt/5.15.2/mingw81_32/mkspecs/win32-g++ -ID:/repos/slice-pro-turbo/slice-pro-turbo -IC:/Qt/5.15.2/mingw81_32/include -IC:/Qt/5.15.2/mingw81_32/include/QtOpenGL -IC:/Qt/5.15.2/mingw81_32/include/QtWidgets -IC:/Qt/5.15.2/mingw81_32/include/QtGui -IC:/Qt/5.15.2/mingw81_32/include/QtANGLE -IC:/Qt/5.15.2/mingw81_32/include/QtCore -I. -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++ -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32 -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include-fixed -IC:/Qt/Tools/mingw810_32/i686-w64-mingw32/include ..\slice-pro-turbo\glwidget.h -o release\moc_glwidget.cpp
+	C:\Qt\5.15.2\mingw81_32\bin\moc.exe $(DEFINES) --include C:/Users/ASUS/Desktop/develop/different/slice-pro-turbo/build-slice-pro-turbo-Desktop_Qt_5_15_2_MinGW_32_bit-Debug/release/moc_predefs.h -IC:/Qt/5.15.2/mingw81_32/mkspecs/win32-g++ -IC:/Users/ASUS/Desktop/develop/different/slice-pro-turbo/slice-pro-turbo -IC:/Qt/5.15.2/mingw81_32/include -IC:/Qt/5.15.2/mingw81_32/include/QtOpenGL -IC:/Qt/5.15.2/mingw81_32/include/QtWidgets -IC:/Qt/5.15.2/mingw81_32/include/QtGui -IC:/Qt/5.15.2/mingw81_32/include/QtANGLE -IC:/Qt/5.15.2/mingw81_32/include/QtCore -I. -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++ -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32 -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include-fixed -IC:/Qt/Tools/mingw810_32/i686-w64-mingw32/include ..\slice-pro-turbo\glwidget.h -o release\moc_glwidget.cpp
 
 release/moc_widget.cpp: ../slice-pro-turbo/widget.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtWidgets/QWidget \
@@ -729,7 +730,7 @@ release/moc_widget.cpp: ../slice-pro-turbo/widget.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtOpenGL/qtopenglversion.h \
 		release/moc_predefs.h \
 		C:/Qt/5.15.2/mingw81_32/bin/moc.exe
-	C:\Qt\5.15.2\mingw81_32\bin\moc.exe $(DEFINES) --include D:/repos/slice-pro-turbo/build-slice-pro-turbo-Desktop_Qt_5_15_2_MinGW_32_bit-Debug/release/moc_predefs.h -IC:/Qt/5.15.2/mingw81_32/mkspecs/win32-g++ -ID:/repos/slice-pro-turbo/slice-pro-turbo -IC:/Qt/5.15.2/mingw81_32/include -IC:/Qt/5.15.2/mingw81_32/include/QtOpenGL -IC:/Qt/5.15.2/mingw81_32/include/QtWidgets -IC:/Qt/5.15.2/mingw81_32/include/QtGui -IC:/Qt/5.15.2/mingw81_32/include/QtANGLE -IC:/Qt/5.15.2/mingw81_32/include/QtCore -I. -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++ -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32 -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include-fixed -IC:/Qt/Tools/mingw810_32/i686-w64-mingw32/include ..\slice-pro-turbo\widget.h -o release\moc_widget.cpp
+	C:\Qt\5.15.2\mingw81_32\bin\moc.exe $(DEFINES) --include C:/Users/ASUS/Desktop/develop/different/slice-pro-turbo/build-slice-pro-turbo-Desktop_Qt_5_15_2_MinGW_32_bit-Debug/release/moc_predefs.h -IC:/Qt/5.15.2/mingw81_32/mkspecs/win32-g++ -IC:/Users/ASUS/Desktop/develop/different/slice-pro-turbo/slice-pro-turbo -IC:/Qt/5.15.2/mingw81_32/include -IC:/Qt/5.15.2/mingw81_32/include/QtOpenGL -IC:/Qt/5.15.2/mingw81_32/include/QtWidgets -IC:/Qt/5.15.2/mingw81_32/include/QtGui -IC:/Qt/5.15.2/mingw81_32/include/QtANGLE -IC:/Qt/5.15.2/mingw81_32/include/QtCore -I. -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++ -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32 -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include -IC:/Qt/Tools/mingw810_32/lib/gcc/i686-w64-mingw32/8.1.0/include-fixed -IC:/Qt/Tools/mingw810_32/i686-w64-mingw32/include ..\slice-pro-turbo\widget.h -o release\moc_widget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -863,7 +864,8 @@ ui_widget.h: ../slice-pro-turbo/widget.ui \
 		C:/Qt/5.15.2/mingw81_32/include/QtGui/QSurfaceFormat \
 		C:/Qt/5.15.2/mingw81_32/include/QtGui/qsurfaceformat.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QObject \
-		C:/Qt/5.15.2/mingw81_32/include/QtCore/QString
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QString \
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QFile
 	C:\Qt\5.15.2\mingw81_32\bin\uic.exe ..\slice-pro-turbo\widget.ui -o ui_widget.h
 
 compiler_yacc_decl_make_all:
@@ -1002,12 +1004,14 @@ release/glwidget.o: ../slice-pro-turbo/glwidget.cpp ../slice-pro-turbo/glwidget.
 		C:/Qt/5.15.2/mingw81_32/include/QtGui/qsurfaceformat.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QObject \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QString \
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QFile \
 		C:/Qt/5.15.2/mingw81_32/include/GL/glut.h \
 		C:/Qt/5.15.2/mingw81_32/include/GL/freeglut_std.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtANGLE/EGL/egl.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtANGLE/EGL/eglplatform.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QDebug \
-		C:/Qt/5.15.2/mingw81_32/include/QtGui/QMouseEvent
+		C:/Qt/5.15.2/mingw81_32/include/QtGui/QMouseEvent \
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QTextStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\glwidget.o ..\slice-pro-turbo\glwidget.cpp
 
 release/main.o: ../slice-pro-turbo/main.cpp ../slice-pro-turbo/widget.h \
@@ -1991,11 +1995,11 @@ release/widget.o: ../slice-pro-turbo/widget.cpp ../slice-pro-turbo/widget.h \
 		../slice-pro-turbo/glwidget.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtOpenGL/QGLWidget \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QString \
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QFile \
 		ui_widget.h \
 		C:/Qt/5.15.2/mingw81_32/include/QtWidgets/QFileDialog \
 		C:/Qt/5.15.2/mingw81_32/include/QtWidgets/QMessageBox \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QDir \
-		C:/Qt/5.15.2/mingw81_32/include/QtCore/QFile \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QTextStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\widget.o ..\slice-pro-turbo\widget.cpp
 

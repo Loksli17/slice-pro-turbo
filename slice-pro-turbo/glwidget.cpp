@@ -3,6 +3,14 @@
 #include "GL/glut.h"
 #include <QDebug>
 #include <QMouseEvent>
+#include <QFile>
+#include <QTextStream>
+#include <QVector>
+
+//struct triangle{
+//    point Normal;
+//    point p[3];
+//};
 
 GLWidget::GLWidget(QWidget *parent)
 {
@@ -221,6 +229,7 @@ void GLWidget::setYRotation(int angle)
     }
 }
 
+
 void GLWidget::setZRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -231,10 +240,76 @@ void GLWidget::setZRotation(int angle)
     }
 }
 
-void GLWidget::getStl(QString stl)
+
+void GLWidget::getStl(QFile* file)
 {
-    qDebug()<<stl;
+
+    struct point{
+        float X;
+        float Y;
+        float Z;
+    };
+
+    struct triangle{
+        point Normal;
+        point p[3];
+    };
+
+    QVector <triangle>triangleBase;
+
+    int
+        state       = 0,
+        type        = 0,
+        countCoords = 0;
+    float points[3];
+    triangle form;
+
+    QTextStream in(file);
+    QString text      = in.readAll();
+    QStringList words = text.split(" ");
+    file->close();
+
+    for(int i = 0; i < words.size(); i++){
+        QString word = words[i];
+
+        if(word != ""){
+            if(state == 1){
+                countCoords--;
+                points[countCoords] = word.toFloat();
+
+                if(!countCoords){
+                  if(type == 1){
+                      form.Normal.X = points[2];
+                      form.Normal.Y = points[1];
+                      form.Normal.Z = points[0];
+                      triangleBase.push_back(form);
+                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
+                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
+                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
+                  }else if(type > 1){
+                      triangleBase[triangleBase.size() - 1].p[type - 2].X = points[2];
+                      triangleBase[triangleBase.size() - 1].p[type - 2].Y = points[1];
+                      triangleBase[triangleBase.size() - 1].p[type - 2].Z = points[0];
+                  }
+                  state = 0;
+                }
+            }else if(state == 0){
+                if(word == "normal"){
+                  state       = 1;
+                  countCoords = 3;
+                  type        = 1;
+                }else if(word == "vertex"){
+                  state       = 1;
+                  countCoords = 3;
+                  type        = type + 1;
+                }
+            }
+        }
+    }
+
+    qDebug() << triangleBase.size();
 }
+
 
 void GLWidget::normalizeAngle(int *angle)
 {

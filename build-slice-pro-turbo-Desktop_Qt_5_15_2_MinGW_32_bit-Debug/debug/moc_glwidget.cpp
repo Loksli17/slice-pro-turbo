@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GLWidget_t {
-    QByteArrayData data[11];
-    char stringdata0[117];
+    QByteArrayData data[12];
+    char stringdata0[125];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,13 +42,14 @@ QT_MOC_LITERAL(6, 67, 12), // "setXRotation"
 QT_MOC_LITERAL(7, 80, 12), // "setYRotation"
 QT_MOC_LITERAL(8, 93, 12), // "setZRotation"
 QT_MOC_LITERAL(9, 106, 6), // "getStl"
-QT_MOC_LITERAL(10, 113, 3) // "stl"
+QT_MOC_LITERAL(10, 113, 6), // "QFile*"
+QT_MOC_LITERAL(11, 120, 4) // "file"
 
     },
     "GLWidget\0xRotationChanged\0\0angle\0"
     "yRotationChanged\0zRotationChanged\0"
     "setXRotation\0setYRotation\0setZRotation\0"
-    "getStl\0stl"
+    "getStl\0QFile*\0file"
 };
 #undef QT_MOC_LITERAL
 
@@ -85,7 +86,7 @@ static const uint qt_meta_data_GLWidget[] = {
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void, QMetaType::Int,    3,
-    QMetaType::Void, QMetaType::QString,   10,
+    QMetaType::Void, 0x80000000 | 10,   11,
 
        0        // eod
 };
@@ -102,8 +103,19 @@ void GLWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 3: _t->setXRotation((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 4: _t->setYRotation((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 5: _t->setZRotation((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->getStl((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 6: _t->getStl((*reinterpret_cast< QFile*(*)>(_a[1]))); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 6:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QFile* >(); break;
+            }
+            break;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
@@ -165,7 +177,7 @@ int GLWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 7)
-            *reinterpret_cast<int*>(_a[0]) = -1;
+            qt_static_metacall(this, _c, _id, _a);
         _id -= 7;
     }
     return _id;
