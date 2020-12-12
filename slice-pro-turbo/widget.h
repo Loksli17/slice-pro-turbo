@@ -21,8 +21,11 @@ public:
 private slots:
     void on_pushButton_2_clicked();
 
+    void on_checkBox_toggled(bool checked);
+
 signals:
     void stlOpened(QFile* file);
+    void toggleWireframe(bool show);
 
 private:
     Ui::Widget *ui;

@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -27,6 +28,7 @@ public:
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton_2;
+    QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
@@ -54,6 +56,11 @@ public:
 
         verticalLayout->addWidget(pushButton_2);
 
+        checkBox = new QCheckBox(Widget);
+        checkBox->setObjectName(QString::fromUtf8("checkBox"));
+
+        verticalLayout->addWidget(checkBox);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -77,6 +84,7 @@ public:
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition Featuring Dante & Knuckles from Devil May Cry series, with new Funky Mode", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
+        checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
 
