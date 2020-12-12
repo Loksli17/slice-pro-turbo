@@ -23,9 +23,12 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_SliceAuto_clicked();
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
+    void sliceAuto();
 
 private:
     Ui::Widget *ui;

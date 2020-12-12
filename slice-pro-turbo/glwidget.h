@@ -32,8 +32,8 @@ public slots:
     void setZRotation(int angle);
 
     void getStl(QFile* file);
-
     void toggleWireframe(bool show);
+    void sliceAuto();
 
 signals:
     void xRotationChanged(int angle);
@@ -42,8 +42,8 @@ signals:
 
 private:
     void normalizeAngle(int *angle);
-
     void wireframe(bool show);
+    void findGabarite();
 
     int xRot;
     int yRot;

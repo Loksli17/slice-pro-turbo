@@ -28,6 +28,7 @@ public:
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton_2;
+    QPushButton *SliceAuto;
     QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
@@ -55,6 +56,11 @@ public:
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
 
         verticalLayout->addWidget(pushButton_2);
+
+        SliceAuto = new QPushButton(Widget);
+        SliceAuto->setObjectName(QString::fromUtf8("SliceAuto"));
+
+        verticalLayout->addWidget(SliceAuto);
 
         checkBox = new QCheckBox(Widget);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
@@ -84,6 +90,7 @@ public:
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition Featuring Dante & Knuckles from Devil May Cry series, with new Funky Mode", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
+        SliceAuto->setText(QCoreApplication::translate("Widget", "Cum", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi

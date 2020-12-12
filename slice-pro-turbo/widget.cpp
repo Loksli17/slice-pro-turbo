@@ -16,6 +16,7 @@ Widget::Widget(QWidget *parent)
     glWidget = new GLWidget();
     connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
     connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
+    connect(this, SIGNAL(sliceAuto()), glWidget, SLOT(sliceAuto()));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -43,4 +44,11 @@ void Widget::on_checkBox_toggled(bool checked)
 {
     ui->widget->setFocus();
     emit toggleWireframe(checked);
+}
+
+
+void Widget::on_SliceAuto_clicked()
+{
+    ui->widget->setFocus();
+    emit sliceAuto();
 }
