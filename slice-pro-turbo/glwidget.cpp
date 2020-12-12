@@ -122,10 +122,25 @@ void GLWidget::paintGL()
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
+
     // Отрисовка модели и сетки
     glPushMatrix();
         glScalef(zoomScale, zoomScale, zoomScale);
         drawGrid();
+
+        glLineWidth(2);
+        for (int j=0;j<OutLineLoop.size();j++){
+            glBegin(GL_LINES);
+            glColor4f(0,1,0,1);
+            glNormal3f(0,0,1);
+            for (int i=0;i<OutLineLoop.at(j).size()-1;i++){
+                if (OutLineLoopID.at(j).at(i+1)==OutLineLoopID.at(j).at(i)){
+                    glVertex3f(OutLineLoop.at(j).at(i).X,OutLineLoop.at(j).at(i).Y,OutLineLoop.at(j).at(i).Z);
+                    glVertex3f(OutLineLoop.at(j).at(i+1).X,OutLineLoop.at(j).at(i+1).Y,OutLineLoop.at(j).at(i+1).Z);
+                }
+            }
+            glEnd();
+        }
 
 //        glutSolidTeapot(1.0);
         //строим модель
@@ -150,20 +165,6 @@ void GLWidget::paintGL()
 //            }
 //        }
 //    glEnd();
-
-    glLineWidth(2);
-    for (int j=0;j<OutLineLoop.size();j++){
-        glBegin(GL_LINES);
-        glColor4f(0,1,0,1);
-        glNormal3f(0,0,1);
-        for (int i=0;i<OutLineLoop.at(j).size()-1;i++){
-            if (OutLineLoopID.at(j).at(i+1)==OutLineLoopID.at(j).at(i)){
-                glVertex3f(OutLineLoop.at(j).at(i).X,OutLineLoop.at(j).at(i).Y,OutLineLoop.at(j).at(i).Z);
-                glVertex3f(OutLineLoop.at(j).at(i+1).X,OutLineLoop.at(j).at(i+1).Y,OutLineLoop.at(j).at(i+1).Z);
-            }
-        }
-        glEnd();
-    }
 
     glPopMatrix();
 
