@@ -47,7 +47,7 @@ void GLWidget::initializeGL()
 {
     glClearColor(0.5, 0.5, 0.5, 1.0);
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    glCullFace(GL_FRONT);
 
     // Настройки глута - нужны для верного отображения
     glEnable(GL_DEPTH_TEST);
