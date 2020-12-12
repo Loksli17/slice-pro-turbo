@@ -33,9 +33,5 @@ void Widget::on_pushButton_2_clicked()
         return;
     } else QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
 
-//    QTextStream in(&file);
-//    QString text = in.readAll();
-//    file.close();
-
     emit stlOpened(&file);
 }

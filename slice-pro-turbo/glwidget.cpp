@@ -7,10 +7,26 @@
 #include <QTextStream>
 #include <QVector>
 
-//struct triangle{
-//    point Normal;
-//    point p[3];
-//};
+struct point{
+    float X;
+    float Y;
+    float Z;
+};
+
+struct triangle{
+    point Normal;
+    point p[3];
+};
+
+struct state{
+    bool slice;
+    bool gCode;
+    bool HolodilovAAAA;
+};
+
+QVector <triangle>triangleBase;
+QVector <state>states;
+
 
 GLWidget::GLWidget(QWidget *parent)
 {
@@ -70,15 +86,23 @@ void GLWidget::paintGL()
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
-
-//    gluLookAt(xPos, yPos, 0.0, 0.0, 0.0, -10.0, 0.0, 1.0, 0.0);
-
     // Отрисовка модели и сетки
     glPushMatrix();
         glScalef(zoomScale, zoomScale, zoomScale);
         drawGrid();
 
-        glutSolidTeapot(1.0);
+//        glutSolidTeapot(1.0);
+        //строим модель
+        glBegin(GL_TRIANGLES);
+            glColor4f(0.8,0.8,0.1,0.8);
+            for (int i=0;i<triangleBase.size();i++){
+                glNormal3f(triangleBase[i].Normal.X,triangleBase[i].Normal.Y,triangleBase[i].Normal.Z);
+                glVertex3f(triangleBase[i].p[0].X,triangleBase[i].p[0].Y,triangleBase[i].p[0].Z);
+                glVertex3f(triangleBase[i].p[1].X,triangleBase[i].p[1].Y,triangleBase[i].p[1].Z);
+                glVertex3f(triangleBase[i].p[2].X,triangleBase[i].p[2].Y,triangleBase[i].p[2].Z);
+            }
+        glEnd();
+
     glPopMatrix();
 
     // Отрисовка оси координат поверх всего
@@ -138,6 +162,7 @@ void GLWidget::drawOrigin()
     glEnable(GL_LIGHTING);
 }
 
+
 void GLWidget::drawGrid()
 {
     glColor4f(0.5, 0.5, 0.5, 1.0);
@@ -149,11 +174,13 @@ void GLWidget::drawGrid()
     glEnd();
 }
 
+
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
 //    setFocus();
     lastPos = event->pos();
 }
+
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
@@ -176,6 +203,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     updateGL();
 }
 
+
 /// reset all camera movements
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
@@ -186,6 +214,7 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 
     updateGL();
 }
+
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
 {
@@ -209,6 +238,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
     updateGL();
 }
 
+
 void GLWidget::setXRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -218,6 +248,7 @@ void GLWidget::setXRotation(int angle)
 //        updateGL();
     }
 }
+
 
 void GLWidget::setYRotation(int angle)
 {
@@ -243,19 +274,6 @@ void GLWidget::setZRotation(int angle)
 
 void GLWidget::getStl(QFile* file)
 {
-
-    struct point{
-        float X;
-        float Y;
-        float Z;
-    };
-
-    struct triangle{
-        point Normal;
-        point p[3];
-    };
-
-    QVector <triangle>triangleBase;
 
     int
         state       = 0,
@@ -308,6 +326,8 @@ void GLWidget::getStl(QFile* file)
     }
 
     qDebug() << triangleBase.size();
+
+    updateGL();
 }
 
 
