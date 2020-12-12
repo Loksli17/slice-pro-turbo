@@ -33,6 +33,8 @@ public slots:
 
     void getStl(QFile* file);
 
+    void toggleWireframe(bool show);
+
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
@@ -41,12 +43,14 @@ signals:
 private:
     void normalizeAngle(int *angle);
 
+    void wireframe(bool show);
+
     int xRot;
     int yRot;
     int zRot;
     double xPos;
     double yPos;
-    float zoomScale;
+    double zoomScale;
     QPoint lastPos;
 
     // lighting

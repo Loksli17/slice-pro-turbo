@@ -1,11 +1,13 @@
 #include "glwidget.h"
 #include "GL/glu.h"
 #include "GL/glut.h"
+#include "windows.h"
 #include <QDebug>
 #include <QMouseEvent>
 #include <QFile>
 #include <QTextStream>
 #include <QVector>
+#include <QVector3D>
 
 struct point{
     float X;
@@ -33,7 +35,7 @@ GLWidget::GLWidget(QWidget *parent)
     yRot = 720;
     xRot = 480;
     xPos = yPos = 0;
-    zoomScale = 0.5;
+    zoomScale = 0.05;
 
     setXRotation(xRot);
     setYRotation(yRot);
@@ -113,29 +115,24 @@ void GLWidget::paintGL()
 /// Window resize handler
 void GLWidget::resizeGL(int w, int h)
 {
-    int side = qMin(w, h);
-    glViewport((w - 2.0 * side) / 2, (h - 2.0 * side) / 2, 2.0 * side, 2.0 * side);
+//    int side = qMin(w, h);
+//    glViewport((w - 2.0 * side) / 2, (h - 2.0 * side) / 2, 2.0 * side, 2.0 * side);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-#ifdef QT_OPENGL_ES_1
-    glOrthof(-2.0, +2.0, -2.0, +2.0, 4.0, 15.0);
-#else
-    glOrtho(-2.0, +2.0, -2.0, +2.0, 4.0, 15.0);
-#endif
-    glMatrixMode(GL_MODELVIEW);
-
-//    glViewport(0, 0, w, h);
 //    glMatrixMode(GL_PROJECTION);
 //    glLoadIdentity();
-//    gluPerspective(45, (float)w/h, 0.01, 100.0);
+//#ifdef QT_OPENGL_ES_1
+//    glOrthof(-2.0, +2.0, -2.0, +2.0, 4.0, 15.0);
+//#else
+//    glOrtho(-2.0, +2.0, -2.0, +2.0, 4.0, 15.0);
+//#endif
 //    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//    gluLookAt(
-//                0, 0, 5,
-//                0, 0, 0,
-//                0, 1, 0
-//                    );
+
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45, (float)w/h, 0.01, 100.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void GLWidget::drawOrigin()
@@ -166,9 +163,9 @@ void GLWidget::drawGrid()
 {
     glColor4f(0.5, 0.5, 0.5, 1.0);
     glBegin(GL_LINES);
-    for (GLfloat i = -2.5; i <= 2.5; i += 0.25) {
-        glVertex3f(i, 0, 2.5); glVertex3f(i, 0, -2.5);
-        glVertex3f(2.5, 0, i); glVertex3f(-2.5, 0, i);
+    for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
+        glVertex3f(i, 0, 20.0); glVertex3f(i, 0, -20.0);
+        glVertex3f(20.0, 0, i); glVertex3f(-20.0, 0, i);
     }
     glEnd();
 }
@@ -194,12 +191,15 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     } else if (event->buttons() == Qt::MiddleButton) {
-        xPos += dx / ((double)width() / 3.0);
-        yPos -= dy / ((double)height() / 2.0);
+//        xPos += dx / ((double)width() / 3.0);
+//        yPos -= dy / ((double)height() / 2.0);
+        xPos += (10.0 * dx) / ((double)width());
+        yPos -= (8.0  * dy) / ((double)height());
+        updateGL();
     }
 
     lastPos = event->pos();
-    updateGL();
+
 }
 
 
@@ -208,8 +208,8 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 {
 //    setFocus();
     QPoint numDegrees = event->angleDelta();
-    if (numDegrees.y() < 0) zoomScale = zoomScale / 1.5;
-    if (numDegrees.y() > 0) zoomScale = zoomScale * 1.5;
+    if (numDegrees.y() < 0) zoomScale /= 1.5;
+    if (numDegrees.y() > 0) zoomScale *= 1.5;
 
     updateGL();
 }
@@ -217,6 +217,7 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
 {
+//    setFocus();
 
     if (event->key() == Qt::Key_R) {
         yRot = 720;
@@ -224,15 +225,11 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         zRot = 0;
 
         xPos = yPos = 0;
-        zoomScale = 0.5;
+        zoomScale = 0.05;
 
         setXRotation(xRot);
         setYRotation(yRot);
         setZRotation(zRot);
-    } else if (event->key() == Qt::Key_W) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else if (event->key() == Qt::Key_E) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
     updateGL();
 }
@@ -244,7 +241,7 @@ void GLWidget::setXRotation(int angle)
     if (angle != xRot) {
         xRot = angle;
         emit xRotationChanged(angle);
-//        updateGL();
+        updateGL();
     }
 }
 
@@ -255,7 +252,7 @@ void GLWidget::setYRotation(int angle)
     if (angle != yRot) {
         yRot = angle;
         emit yRotationChanged(angle);
-//        updateGL();
+        updateGL();
     }
 }
 
@@ -266,7 +263,7 @@ void GLWidget::setZRotation(int angle)
     if (angle != zRot) {
         zRot = angle;
         emit zRotationChanged(angle);
-//        updateGL();
+        updateGL();
     }
 }
 
@@ -274,7 +271,7 @@ void GLWidget::setZRotation(int angle)
 //полученние данных с файла и отрисовка модели
 void GLWidget::getStl(QFile* file)
 {
-
+    triangleBase.clear();
     int
         state       = 0,
         type        = 0,
@@ -330,6 +327,11 @@ void GLWidget::getStl(QFile* file)
     updateGL();
 }
 
+void GLWidget::toggleWireframe(bool show)
+{
+    wireframe(show);
+}
+
 
 void GLWidget::normalizeAngle(int *angle)
 {
@@ -337,4 +339,14 @@ void GLWidget::normalizeAngle(int *angle)
         *angle += 360 * 16;
     while (*angle > 360 * 16)
         *angle -= 360 * 16;
+}
+
+void GLWidget::wireframe(bool show)
+{
+    if (show) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+    update();
 }

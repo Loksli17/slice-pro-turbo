@@ -15,6 +15,7 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     glWidget = new GLWidget();
     connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
+    connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -33,5 +34,13 @@ void Widget::on_pushButton_2_clicked()
         return;
     } else QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
 
+    ui->widget->setFocus();
     emit stlOpened(&file);
+}
+
+
+void Widget::on_checkBox_toggled(bool checked)
+{
+    ui->widget->setFocus();
+    emit toggleWireframe(checked);
 }
