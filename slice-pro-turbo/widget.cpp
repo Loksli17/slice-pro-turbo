@@ -25,7 +25,7 @@ Widget::~Widget()
 
 void Widget::on_pushButton_2_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Открытый файл", QDir::homePath());
+    QString fileName = QFileDialog::getOpenFileName(this, "Открытый файл", QDir::homePath(), tr("STL-files (*.stl)"));
     QFile   file(fileName);
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
