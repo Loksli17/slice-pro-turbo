@@ -19,9 +19,7 @@ struct triangle{
 };
 
 struct state{
-    bool slice;
-    bool gCode;
-    bool HolodilovAAAA;
+    bool grid;
 };
 
 QVector <triangle>triangleBase;
@@ -59,7 +57,7 @@ void GLWidget::initializeGL()
 
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
-//    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
 
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -94,12 +92,12 @@ void GLWidget::paintGL()
 //        glutSolidTeapot(1.0);
         //строим модель
         glBegin(GL_TRIANGLES);
-            glColor4f(0.8,0.8,0.1,0.8);
-            for (int i=0;i<triangleBase.size();i++){
-                glNormal3f(triangleBase[i].Normal.X,triangleBase[i].Normal.Y,triangleBase[i].Normal.Z);
-                glVertex3f(triangleBase[i].p[0].X,triangleBase[i].p[0].Y,triangleBase[i].p[0].Z);
-                glVertex3f(triangleBase[i].p[1].X,triangleBase[i].p[1].Y,triangleBase[i].p[1].Z);
-                glVertex3f(triangleBase[i].p[2].X,triangleBase[i].p[2].Y,triangleBase[i].p[2].Z);
+            glColor4f(0.8, 0.8, 0.1, 0.8);
+            for (int i = 0; i < triangleBase.size(); i++){
+                glNormal3f(triangleBase[i].Normal.X, triangleBase[i].Normal.Y, triangleBase[i].Normal.Z);
+                glVertex3f(triangleBase[i].p[0].X,   triangleBase[i].p[0].Y,   triangleBase[i].p[0].Z);
+                glVertex3f(triangleBase[i].p[1].X,   triangleBase[i].p[1].Y,   triangleBase[i].p[1].Z);
+                glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
         glEnd();
 
@@ -110,6 +108,7 @@ void GLWidget::paintGL()
 
     glLineWidth(1);
 }
+
 
 /// Window resize handler
 void GLWidget::resizeGL(int w, int h)
@@ -272,6 +271,7 @@ void GLWidget::setZRotation(int angle)
 }
 
 
+//полученние данных с файла и отрисовка модели
 void GLWidget::getStl(QFile* file)
 {
 
