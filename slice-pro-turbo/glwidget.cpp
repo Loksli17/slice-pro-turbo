@@ -350,6 +350,14 @@ void GLWidget::setZRotation(int angle)
 void GLWidget::getStl(QFile* file)
 {
     triangleBase.clear();
+
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+    pointSeparation.clear();
+    pointSeparationID.clear();
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+
     int
         state       = 0,
         type        = 0,
