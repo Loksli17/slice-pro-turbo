@@ -33,6 +33,7 @@ public:
     QCheckBox *checkBox;
     QDoubleSpinBox *SliceAdaptive;
     QPushButton *saveGCode;
+    QPushButton *ResetButton;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
@@ -84,6 +85,11 @@ public:
 
         verticalLayout->addWidget(saveGCode);
 
+        ResetButton = new QPushButton(Widget);
+        ResetButton->setObjectName(QString::fromUtf8("ResetButton"));
+
+        verticalLayout->addWidget(ResetButton);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -110,6 +116,7 @@ public:
         SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
         saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
+        ResetButton->setText(QCoreApplication::translate("Widget", "Reset", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
 

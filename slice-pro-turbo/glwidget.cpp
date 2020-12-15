@@ -273,11 +273,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 //        yPos -= dy / ((double)height() / 2.0);
         xPos += (10.0 * dx) / ((double)width());
         yPos -= (8.0  * dy) / ((double)height());
-        updateGL();
+
     }
 
     lastPos = event->pos();
-
+    update();
 }
 
 
@@ -289,7 +289,7 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     if (numDegrees.y() < 0) zoomScale /= 1.5;
     if (numDegrees.y() > 0) zoomScale *= 1.5;
 
-    updateGL();
+    update();
 }
 
 
@@ -309,7 +309,20 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         setYRotation(yRot);
         setZRotation(zRot);
     }
-    updateGL();
+    update();
+}
+
+void GLWidget::resetSliceState()
+{
+//    triangleBase.clear();
+    qDebug() << "Hmm";
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+    pointSeparation.clear();
+    pointSeparationID.clear();
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+    update();
 }
 
 
@@ -319,7 +332,6 @@ void GLWidget::setXRotation(int angle)
     if (angle != xRot) {
         xRot = angle;
         emit xRotationChanged(angle);
-        updateGL();
     }
 }
 
@@ -330,7 +342,6 @@ void GLWidget::setYRotation(int angle)
     if (angle != yRot) {
         yRot = angle;
         emit yRotationChanged(angle);
-        updateGL();
     }
 }
 
@@ -341,7 +352,6 @@ void GLWidget::setZRotation(int angle)
     if (angle != zRot) {
         zRot = angle;
         emit zRotationChanged(angle);
-        updateGL();
     }
 }
 
@@ -412,7 +422,7 @@ void GLWidget::getStl(QFile* file)
 
     qDebug() << triangleBase.size();
 
-    updateGL();
+    update();
 }
 
 void GLWidget::toggleWireframe(bool show)
@@ -737,7 +747,7 @@ void GLWidget::sliceAdaptive(double width)
 
 
 float LenghtOfLine(point a, point b){
-    return sqrt(pow((a.X-b.X),2)+pow((a.Y-b.Y),2));
+    return sqrt(pow((a.X - b.X), 2) + pow((a.Y - b.Y), 2));
 }
 
 void GLWidget::createGCodeFile(QString fileName)
@@ -767,17 +777,17 @@ void GLWidget::createGCodeFile(QString fileName)
     float centX=92.22;
     float centY=86.75;
 
-    for (int j=0;j<OutLineLoop.size();j++){
+    for (int j = 0; j < OutLineLoop.size(); j++){
         out << ";LAYER:" << j << Qt::endl;
-        out << "G0 F9000 X" << OutLineLoop.at(j).at(0).X+centX<<" Y"<<OutLineLoop.at(j).at(0).Y+centY<<" Z"<<OutLineLoop.at(j).at(0).Z<< Qt::endl;
+        out << "G0 F9000 X" << OutLineLoop.at(j).at(0).X + centX << " Y"<< OutLineLoop.at(j).at(0).Y + centY << " Z" << OutLineLoop.at(j).at(0).Z << Qt::endl;
         out << ";TYPE:WALL-OUTER" << Qt::endl;
 
-        for (int i=1;i<OutLineLoop.at(j).size()-1;i++){
-            if (OutLineLoopID.at(j).at(i-1)==OutLineLoopID.at(j).at(i)){
-                out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X+centX <<" Y"<< OutLineLoop.at(j).at(i).Y+centY<<" E"<<(LenghtOfLine(OutLineLoop.at(j).at(i),OutLineLoop.at(j).at(i-1))/63.697)<< Qt::endl;
+        for (int i = 1; i < OutLineLoop.at(j).size() - 1; i++){
+            if (OutLineLoopID.at(j).at(i - 1)==OutLineLoopID.at(j).at(i)){
+                out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X + centX << " Y" << OutLineLoop.at(j).at(i).Y + centY << " E" << (LenghtOfLine(OutLineLoop.at(j).at(i), OutLineLoop.at(j).at(i - 1)) / 63.697) << Qt::endl;
             }
         }
-        out << "G1 F1200 X"<<OutLineLoop.at(j).at(OutLineLoop.at(j).size()-1).X+centX<<" Y"<<OutLineLoop.at(j).at(OutLineLoop.at(j).size()-1).Y+centY<<" E0.1"<< Qt::endl;
+        out << "G1 F1200 X" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX<< " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
     }
 
     gcodeFile.close();

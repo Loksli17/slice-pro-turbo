@@ -19,6 +19,7 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(sliceAuto()), glWidget, SLOT(sliceAuto()));
     connect(this, SIGNAL(sliceAdaptive(double)), glWidget, SLOT(sliceAdaptive(double)));
     connect(this, SIGNAL(createGCodeFile(QString)), glWidget, SLOT(createGCodeFile(QString)));
+    connect(this, SIGNAL(resetSlicing()), glWidget, SLOT(resetSliceState()));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -72,4 +73,10 @@ void Widget::on_saveGCode_clicked()
     qDebug() << fileName;
 
     emit createGCodeFile(fileName);
+}
+
+void Widget::on_ResetButton_clicked()
+{
+    ui->widget->setFocus();
+    emit resetSlicing();
 }

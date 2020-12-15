@@ -29,12 +29,15 @@ private slots:
 
     void on_saveGCode_clicked();
 
+    void on_ResetButton_clicked();
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
     void sliceAuto();
     void sliceAdaptive(double width);
     void createGCodeFile(QString file);
+    void resetSlicing();
 
 private:
     Ui::Widget *ui;

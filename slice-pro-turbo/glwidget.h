@@ -36,6 +36,7 @@ public slots:
     void sliceAuto();
     void sliceAdaptive(double width);
     void createGCodeFile(QString fileName);
+    void resetSliceState();
 
 signals:
     void xRotationChanged(int angle);
