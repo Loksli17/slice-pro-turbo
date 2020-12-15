@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GLWidget_t {
     QByteArrayData data[25];
-    char stringdata0[271];
+    char stringdata0[273];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -56,7 +56,7 @@ QT_MOC_LITERAL(20, 217, 10), // "rotateBody"
 QT_MOC_LITERAL(21, 228, 4), // "axis"
 QT_MOC_LITERAL(22, 233, 12), // "intersection"
 QT_MOC_LITERAL(23, 246, 7), // "checked"
-QT_MOC_LITERAL(24, 254, 16) // "intersectionDraw"
+QT_MOC_LITERAL(24, 254, 18) // "setInnerPointsGrid"
 
     },
     "GLWidget\0xRotationChanged\0\0angle\0"
@@ -66,7 +66,7 @@ QT_MOC_LITERAL(24, 254, 16) // "intersectionDraw"
     "show\0sliceAuto\0sliceAdaptive\0width\0"
     "createGCodeFile\0fileName\0resetSliceState\0"
     "rotateBody\0axis\0intersection\0checked\0"
-    "intersectionDraw"
+    "setInnerPointsGrid"
 };
 #undef QT_MOC_LITERAL
 
@@ -144,7 +144,7 @@ void GLWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 11: _t->resetSliceState(); break;
         case 12: _t->rotateBody((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->intersection((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 14: _t->intersectionDraw(); break;
+        case 14: _t->setInnerPointsGrid(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {

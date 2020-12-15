@@ -10,6 +10,8 @@
 #include <QVector3D>
 #include <QVector>
 
+#define GridSize 5
+
 struct point{
     float X;
     float Y;
@@ -167,6 +169,8 @@ void GLWidget::paintGL()
             glVertex3f(GabariteMinX - 1, GabariteMaxY + 1, SlicerHeight);
         glEnd();
 
+        glDisable(GL_LIGHTING);
+
         if(showIntersectionFlag){
             glClear(GL_DEPTH_BUFFER_BIT);
             glLineWidth(4.5);
@@ -180,8 +184,17 @@ void GLWidget::paintGL()
                     }
                 }
             glEnd();
-        }
 
+            //Отображение точек в процессе подготовки к заливке сеткой вороного
+            glPointSize(4);
+            glBegin(GL_POINTS);
+                glColor4f(1.0, 0.0, 1.0, 1.0);
+                for (int i = 0; i < InnerPoints.size(); i++) {
+                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
+                }
+            glEnd();
+        }
+        glEnable(GL_LIGHTING);
     glPopMatrix();
 
     // Отрисовка оси координат поверх всего
@@ -265,7 +278,7 @@ void GLWidget::drawGrid()
             glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
             glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
         }
-    glEnd();
+        glEnd();
 }
 
 
@@ -336,12 +349,12 @@ void GLWidget::resetSliceState()
 {
 //    triangleBase.clear();
     qDebug() << "Hmm";
-    OutLineLoop.clear();
-    OutLineLoopID.clear();
-    pointSeparation.clear();
-    pointSeparationID.clear();
-    OutLineSeparation.clear();
-    OutLineSeparationID.clear();
+//    OutLineLoop.clear();
+//    OutLineLoopID.clear();
+//    pointSeparation.clear();
+//    pointSeparationID.clear();
+//    OutLineSeparation.clear();
+//    OutLineSeparationID.clear();
     update();
 }
 
@@ -553,21 +566,21 @@ void GLWidget::wireframe(bool show)
 
 void GLWidget::findGabarite()
 {
-    float minX=triangleBase[0].p[0].X;
-    float maxX=triangleBase[0].p[0].X;
-    float minY=triangleBase[0].p[0].Y;
-    float maxY=triangleBase[0].p[0].Y;
-    float minZ=triangleBase[0].p[0].Z;
-    float maxZ=triangleBase[0].p[0].Z;
+    float minX = triangleBase[0].p[0].X;
+    float maxX = triangleBase[0].p[0].X;
+    float minY = triangleBase[0].p[0].Y;
+    float maxY = triangleBase[0].p[0].Y;
+    float minZ = triangleBase[0].p[0].Z;
+    float maxZ = triangleBase[0].p[0].Z;
 
-    for(int i=0;i<triangleBase.size();i++){
-        for (int j=0;j<3;j++){
-            if (triangleBase[i].p[j].X>maxX) maxX=triangleBase[i].p[j].X;
-            if (triangleBase[i].p[j].Y>maxY) maxY=triangleBase[i].p[j].Y;
-            if (triangleBase[i].p[j].Z>maxZ) maxZ=triangleBase[i].p[j].Z;
-            if (triangleBase[i].p[j].X<minX) minX=triangleBase[i].p[j].X;
-            if (triangleBase[i].p[j].Y<minY) minY=triangleBase[i].p[j].Y;
-            if (triangleBase[i].p[j].Z<minZ) minZ=triangleBase[i].p[j].Z;
+    for (int i = 0; i < triangleBase.size(); i++) {
+        for (int j = 0; j < 3; j++) {
+            if (triangleBase[i].p[j].X > maxX) maxX = triangleBase[i].p[j].X;
+            if (triangleBase[i].p[j].Y > maxY) maxY = triangleBase[i].p[j].Y;
+            if (triangleBase[i].p[j].Z > maxZ) maxZ = triangleBase[i].p[j].Z;
+            if (triangleBase[i].p[j].X < minX) minX = triangleBase[i].p[j].X;
+            if (triangleBase[i].p[j].Y < minY) minY = triangleBase[i].p[j].Y;
+            if (triangleBase[i].p[j].Z < minZ) minZ = triangleBase[i].p[j].Z;
         }
     }
 
@@ -586,12 +599,12 @@ void GLWidget::findSeparatePoint()
     pointSeparationID.clear();
 
     ///Основной цикл прохода по всем треугольниками модели
-    for(int trianN=0;trianN<triangleBase.size();trianN++){
+    for (int trianN = 0; trianN < triangleBase.size(); trianN++) {
         ///Преобразование с определением к какой грани относится та или иная точка на трегуольнике
-        for (int vert1=0;vert1<3;vert1++){
-            if (vert1==0) vert2=1;
-            if (vert1==1) vert2=2;
-            if (vert1==2) vert2=0;
+        for (int vert1 = 0; vert1 < 3; vert1++) {
+            if (vert1 == 0) vert2 = 1;
+            if (vert1 == 1) vert2 = 2;
+            if (vert1 == 2) vert2 = 0;
             ///Оплетка для проверки факта парарельности треугольника секущей плоскости
             if (triangleBase[trianN].p[vert1].Z == SlicerHeight) {
 //                    cout<<"Danger triangle pararell slisser plane "<<trianN<<endl;
@@ -601,28 +614,32 @@ void GLWidget::findSeparatePoint()
             }
 
             ///Определение факта того что плоскость пересекает треугольник (она должна пересекать точно 2 грани, не может быть 1 или 3)
-            if ((triangleBase[trianN].p[vert1].Z<SlicerHeight && triangleBase[trianN].p[vert2].Z>SlicerHeight)||
-                (triangleBase[trianN].p[vert1].Z>SlicerHeight && triangleBase[trianN].p[vert2].Z<SlicerHeight)){
-                    float difX=triangleBase[trianN].p[vert2].X-triangleBase[trianN].p[vert1].X;
-                    float difY=triangleBase[trianN].p[vert2].Y-triangleBase[trianN].p[vert1].Y;
-                    float difZ=triangleBase[trianN].p[vert2].Z-triangleBase[trianN].p[vert1].Z;
-                    float t=(SlicerHeight-triangleBase[trianN].p[vert1].Z)/(difZ);
+            if ((triangleBase[trianN].p[vert1].Z < SlicerHeight  && triangleBase[trianN].p[vert2].Z > SlicerHeight)
+                || (triangleBase[trianN].p[vert1].Z > SlicerHeight && triangleBase[trianN].p[vert2].Z < SlicerHeight)) {
+                float difX = triangleBase[trianN].p[vert2].X - triangleBase[trianN].p[vert1].X;
+                float difY = triangleBase[trianN].p[vert2].Y - triangleBase[trianN].p[vert1].Y;
+                float difZ = triangleBase[trianN].p[vert2].Z - triangleBase[trianN].p[vert1].Z;
+                float t = (SlicerHeight - triangleBase[trianN].p[vert1].Z) / (difZ);
 
-                    if (pointSeparationID.size()>0){
-                        if (pointSeparationID[pointSeparationID.size()-1]==trianN &&
-                            (fabs(pointSeparation[pointSeparation.size()-1].X-(triangleBase[trianN].p[vert1].X+difX*t)))<0.001 &&
-                            (fabs(pointSeparation[pointSeparation.size()-1].Y-(triangleBase[trianN].p[vert1].Y+difY*t)))<0.001){
-                                pointSeparation.pop_back();
-                                pointSeparationID.pop_back();
-                                continue;
-                        }
+                if (pointSeparationID.size() > 0) {
+                    if (pointSeparationID[pointSeparationID.size() - 1] == trianN
+                        && (fabs(pointSeparation[pointSeparation.size() - 1].X
+                                 - (triangleBase[trianN].p[vert1].X + difX * t)))
+                               < 0.001
+                        && (fabs(pointSeparation[pointSeparation.size() - 1].Y
+                                 - (triangleBase[trianN].p[vert1].Y + difY * t)))
+                               < 0.001) {
+                        pointSeparation.pop_back();
+                        pointSeparationID.pop_back();
+                        continue;
                     }
-                    point temp;
-                    temp.X=triangleBase[trianN].p[vert1].X+difX*t;
-                    temp.Y=triangleBase[trianN].p[vert1].Y+difY*t;
-                    temp.Z=triangleBase[trianN].p[vert1].Z+difZ*t;
-                    pointSeparation.push_back(temp);
-                    pointSeparationID.push_back(trianN);
+                }
+                point temp;
+                temp.X = triangleBase[trianN].p[vert1].X + difX * t;
+                temp.Y = triangleBase[trianN].p[vert1].Y + difY * t;
+                temp.Z = triangleBase[trianN].p[vert1].Z + difZ * t;
+                pointSeparation.push_back(temp);
+                pointSeparationID.push_back(trianN);
             }
         }
     }
@@ -636,12 +653,12 @@ void GLWidget::findSeparateLayerOutline()
     point tempPoint;
     int tempID;
     int thisIDLine;
-    qDebug()<<pointSeparation.size() << "SIZE";
-    tempPoint.X=pointSeparation[0].X;
-    tempPoint.Y=pointSeparation[0].Y;
-    tempPoint.Z=pointSeparation[0].Z;
-    tempID=0;
-    thisIDLine=0;
+    qDebug() << pointSeparation.size() << "SIZE";
+    tempPoint.X = pointSeparation[0].X;
+    tempPoint.Y = pointSeparation[0].Y;
+    tempPoint.Z = pointSeparation[0].Z;
+    tempID = 0;
+    thisIDLine = 0;
     OutLineSeparation.push_back(tempPoint);
     OutLineSeparationID.push_back(thisIDLine);
 
@@ -698,37 +715,36 @@ void GLWidget::findSeparateLayerOutline()
     }
 
     ///Дополнительная фильтрация массива контура для удаления лишних вершин в узле которой линия не изгибается
-    int thisPointStartLine=0;
-    while (thisPointStartLine<OutLineSeparation.size()-2) {
-        if (OutLineSeparationID[thisPointStartLine]!=OutLineSeparationID[thisPointStartLine+2]) {
-            thisPointStartLine+=2;
+    int thisPointStartLine = 0;
+    while (thisPointStartLine < OutLineSeparation.size() - 2) {
+        if (OutLineSeparationID[thisPointStartLine] != OutLineSeparationID[thisPointStartLine + 2]) {
+            thisPointStartLine += 2;
         }
-        float dx1=fabs(OutLineSeparation[thisPointStartLine].X-OutLineSeparation[thisPointStartLine+1].X);
-        float dy1=fabs(OutLineSeparation[thisPointStartLine].Y-OutLineSeparation[thisPointStartLine+1].Y);
-        float dx2=fabs(OutLineSeparation[thisPointStartLine+1].X-OutLineSeparation[thisPointStartLine+2].X);
-        float dy2=fabs(OutLineSeparation[thisPointStartLine+1].Y-OutLineSeparation[thisPointStartLine+2].Y);
+        float dx1 = fabs(OutLineSeparation[thisPointStartLine].X - OutLineSeparation[thisPointStartLine + 1].X);
+        float dy1 = fabs(OutLineSeparation[thisPointStartLine].Y - OutLineSeparation[thisPointStartLine + 1].Y);
+        float dx2 = fabs(OutLineSeparation[thisPointStartLine + 1].X-OutLineSeparation[thisPointStartLine + 2].X);
+        float dy2 = fabs(OutLineSeparation[thisPointStartLine + 1].Y-OutLineSeparation[thisPointStartLine + 2].Y);
 
-        if ((dx1/dy1)==(dx2/dy2)){
-            OutLineSeparation[thisPointStartLine+1].X=OutLineSeparation[thisPointStartLine+2].X;
-            OutLineSeparation[thisPointStartLine+1].Y=OutLineSeparation[thisPointStartLine+2].Y;
-            OutLineSeparation[thisPointStartLine+1].Z=OutLineSeparation[thisPointStartLine+2].Z;
-            OutLineSeparation.erase(OutLineSeparation.begin()+thisPointStartLine+2,OutLineSeparation.begin()+thisPointStartLine+3);
-            OutLineSeparationID.erase(OutLineSeparationID.begin()+thisPointStartLine+2,OutLineSeparationID.begin()+thisPointStartLine+3);
-            thisPointStartLine=0;
-        }
-        else thisPointStartLine+=1;
+        if ((dx1 / dy1) == (dx2 / dy2)){
+            OutLineSeparation[thisPointStartLine + 1].X = OutLineSeparation[thisPointStartLine + 2].X;
+            OutLineSeparation[thisPointStartLine + 1].Y = OutLineSeparation[thisPointStartLine + 2].Y;
+            OutLineSeparation[thisPointStartLine + 1].Z = OutLineSeparation[thisPointStartLine + 2].Z;
+            OutLineSeparation.erase(OutLineSeparation.begin() + thisPointStartLine + 2, OutLineSeparation.begin() + thisPointStartLine + 3);
+            OutLineSeparationID.erase(OutLineSeparationID.begin() + thisPointStartLine + 2, OutLineSeparationID.begin() + thisPointStartLine + 3);
+            thisPointStartLine = 0;
+        } else thisPointStartLine += 1;
     }
 
-    offsetUpForLinePerimetr=OutLineSeparation.size();
-    countLoops=thisIDLine+1;
+    offsetUpForLinePerimetr = OutLineSeparation.size();
+    countLoops = thisIDLine + 1;
 }
 
 
 void GLWidget::sliceAuto()
 {
     //Подготовка к слайсингу и определение параметров слайсинга
-    if (OutLineSeparation.size()>0){
-//        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
+    if (OutLineSeparation.size() > 0) {
+        //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
     }
 
     LayerHeight = 0.2;
@@ -748,12 +764,8 @@ void GLWidget::sliceAuto()
         //findSeparatePoint
         findSeparatePoint();
 
-        //fingSeparatePoint
-
         //findSeparateLayerOutline
         findSeparateLayerOutline();
-
-        //findSeparateLayerOutline
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -770,8 +782,8 @@ void GLWidget::sliceAuto()
 
 
 float OffsetByLine(point P1, point P2, point O){
-    float h=((P2.X-P1.X)*(O.Y-P1.Y)-(P2.Y-P1.Y)*(O.X-P1.X))/(float)sqrt((float)pow((P2.X-P1.X)+(P2.Y-P1.Y),2));
-    return h<0?-h:h;
+    float h = ((P2.X - P1.X) * (O.Y - P1.Y) - (P2.Y - P1.Y) * (O.X - P1.X)) / (float) sqrt((float) pow((P2.X - P1.X) + (P2.Y - P1.Y), 2));
+    return h < 0 ? -h : h;
 }
 
 void GLWidget::sliceAdaptive(double width)
@@ -798,44 +810,44 @@ void GLWidget::sliceAdaptive(double width)
     OutLineLoopID.clear();
 
     ///Цикл слайсинга с использованием базовой фунции слайсинга слоя
-    for (float height=LayerHeight/2;height<GabariteMaxZ-LayerHeight;height+=LayerHeight){
+    for (float height = LayerHeight / 2; height < GabariteMaxZ - LayerHeight; height += LayerHeight) {
         ///Создание подслоев для определения их степени похожести. ПОдслайсинг слоев
-        SlicerHeight=height;
+        SlicerHeight = height;
         findSeparatePoint();
         findSeparateLayerOutline();
-        tempLoop=OutLineSeparation;
-        tempLoopID=OutLineSeparationID;
+        tempLoop = OutLineSeparation;
+        tempLoopID = OutLineSeparationID;
 
-        SlicerHeight=height+LayerHeight;
+        SlicerHeight = height + LayerHeight;
         findSeparatePoint();
         findSeparateLayerOutline();
-        tempLoop2=OutLineSeparation;
-        tempLoopID2=OutLineSeparationID;
+        tempLoop2 = OutLineSeparation;
+        tempLoopID2 = OutLineSeparationID;
 
         ///Цикл поиска степени похожести
-        float minDeltaOnLoop=300;
-        for (int i=0;i<tempLoop2.size();i++){
-            float minDelta=300;
-            for (int j=0;j<tempLoop.size()-1;j++){
-                if (tempLoopID[j+1]==tempLoopID[j]){
-                    if (OffsetByLine(tempLoop[j],tempLoop[j+1],tempLoop2[i])<minDelta)
-                        ///На кадом этапе определяется переменная - MinDelta - по сути после поиска по всем вершинам - это макисмальное из минимальных для каждой точки значение отклонения точек от исходных линий
-                        minDelta=OffsetByLine(tempLoop[j],tempLoop[j+1],tempLoop2[i]);
+        float minDeltaOnLoop = 300;
+        for (int i = 0; i < tempLoop2.size(); i++) {
+            float minDelta = 300;
+            for (int j = 0; j < tempLoop.size() - 1; j++) {
+                if (tempLoopID[j + 1] == tempLoopID[j]) {
+                    if (OffsetByLine(tempLoop[j], tempLoop[j + 1], tempLoop2[i]) < minDelta) {
+                        //На кадом этапе определяется переменная - MinDelta - по сути после поиска по всем вершинам - это макисмальное из минимальных для каждой точки значение отклонения точек от исходных линий
+                        minDelta = OffsetByLine(tempLoop[j], tempLoop[j + 1], tempLoop2[i]);
+                    }
                 }
             }
-            if (minDelta<minDeltaOnLoop) minDeltaOnLoop=minDelta;
+            if (minDelta < minDeltaOnLoop) minDeltaOnLoop = minDelta;
         }
 
         qDebug() << "Adaptive = "<<minDeltaOnLoop;
         //system("pause");
         ///Собственно тут принимается решение когда делать слой одинаковым. Если величина отклооения меньше 0.001 мм. То делать слой в 2 раза больше
-        if (minDeltaOnLoop<=0.00001) {
-            height+=LayerHeight;
+        if (minDeltaOnLoop <= 0.00001) {
+            height += LayerHeight;
             OutLineLoop.push_back(tempLoop2);
             OutLineLoopID.push_back(tempLoopID2);
             //supsees=true;
-        }
-        else{
+        } else {
             OutLineLoop.push_back(tempLoop);
             OutLineLoopID.push_back(tempLoopID);
         }
@@ -844,7 +856,7 @@ void GLWidget::sliceAdaptive(double width)
     OutLineSeparation.clear();
     OutLineSeparationID.clear();
 
-    SlicerHeight=tempSliceHight;
+    SlicerHeight = tempSliceHight;
 }
 
 
@@ -860,29 +872,29 @@ void GLWidget::createGCodeFile(QString fileName)
 
     //write file.gcode
     QTextStream out(&gcodeFile);
-    out << "M140 S50.000000"<< Qt::endl
-        <<"M109 T0 S190.000000"<< Qt::endl
-        <<"T0"<< Qt::endl
-        <<"M190 S50.000000"<< Qt::endl
-        <<"G21        ;metric values"<< Qt::endl
-        <<"G90        ;absolute positioning"<< Qt::endl
-        <<"M83        ;set extruder to absolute mode"<< Qt::endl
-        <<"M107       ;start with the fan off"<< Qt::endl
-        <<"G28 X0 Y0  ;move X/Y to min endstops"<< Qt::endl
-        <<"G28 Z0     ;move Z to min endstops"<< Qt::endl
-        <<"G1 Z15.0 F9000 ;move the platform down 15mm"<< Qt::endl
-        <<"G92 E0                  ;zero the extruded length"<< Qt::endl
-        <<"G1 F200 E3              ;extrude 3mm of feed stock"<< Qt::endl
-        <<"G92 E0                  ;zero the extruded length again"<< Qt::endl
-        <<"G1 F9000"<< Qt::endl
-        <<"M107"<< Qt::endl;
+    out << "M140 S50.000000" << Qt::endl
+        << "M109 T0 S190.000000" << Qt::endl
+        << "T0" << Qt::endl
+        << "M190 S50.000000" << Qt::endl
+        << "G21        ;metric values" << Qt::endl
+        << "G90        ;absolute positioning" << Qt::endl
+        << "M83        ;set extruder to absolute mode" << Qt::endl
+        << "M107       ;start with the fan off" << Qt::endl
+        << "G28 X0 Y0  ;move X/Y to min endstops" << Qt::endl
+        << "G28 Z0     ;move Z to min endstops" << Qt::endl
+        << "G1 Z15.0 F9000 ;move the platform down 15mm" << Qt::endl
+        << "G92 E0                  ;zero the extruded length" << Qt::endl
+        << "G1 F200 E3              ;extrude 3mm of feed stock" << Qt::endl
+        << "G92 E0                  ;zero the extruded length again" << Qt::endl
+        << "G1 F9000" << Qt::endl
+        << "M107" << Qt::endl;
 
-    float centX=92.22;
-    float centY=86.75;
+    float centX = 92.22;
+    float centY = 86.75;
 
     for (int j = 0; j < OutLineLoop.size(); j++){
         out << ";LAYER:" << j << Qt::endl;
-        out << "G0 F9000 X" << OutLineLoop.at(j).at(0).X + centX << " Y"<< OutLineLoop.at(j).at(0).Y + centY << " Z" << OutLineLoop.at(j).at(0).Z << Qt::endl;
+        out << "G0 F9000 X" << OutLineLoop.at(j).at(0).X + centX << " Y" << OutLineLoop.at(j).at(0).Y + centY << " Z" << OutLineLoop.at(j).at(0).Z << Qt::endl;
         out << ";TYPE:WALL-OUTER" << Qt::endl;
 
         for (int i = 1; i < OutLineLoop.at(j).size() - 1; i++){
@@ -890,7 +902,7 @@ void GLWidget::createGCodeFile(QString fileName)
                 out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X + centX << " Y" << OutLineLoop.at(j).at(i).Y + centY << " E" << (LenghtOfLine(OutLineLoop.at(j).at(i), OutLineLoop.at(j).at(i - 1)) / 63.697) << Qt::endl;
             }
         }
-        out << "G1 F1200 X" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX<< " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
+        out << "G1 F1200 X" << OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX << " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
     }
 
     gcodeFile.close();
@@ -909,5 +921,57 @@ void GLWidget::intersectionDraw()
     if(showIntersectionFlag){
         findSeparatePoint();
         findSeparateLayerOutline();
+        InnerPoints.clear();
     }
 }
+
+
+float GLWidget::atanTrueDegree(float x, float y)
+{
+    return (atan2(y, x) * 180 / M_PI) < 0 ? ((atan2(y, x) * 180 / M_PI) + 360)
+                                          : (atan2(y, x) * 180 / M_PI);
+}
+
+
+bool GLWidget::findPointInLoop(float inX, float inY)
+{
+    float dAlpha = 0;       //Временный угол к которому суммируется дельта от переходов по точкам
+    int countIDInLoops = 0; //Количество контуров
+
+    //Цикл обхода по всем точкам контура с суммированием в временный угол
+    for (int i = 0; i < OutLineSeparation.size() - 1; i++) {
+        if (OutLineSeparationID[i] != OutLineSeparationID[i + 1]) {
+            if (fabs(dAlpha) > 0.001) countIDInLoops++;
+            dAlpha = 0;
+            continue;
+        }
+        float p1x = OutLineSeparation[i].X - inX;
+        float p1y = OutLineSeparation[i].Y - inY;
+        float p2x = OutLineSeparation[i + 1].X - inX;
+        float p2y = OutLineSeparation[i + 1].Y - inY;
+
+        float angle = atanTrueDegree(p1x, p1y) - atanTrueDegree(p2x, p2y);
+        if (angle >  180) angle = -(360 - atanTrueDegree(p1x, p1y) + atanTrueDegree(p2x, p2y));
+        if (angle < -180) angle =  (360 - atanTrueDegree(p2x, p2y) + atanTrueDegree(p1x, p1y));
+        dAlpha += angle;
+    }
+    if (fabs(dAlpha) > 0.001) countIDInLoops++;
+    if (countIDInLoops % 2 == 1) return true;
+    else return false;
+}
+
+
+void GLWidget::setInnerPointsGrid()
+{
+    InnerPoints.clear();
+    point tmp;
+    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
+        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+            tmp.X = dx;
+            tmp.Y = dy;
+            tmp.Z = SlicerHeight;
+            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
+        }
+    }
+}
+

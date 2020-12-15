@@ -20,6 +20,9 @@ public:
     void drawOrigin();
     void drawGrid();
 
+    bool findPointInLoop(float inX, float inY);
+    float atanTrueDegree(float x, float y);
+
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -39,7 +42,8 @@ public slots:
     void resetSliceState();
     void rotateBody(int axis);
     void intersection(bool checked);
-    void intersectionDraw();
+
+    void setInnerPointsGrid();
 
 signals:
     void xRotationChanged(int angle);
@@ -53,6 +57,9 @@ private:
 
     void findSeparatePoint();
     void findSeparateLayerOutline();
+
+    void intersectionDraw();
+
 
     int xRot;
     int yRot;

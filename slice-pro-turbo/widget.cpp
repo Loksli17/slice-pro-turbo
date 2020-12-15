@@ -15,15 +15,15 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
     ui->messageLayout->addWidget(bar);
     glWidget = new GLWidget();
-    connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
-    connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
-    connect(this, SIGNAL(sliceAuto()), glWidget, SLOT(sliceAuto()));
-    connect(this, SIGNAL(sliceAdaptive(double)), glWidget, SLOT(sliceAdaptive(double)));
+    connect(this, SIGNAL(stlOpened(QFile *)),       glWidget, SLOT(getStl(QFile *)));
+    connect(this, SIGNAL(toggleWireframe(bool)),    glWidget, SLOT(toggleWireframe(bool)));
+    connect(this, SIGNAL(sliceAuto()),              glWidget, SLOT(sliceAuto()));
+    connect(this, SIGNAL(sliceAdaptive(double)),    glWidget, SLOT(sliceAdaptive(double)));
     connect(this, SIGNAL(createGCodeFile(QString)), glWidget, SLOT(createGCodeFile(QString)));
-    connect(this, SIGNAL(resetSlicing()), glWidget, SLOT(resetSliceState()));
-    connect(this, SIGNAL(rotateBody(int)), glWidget, SLOT(rotateBody(int)));
-    connect(this, SIGNAL(intersection(bool)), glWidget, SLOT(intersection(bool)));
-
+    connect(this, SIGNAL(resetSlicing()),           glWidget, SLOT(resetSliceState()));
+    connect(this, SIGNAL(rotateBody(int)),          glWidget, SLOT(rotateBody(int)));
+    connect(this, SIGNAL(intersection(bool)),       glWidget, SLOT(intersection(bool)));
+    connect(this, SIGNAL(setGridInIntersection()),  glWidget, SLOT(setInnerPointsGrid()));
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -110,4 +110,10 @@ void Widget::on_intersection_toggled(bool checked)
 {
     ui->widget->setFocus();
     emit intersection(checked);
+}
+
+void Widget::on_pushButton_3_clicked()
+{
+    ui->widget->setFocus();
+    emit setGridInIntersection();
 }

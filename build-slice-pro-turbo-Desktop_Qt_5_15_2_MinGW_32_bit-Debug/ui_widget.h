@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
@@ -25,6 +26,9 @@ QT_BEGIN_NAMESPACE
 class Ui_Widget
 {
 public:
+    QGridLayout *gridLayout;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *horizontalLayout;
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
@@ -32,34 +36,44 @@ public:
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
     QCheckBox *intersection;
+    QPushButton *pushButton_3;
     QDoubleSpinBox *SliceAdaptiveSpinBox;
     QPushButton *SliceAdaptive;
     QPushButton *saveGCode;
     QPushButton *ResetButton;
-    QVBoxLayout *messageLayout;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QPushButton *RotateX;
     QPushButton *RotateY;
     QPushButton *RotateZ;
     QPushButton *pushButton;
+    QVBoxLayout *messageLayout;
 
     void setupUi(QWidget *Widget)
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QString::fromUtf8("Widget"));
-        Widget->resize(889, 585);
-        horizontalLayout = new QHBoxLayout(Widget);
+        Widget->resize(989, 753);
+        gridLayout = new QGridLayout(Widget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         widget = new GLWidget(Widget);
         widget->setObjectName(QString::fromUtf8("widget"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(widget);
+
+
+        horizontalLayout_2->addLayout(horizontalLayout);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
@@ -82,6 +96,11 @@ public:
         intersection->setObjectName(QString::fromUtf8("intersection"));
 
         verticalLayout->addWidget(intersection);
+
+        pushButton_3 = new QPushButton(Widget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
+        verticalLayout->addWidget(pushButton_3);
 
         SliceAdaptiveSpinBox = new QDoubleSpinBox(Widget);
         SliceAdaptiveSpinBox->setObjectName(QString::fromUtf8("SliceAdaptiveSpinBox"));
@@ -106,11 +125,6 @@ public:
         ResetButton->setObjectName(QString::fromUtf8("ResetButton"));
 
         verticalLayout->addWidget(ResetButton);
-
-        messageLayout = new QVBoxLayout();
-        messageLayout->setObjectName(QString::fromUtf8("messageLayout"));
-
-        verticalLayout->addLayout(messageLayout);
 
         groupBox = new QGroupBox(Widget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
@@ -140,7 +154,18 @@ public:
         verticalLayout->addWidget(pushButton);
 
 
-        horizontalLayout->addLayout(verticalLayout);
+        horizontalLayout_2->addLayout(verticalLayout);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_2);
+
+        messageLayout = new QVBoxLayout();
+        messageLayout->setObjectName(QString::fromUtf8("messageLayout"));
+
+        verticalLayout_4->addLayout(messageLayout);
+
+
+        gridLayout->addLayout(verticalLayout_4, 0, 0, 1, 1);
 
 
         retranslateUi(Widget);
@@ -156,6 +181,7 @@ public:
         SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
         intersection->setText(QCoreApplication::translate("Widget", "Intersection", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("Widget", "SetInnerGrid", nullptr));
         SliceAdaptive->setText(QCoreApplication::translate("Widget", "SliceAdaptive", nullptr));
         saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
         ResetButton->setText(QCoreApplication::translate("Widget", "Reset", nullptr));

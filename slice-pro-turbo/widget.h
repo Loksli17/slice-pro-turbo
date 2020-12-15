@@ -24,7 +24,6 @@ private slots:
     void on_checkBox_toggled(bool checked);
 
     void on_SliceAuto_clicked();
-    ;
 
     void on_saveGCode_clicked();
 
@@ -40,6 +39,8 @@ private slots:
 
     void on_intersection_toggled(bool checked);
 
+    void on_pushButton_3_clicked();
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
@@ -49,6 +50,7 @@ signals:
     void resetSlicing();
     void rotateBody(int axis);
     void intersection(bool checked);
+    void setGridInIntersection();
 
 private:
     Ui::Widget *ui;
