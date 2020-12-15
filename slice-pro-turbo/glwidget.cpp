@@ -2,13 +2,13 @@
 #include "GL/glu.h"
 #include "GL/glut.h"
 #include "windows.h"
-#include <QDebug>
-#include <QMouseEvent>
-#include <QFile>
-#include <QTextStream>
-#include <QVector>
-#include <QVector3D>
 #include <math.h>
+#include <QDebug>
+#include <QFile>
+#include <QMouseEvent>
+#include <QTextStream>
+#include <QVector3D>
+#include <QVector>
 
 struct point{
     float X;
@@ -73,6 +73,9 @@ GLWidget::GLWidget(QWidget *parent)
     xPos = yPos = 0;
     zoomScale = 0.05;
 
+    fontOrigin = new QFont("Arial", 16);
+    fontText = new QFont("Arial", 10);
+
     setXRotation(xRot);
     setYRotation(yRot);
     setZRotation(zRot);
@@ -130,20 +133,19 @@ void GLWidget::paintGL()
 
         //Отображение множетсва слоев после слайсинга модели (зеленый)
         glLineWidth(2);
-        for (int j=0;j<OutLineLoop.size();j++){
+        for (int j = 0; j < OutLineLoop.size(); j++) {
             glBegin(GL_LINES);
-            glColor4f(0,1,0,1);
-            glNormal3f(0,0,1);
-            for (int i=0;i<OutLineLoop.at(j).size()-1;i++){
-                if (OutLineLoopID.at(j).at(i+1)==OutLineLoopID.at(j).at(i)){
-                    glVertex3f(OutLineLoop.at(j).at(i).X,OutLineLoop.at(j).at(i).Y,OutLineLoop.at(j).at(i).Z);
-                    glVertex3f(OutLineLoop.at(j).at(i+1).X,OutLineLoop.at(j).at(i+1).Y,OutLineLoop.at(j).at(i+1).Z);
+                glColor4f(0.0, 1.0, 0.0, 1.0);
+                glNormal3f(0.0, 0.0, 1.0);
+                for (int i=0;i<OutLineLoop.at(j).size() - 1; i++){
+                    if (OutLineLoopID.at(j).at(i+1) == OutLineLoopID.at(j).at(i)){
+                        glVertex3f(OutLineLoop.at(j).at(i).X, OutLineLoop.at(j).at(i).Y,OutLineLoop.at(j).at(i).Z);
+                        glVertex3f(OutLineLoop.at(j).at(i + 1).X, OutLineLoop.at(j).at(i + 1).Y,OutLineLoop.at(j).at(i + 1).Z);
+                    }
                 }
-            }
             glEnd();
         }
 
-//        glutSolidTeapot(1.0);
         //строим модель
         glBegin(GL_TRIANGLES);
             glColor4f(0.8, 0.8, 0.1, 0.8);
@@ -184,6 +186,11 @@ void GLWidget::paintGL()
     // Отрисовка оси координат поверх всего
     drawOrigin();
 
+    glColor4f(0.0, 0.0, 0.0, 0.5);
+    renderText(3.5, 0.2, 0.0, "X", *fontOrigin);
+    renderText(0.0, 3.5, 0.2, "Y", *fontOrigin);
+    renderText(0.2, 0.0, 3.5, "Z", *fontOrigin);
+
     glLineWidth(1);
 
     QString cameraRot = "Camera angle: x: " + QString::number(xRot)
@@ -195,10 +202,10 @@ void GLWidget::paintGL()
     QString zoom = "Zoom: " + QString::number(zoomScale);
     QString triangles = "Triangles: " + QString::number(triangleBase.size());
 
-    renderText(5, 15, cameraRot);
-    renderText(5, 30, cameraPos);
-    renderText(5, 45, zoom);
-    renderText(5, 60, triangles);
+    renderText(5, 15, cameraRot, *fontText);
+    renderText(5, 30, cameraPos, *fontText);
+    renderText(5, 45, zoom,      *fontText);
+    renderText(5, 60, triangles, *fontText);
 }
 
 
@@ -233,17 +240,17 @@ void GLWidget::drawOrigin()
     glBegin(GL_LINES);
         glNormal3f(0, 0, 1);
         // X
-        glColor4f(1.0, 0.0, 0.0, 0.2);
-        glVertex3f(-5.0,  0.0,  0.0);
-        glVertex3f( 5.0,  0.0,  0.0);
+        glColor4f(  1.0, 0.0, 0.0, 0.2);
+        glVertex3f(-4.0, 0.0, 0.0);
+        glVertex3f( 4.0, 0.0, 0.0);
         // Y
-        glColor4f(0.0, 1.0, 0.0, 0.5);
-        glVertex3f( 0.0, -5.0, 0.0);
-        glVertex3f( 0.0,  5.0, 0.0);
+        glColor4f( 0.0,  1.0, 0.0, 0.5);
+        glVertex3f(0.0, -4.0, 0.0);
+        glVertex3f(0.0,  4.0, 0.0);
         // Z
-        glColor4f(0.0, 0.0, 1.0, 0.5);
-        glVertex3f( 0.0,  0.0, -5.0);
-        glVertex3f( 0.0,  0.0,  5.0);
+        glColor4f(  0.0, 0.0,  1.0, 0.5);
+        glVertex3f( 0.0, 0.0, -4.0);
+        glVertex3f( 0.0, 0.0,  4.0);
     glEnd();
     glEnable(GL_LIGHTING);
 }
@@ -253,10 +260,10 @@ void GLWidget::drawGrid()
 {
     glColor4f(0.5, 0.5, 0.5, 1.0);
     glBegin(GL_LINES);
-    for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
-        glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
-        glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
-    }
+        for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
+            glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
+            glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
+        }
     glEnd();
 }
 

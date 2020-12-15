@@ -60,6 +60,10 @@ private:
     double zoomScale;
     QPoint lastPos;
 
+    //Fonts
+    QFont *fontText;
+    QFont *fontOrigin;
+
     // lighting
     const GLfloat light_ambient[4]  = { 0.0f, 0.0f, 0.0f, 1.0f };
     const GLfloat light_diffuse[4]  = { 1.0f, 1.0f, 1.0f, 1.0f };
