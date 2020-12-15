@@ -38,6 +38,8 @@ public slots:
     void createGCodeFile(QString fileName);
     void resetSliceState();
     void rotateBody(int axis);
+    void intersection(bool checked);
+    void intersectionDraw();
 
 signals:
     void xRotationChanged(int angle);

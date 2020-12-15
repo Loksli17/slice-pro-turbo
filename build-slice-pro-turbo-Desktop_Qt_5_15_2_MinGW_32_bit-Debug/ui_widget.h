@@ -31,6 +31,7 @@ public:
     QPushButton *pushButton_2;
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
+    QCheckBox *intersection;
     QDoubleSpinBox *SliceAdaptiveSpinBox;
     QPushButton *SliceAdaptive;
     QPushButton *saveGCode;
@@ -76,6 +77,11 @@ public:
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
 
         verticalLayout->addWidget(checkBox);
+
+        intersection = new QCheckBox(Widget);
+        intersection->setObjectName(QString::fromUtf8("intersection"));
+
+        verticalLayout->addWidget(intersection);
 
         SliceAdaptiveSpinBox = new QDoubleSpinBox(Widget);
         SliceAdaptiveSpinBox->setObjectName(QString::fromUtf8("SliceAdaptiveSpinBox"));
@@ -149,6 +155,7 @@ public:
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
         SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
+        intersection->setText(QCoreApplication::translate("Widget", "Intersection", nullptr));
         SliceAdaptive->setText(QCoreApplication::translate("Widget", "SliceAdaptive", nullptr));
         saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
         ResetButton->setText(QCoreApplication::translate("Widget", "Reset", nullptr));

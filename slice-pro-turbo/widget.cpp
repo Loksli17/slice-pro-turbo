@@ -22,6 +22,8 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(createGCodeFile(QString)), glWidget, SLOT(createGCodeFile(QString)));
     connect(this, SIGNAL(resetSlicing()), glWidget, SLOT(resetSliceState()));
     connect(this, SIGNAL(rotateBody(int)), glWidget, SLOT(rotateBody(int)));
+    connect(this, SIGNAL(intersection(bool)), glWidget, SLOT(intersection(bool)));
+
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -102,4 +104,10 @@ void Widget::on_SliceAdaptive_clicked()
     ui->widget->setFocus();
     double val = ui->SliceAdaptiveSpinBox->value();
     emit sliceAdaptive(val);
+}
+
+void Widget::on_intersection_toggled(bool checked)
+{
+    ui->widget->setFocus();
+    emit intersection(checked);
 }

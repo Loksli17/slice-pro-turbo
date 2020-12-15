@@ -61,7 +61,7 @@ int offsetUpForLinePerimetr;
 bool HideSolid;
 float LayerHeight = 0.2;
 
-
+bool showIntersectionFlag = false;
 
 
 GLWidget::GLWidget(QWidget *parent)
@@ -850,6 +850,7 @@ float LenghtOfLine(point a, point b){
     return sqrt(pow((a.X - b.X), 2) + pow((a.Y - b.Y), 2));
 }
 
+
 void GLWidget::createGCodeFile(QString fileName)
 {
     QFile gcodeFile(fileName);
@@ -891,4 +892,22 @@ void GLWidget::createGCodeFile(QString fileName)
     }
 
     gcodeFile.close();
+}
+
+
+void GLWidget::intersection(bool checked)
+{
+    showIntersectionFlag = checked;
+//    intersectionDraw();
+}
+
+
+void GLWidget::intersectionDraw()
+{
+//    if(showIntersectionFlag){
+//        findSeparatePoint();
+//        findSeparateLayerOutline();
+//    }else{
+
+//    }
 }

@@ -48,6 +48,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="intersection">
+       <property name="text">
+        <string>Intersection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QDoubleSpinBox" name="SliceAdaptiveSpinBox">
        <property name="minimum">
         <double>0.500000000000000</double>

@@ -38,6 +38,8 @@ private slots:
 
     void on_SliceAdaptive_clicked();
 
+    void on_intersection_toggled(bool checked);
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
@@ -46,6 +48,7 @@ signals:
     void createGCodeFile(QString file);
     void resetSlicing();
     void rotateBody(int axis);
+    void intersection(bool checked);
 
 private:
     Ui::Widget *ui;
