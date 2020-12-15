@@ -34,6 +34,7 @@ public slots:
     void getStl(QFile* file);
     void toggleWireframe(bool show);
     void sliceAuto();
+    void sliceAdaptive(double width);
 
 signals:
     void xRotationChanged(int angle);

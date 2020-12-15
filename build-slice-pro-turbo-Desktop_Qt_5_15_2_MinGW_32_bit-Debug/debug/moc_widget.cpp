@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Widget_t {
-    QByteArrayData data[12];
-    char stringdata0[134];
+    QByteArrayData data[16];
+    char stringdata0[189];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,16 +40,22 @@ QT_MOC_LITERAL(4, 25, 4), // "file"
 QT_MOC_LITERAL(5, 30, 15), // "toggleWireframe"
 QT_MOC_LITERAL(6, 46, 4), // "show"
 QT_MOC_LITERAL(7, 51, 9), // "sliceAuto"
-QT_MOC_LITERAL(8, 61, 23), // "on_pushButton_2_clicked"
-QT_MOC_LITERAL(9, 85, 19), // "on_checkBox_toggled"
-QT_MOC_LITERAL(10, 105, 7), // "checked"
-QT_MOC_LITERAL(11, 113, 20) // "on_SliceAuto_clicked"
+QT_MOC_LITERAL(8, 61, 13), // "sliceAdaptive"
+QT_MOC_LITERAL(9, 75, 5), // "width"
+QT_MOC_LITERAL(10, 81, 23), // "on_pushButton_2_clicked"
+QT_MOC_LITERAL(11, 105, 19), // "on_checkBox_toggled"
+QT_MOC_LITERAL(12, 125, 7), // "checked"
+QT_MOC_LITERAL(13, 133, 20), // "on_SliceAuto_clicked"
+QT_MOC_LITERAL(14, 154, 29), // "on_SliceAdaptive_valueChanged"
+QT_MOC_LITERAL(15, 184, 4) // "arg1"
 
     },
     "Widget\0stlOpened\0\0QFile*\0file\0"
     "toggleWireframe\0show\0sliceAuto\0"
-    "on_pushButton_2_clicked\0on_checkBox_toggled\0"
-    "checked\0on_SliceAuto_clicked"
+    "sliceAdaptive\0width\0on_pushButton_2_clicked\0"
+    "on_checkBox_toggled\0checked\0"
+    "on_SliceAuto_clicked\0on_SliceAdaptive_valueChanged\0"
+    "arg1"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,32 +65,36 @@ static const uint qt_meta_data_Widget[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   44,    2, 0x06 /* Public */,
-       5,    1,   47,    2, 0x06 /* Public */,
-       7,    0,   50,    2, 0x06 /* Public */,
+       1,    1,   54,    2, 0x06 /* Public */,
+       5,    1,   57,    2, 0x06 /* Public */,
+       7,    0,   60,    2, 0x06 /* Public */,
+       8,    1,   61,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   51,    2, 0x08 /* Private */,
-       9,    1,   52,    2, 0x08 /* Private */,
-      11,    0,   55,    2, 0x08 /* Private */,
+      10,    0,   64,    2, 0x08 /* Private */,
+      11,    1,   65,    2, 0x08 /* Private */,
+      13,    0,   68,    2, 0x08 /* Private */,
+      14,    1,   69,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, QMetaType::Bool,    6,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Double,    9,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Bool,   10,
+    QMetaType::Void, QMetaType::Bool,   12,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Double,   15,
 
        0        // eod
 };
@@ -98,9 +108,11 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 0: _t->stlOpened((*reinterpret_cast< QFile*(*)>(_a[1]))); break;
         case 1: _t->toggleWireframe((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: _t->sliceAuto(); break;
-        case 3: _t->on_pushButton_2_clicked(); break;
-        case 4: _t->on_checkBox_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: _t->on_SliceAuto_clicked(); break;
+        case 3: _t->sliceAdaptive((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 4: _t->on_pushButton_2_clicked(); break;
+        case 5: _t->on_checkBox_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 6: _t->on_SliceAuto_clicked(); break;
+        case 7: _t->on_SliceAdaptive_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -137,6 +149,13 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
                 return;
             }
         }
+        {
+            using _t = void (Widget::*)(double );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::sliceAdaptive)) {
+                *result = 3;
+                return;
+            }
+        }
     }
 }
 
@@ -169,13 +188,13 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }
@@ -198,6 +217,13 @@ void Widget::toggleWireframe(bool _t1)
 void Widget::sliceAuto()
 {
     QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+}
+
+// SIGNAL 3
+void Widget::sliceAdaptive(double _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

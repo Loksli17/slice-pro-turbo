@@ -25,10 +25,13 @@ private slots:
 
     void on_SliceAuto_clicked();
 
+    void on_SliceAdaptive_valueChanged(double arg1);
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
     void sliceAuto();
+    void sliceAdaptive(double width);
 
 private:
     Ui::Widget *ui;

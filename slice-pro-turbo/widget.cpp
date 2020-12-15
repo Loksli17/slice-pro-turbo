@@ -17,6 +17,7 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
     connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
     connect(this, SIGNAL(sliceAuto()), glWidget, SLOT(sliceAuto()));
+    connect(this, SIGNAL(sliceAdaptive(double)), glWidget, SLOT(sliceAdaptive(double)));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -51,4 +52,12 @@ void Widget::on_SliceAuto_clicked()
 {
     ui->widget->setFocus();
     emit sliceAuto();
+}
+
+
+void Widget::on_SliceAdaptive_valueChanged(double arg1)
+{
+    qDebug() << arg1;
+    ui->widget->setFocus();
+    emit sliceAdaptive(arg1);
 }

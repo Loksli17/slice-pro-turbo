@@ -653,3 +653,82 @@ void GLWidget::sliceAuto()
     SlicerHeight = tempSliceHight;
     update();
 }
+
+
+float OffsetByLine(point P1, point P2, point O){
+    float h=((P2.X-P1.X)*(O.Y-P1.Y)-(P2.Y-P1.Y)*(O.X-P1.X))/(float)sqrt((float)pow((P2.X-P1.X)+(P2.Y-P1.Y),2));
+    return h<0?-h:h;
+}
+
+void GLWidget::sliceAdaptive(double width)
+{
+
+    LayerHeight = width;
+
+    if(width == 0)
+
+    ///Подготовка к слайсингу и определение параметров слайсинга
+    if (OutLineSeparation.size()>0){
+        qDebug() << "Count vertex = "<<OutLineSeparation.size();
+    }
+
+    ///Создание временных подслоев для определения их степени похожести
+    float tempSliceHight = SlicerHeight;
+    QVector <point> tempLoop;
+    QVector <int> tempLoopID;
+
+    QVector <point> tempLoop2;
+    QVector <int> tempLoopID2;
+
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+
+    ///Цикл слайсинга с использованием базовой фунции слайсинга слоя
+    for (float height=LayerHeight/2;height<GabariteMaxZ-LayerHeight;height+=LayerHeight){
+        ///Создание подслоев для определения их степени похожести. ПОдслайсинг слоев
+        SlicerHeight=height;
+        findSeparatePoint();
+        findSeparateLayerOutline();
+        tempLoop=OutLineSeparation;
+        tempLoopID=OutLineSeparationID;
+
+        SlicerHeight=height+LayerHeight;
+        findSeparatePoint();
+        findSeparateLayerOutline();
+        tempLoop2=OutLineSeparation;
+        tempLoopID2=OutLineSeparationID;
+
+        ///Цикл поиска степени похожести
+        float minDeltaOnLoop=300;
+        for (int i=0;i<tempLoop2.size();i++){
+            float minDelta=300;
+            for (int j=0;j<tempLoop.size()-1;j++){
+                if (tempLoopID[j+1]==tempLoopID[j]){
+                    if (OffsetByLine(tempLoop[j],tempLoop[j+1],tempLoop2[i])<minDelta)
+                        ///На кадом этапе определяется переменная - MinDelta - по сути после поиска по всем вершинам - это макисмальное из минимальных для каждой точки значение отклонения точек от исходных линий
+                        minDelta=OffsetByLine(tempLoop[j],tempLoop[j+1],tempLoop2[i]);
+                }
+            }
+            if (minDelta<minDeltaOnLoop) minDeltaOnLoop=minDelta;
+        }
+
+        qDebug() << "Adaptive = "<<minDeltaOnLoop;
+        //system("pause");
+        ///Собственно тут принимается решение когда делать слой одинаковым. Если величина отклооения меньше 0.001 мм. То делать слой в 2 раза больше
+        if (minDeltaOnLoop<=0.00001) {
+            height+=LayerHeight;
+            OutLineLoop.push_back(tempLoop2);
+            OutLineLoopID.push_back(tempLoopID2);
+            //supsees=true;
+        }
+        else{
+            OutLineLoop.push_back(tempLoop);
+            OutLineLoopID.push_back(tempLoopID);
+        }
+    }
+
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+
+    SlicerHeight=tempSliceHight;
+}

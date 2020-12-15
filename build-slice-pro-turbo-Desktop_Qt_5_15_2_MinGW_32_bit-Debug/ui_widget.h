@@ -12,10 +12,10 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glwidget.h"
@@ -29,9 +29,9 @@ public:
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton_2;
-    QSpinBox *wigth;
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
+    QDoubleSpinBox *SliceAdaptive;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
@@ -59,11 +59,6 @@ public:
 
         verticalLayout->addWidget(pushButton_2);
 
-        wigth = new QSpinBox(Widget);
-        wigth->setObjectName(QString::fromUtf8("wigth"));
-
-        verticalLayout->addWidget(wigth);
-
         SliceAuto = new QPushButton(Widget);
         SliceAuto->setObjectName(QString::fromUtf8("SliceAuto"));
 
@@ -73,6 +68,15 @@ public:
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
 
         verticalLayout->addWidget(checkBox);
+
+        SliceAdaptive = new QDoubleSpinBox(Widget);
+        SliceAdaptive->setObjectName(QString::fromUtf8("SliceAdaptive"));
+        SliceAdaptive->setMinimum(1.000000000000000);
+        SliceAdaptive->setMaximum(5.000000000000000);
+        SliceAdaptive->setSingleStep(0.050000000000000);
+        SliceAdaptive->setValue(1.000000000000000);
+
+        verticalLayout->addWidget(SliceAdaptive);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -97,7 +101,7 @@ public:
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition Featuring Dante & Knuckles from Devil May Cry series, with new Funky Mode", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
-        SliceAuto->setText(QCoreApplication::translate("Widget", "Cum", nullptr));
+        SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
