@@ -34,6 +34,9 @@
       </widget>
      </item>
      <item>
+      <widget class="QSpinBox" name="wigth"/>
+     </item>
+     <item>
       <widget class="QPushButton" name="SliceAuto">
        <property name="text">
         <string>Cum</string>

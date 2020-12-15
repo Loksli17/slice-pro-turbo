@@ -15,6 +15,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glwidget.h"
@@ -28,6 +29,7 @@ public:
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton_2;
+    QSpinBox *wigth;
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
@@ -56,6 +58,11 @@ public:
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
 
         verticalLayout->addWidget(pushButton_2);
+
+        wigth = new QSpinBox(Widget);
+        wigth->setObjectName(QString::fromUtf8("wigth"));
+
+        verticalLayout->addWidget(wigth);
 
         SliceAuto = new QPushButton(Widget);
         SliceAuto->setObjectName(QString::fromUtf8("SliceAuto"));
