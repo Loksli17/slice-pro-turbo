@@ -167,19 +167,20 @@ void GLWidget::paintGL()
             glVertex3f(GabariteMinX - 1, GabariteMaxY + 1, SlicerHeight);
         glEnd();
 
-
-
-//    glLineWidth(3);
-//    glBegin(GL_LINES);
-//        glColor4f(1,0,0,1);
-//        glNormal3f(0,0,1);
-//        for (int i=0;i<offsetUpForLinePerimetr-1;i++){
-//            if (OutLineSeparationID[i+1]==OutLineSeparationID[i]){
-//                glVertex3f(OutLineSeparation[i].X,OutLineSeparation[i].Y,OutLineSeparation[i].Z);
-//                glVertex3f(OutLineSeparation[i+1].X,OutLineSeparation[i+1].Y,OutLineSeparation[i+1].Z);
-//            }
-//        }
-//    glEnd();
+        if(showIntersectionFlag){
+            glClear(GL_DEPTH_BUFFER_BIT);
+            glLineWidth(4.5);
+            glBegin(GL_LINES);
+                glColor4f(1,0,0,1);
+                glNormal3f(0,0,1);
+                for (int i=0;i<offsetUpForLinePerimetr-1;i++){
+                    if (OutLineSeparationID[i+1]==OutLineSeparationID[i]){
+                        glVertex3f(OutLineSeparation[i].X,OutLineSeparation[i].Y,OutLineSeparation[i].Z);
+                        glVertex3f(OutLineSeparation[i+1].X,OutLineSeparation[i+1].Y,OutLineSeparation[i+1].Z);
+                    }
+                }
+            glEnd();
+        }
 
     glPopMatrix();
 
@@ -422,7 +423,8 @@ void GLWidget::rotateBody(int axis)
         }
     }
     findGabarite();
-    resetSliceState();
+    intersectionDraw();
+//    resetSliceState();
 }
 
 
@@ -898,16 +900,14 @@ void GLWidget::createGCodeFile(QString fileName)
 void GLWidget::intersection(bool checked)
 {
     showIntersectionFlag = checked;
-//    intersectionDraw();
+    intersectionDraw();
 }
 
 
 void GLWidget::intersectionDraw()
 {
-//    if(showIntersectionFlag){
-//        findSeparatePoint();
-//        findSeparateLayerOutline();
-//    }else{
-
-//    }
+    if(showIntersectionFlag){
+        findSeparatePoint();
+        findSeparateLayerOutline();
+    }
 }
