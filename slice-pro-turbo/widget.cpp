@@ -13,6 +13,7 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    ui->messageLayout->addWidget(bar);
     glWidget = new GLWidget();
     connect(this, SIGNAL(stlOpened(QFile*)), glWidget, SLOT(getStl(QFile*)));
     connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
@@ -41,6 +42,8 @@ void Widget::on_pushButton_2_clicked()
 
     ui->widget->setFocus();
     emit stlOpened(&file);
+
+    bar->showMessage(fileName + " was opened successfully", 2000);
 }
 
 
@@ -66,6 +69,8 @@ void Widget::on_saveGCode_clicked()
     qDebug() << fileName;
 
     emit createGCodeFile(fileName);
+
+    bar->showMessage(fileName + " was created successfully", 2000);
 }
 
 void Widget::on_ResetButton_clicked()

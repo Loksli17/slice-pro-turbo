@@ -49,7 +49,7 @@ signals:
 
 private:
     Ui::Widget *ui;
-
+    QStatusBar *bar = new QStatusBar(this);
     GLWidget *glWidget;
 };
 #endif // WIDGET_H

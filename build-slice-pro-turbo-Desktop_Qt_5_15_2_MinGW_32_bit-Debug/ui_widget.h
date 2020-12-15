@@ -35,7 +35,7 @@ public:
     QPushButton *SliceAdaptive;
     QPushButton *saveGCode;
     QPushButton *ResetButton;
-    QVBoxLayout *verticalLayout_4;
+    QVBoxLayout *messageLayout;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QPushButton *RotateX;
@@ -101,10 +101,10 @@ public:
 
         verticalLayout->addWidget(ResetButton);
 
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        messageLayout = new QVBoxLayout();
+        messageLayout->setObjectName(QString::fromUtf8("messageLayout"));
 
-        verticalLayout->addLayout(verticalLayout_4);
+        verticalLayout->addLayout(messageLayout);
 
         groupBox = new QGroupBox(Widget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
