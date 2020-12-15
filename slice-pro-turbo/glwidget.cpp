@@ -64,6 +64,7 @@ bool HideSolid;
 float LayerHeight = 0.2;
 
 bool showIntersectionFlag = false;
+bool wireframeFlag = false;
 
 
 GLWidget::GLWidget(QWidget *parent)
@@ -86,7 +87,7 @@ GLWidget::GLWidget(QWidget *parent)
 /// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
-    glClearColor(0.5, 0.5, 0.5, 1.0);
+    glClearColor(0.45, 0.45, 0.45, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
@@ -149,6 +150,13 @@ void GLWidget::paintGL()
         }
 
         //строим модель
+
+        if (wireframeFlag) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
         glBegin(GL_TRIANGLES);
             glColor4f(0.8, 0.8, 0.1, 0.8);
             for (int i = 0; i < triangleBase.size(); i++){
@@ -158,6 +166,8 @@ void GLWidget::paintGL()
                 glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
         glEnd();
+
+        if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         //Отображение плоскости слайсинга
         glColor4f(0.1, 0.1, 0.5, 0.3);
@@ -199,6 +209,9 @@ void GLWidget::paintGL()
 
     // Отрисовка оси координат поверх всего
     drawOrigin();
+
+
+    if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glColor4f(0.0, 0.0, 0.0, 0.5);
     renderText(3.5, 0.2, 0.0, "X", *fontOrigin);
@@ -272,13 +285,15 @@ void GLWidget::drawOrigin()
 
 void GLWidget::drawGrid()
 {
-    glColor4f(0.5, 0.5, 0.5, 1.0);
+    glDisable(GL_LIGHTING);
+    glColor4f(0.0, 0.0, 0.0, 1.0);
     glBegin(GL_LINES);
         for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
             glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
             glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
         }
-        glEnd();
+    glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 
@@ -556,11 +571,7 @@ void GLWidget::normalizeAngle(int *angle)
 
 void GLWidget::wireframe(bool show)
 {
-    if (show) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    wireframeFlag = show;
     update();
 }
 
