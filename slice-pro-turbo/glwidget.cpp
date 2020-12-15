@@ -619,6 +619,8 @@ void GLWidget::sliceAuto()
 //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
     }
 
+    LayerHeight = 0.2;
+
     ///Отчистка слоев и запоминание текущей высоты слайсинга
     float tempSliceHight = SlicerHeight;
     QVector <point> tempLoop;
@@ -731,4 +733,52 @@ void GLWidget::sliceAdaptive(double width)
     OutLineSeparationID.clear();
 
     SlicerHeight=tempSliceHight;
+}
+
+
+float LenghtOfLine(point a, point b){
+    return sqrt(pow((a.X-b.X),2)+pow((a.Y-b.Y),2));
+}
+
+void GLWidget::createGCodeFile(QString fileName)
+{
+    QFile gcodeFile(fileName);
+    gcodeFile.open(QIODevice::WriteOnly);
+
+    //write file.gcode
+    QTextStream out(&gcodeFile);
+    out << "M140 S50.000000"<< Qt::endl
+        <<"M109 T0 S190.000000"<< Qt::endl
+        <<"T0"<< Qt::endl
+        <<"M190 S50.000000"<< Qt::endl
+        <<"G21        ;metric values"<< Qt::endl
+        <<"G90        ;absolute positioning"<< Qt::endl
+        <<"M83        ;set extruder to absolute mode"<< Qt::endl
+        <<"M107       ;start with the fan off"<< Qt::endl
+        <<"G28 X0 Y0  ;move X/Y to min endstops"<< Qt::endl
+        <<"G28 Z0     ;move Z to min endstops"<< Qt::endl
+        <<"G1 Z15.0 F9000 ;move the platform down 15mm"<< Qt::endl
+        <<"G92 E0                  ;zero the extruded length"<< Qt::endl
+        <<"G1 F200 E3              ;extrude 3mm of feed stock"<< Qt::endl
+        <<"G92 E0                  ;zero the extruded length again"<< Qt::endl
+        <<"G1 F9000"<< Qt::endl
+        <<"M107"<< Qt::endl;
+
+    float centX=92.22;
+    float centY=86.75;
+
+    for (int j=0;j<OutLineLoop.size();j++){
+        out << ";LAYER:" << j << Qt::endl;
+        out << "G0 F9000 X" << OutLineLoop.at(j).at(0).X+centX<<" Y"<<OutLineLoop.at(j).at(0).Y+centY<<" Z"<<OutLineLoop.at(j).at(0).Z<< Qt::endl;
+        out << ";TYPE:WALL-OUTER" << Qt::endl;
+
+        for (int i=1;i<OutLineLoop.at(j).size()-1;i++){
+            if (OutLineLoopID.at(j).at(i-1)==OutLineLoopID.at(j).at(i)){
+                out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X+centX <<" Y"<< OutLineLoop.at(j).at(i).Y+centY<<" E"<<(LenghtOfLine(OutLineLoop.at(j).at(i),OutLineLoop.at(j).at(i-1))/63.697)<< Qt::endl;
+            }
+        }
+        out << "G1 F1200 X"<<OutLineLoop.at(j).at(OutLineLoop.at(j).size()-1).X+centX<<" Y"<<OutLineLoop.at(j).at(OutLineLoop.at(j).size()-1).Y+centY<<" E0.1"<< Qt::endl;
+    }
+
+    gcodeFile.close();
 }

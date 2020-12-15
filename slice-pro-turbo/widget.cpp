@@ -18,6 +18,7 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(toggleWireframe(bool)), glWidget, SLOT(toggleWireframe(bool)));
     connect(this, SIGNAL(sliceAuto()), glWidget, SLOT(sliceAuto()));
     connect(this, SIGNAL(sliceAdaptive(double)), glWidget, SLOT(sliceAdaptive(double)));
+    connect(this, SIGNAL(createGCodeFile(QString)), glWidget, SLOT(createGCodeFile(QString)));
 //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
@@ -60,4 +61,15 @@ void Widget::on_SliceAdaptive_valueChanged(double arg1)
     qDebug() << arg1;
     ui->widget->setFocus();
     emit sliceAdaptive(arg1);
+}
+
+
+void Widget::on_saveGCode_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                               QDir::homePath(),
+                               tr("GcodeFiles (*.gcode)"));
+    qDebug() << fileName;
+
+    emit createGCodeFile(fileName);
 }

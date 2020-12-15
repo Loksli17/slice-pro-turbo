@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GLWidget_t {
-    QByteArrayData data[17];
-    char stringdata0[176];
+    QByteArrayData data[19];
+    char stringdata0[201];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,14 +48,17 @@ QT_MOC_LITERAL(12, 125, 15), // "toggleWireframe"
 QT_MOC_LITERAL(13, 141, 4), // "show"
 QT_MOC_LITERAL(14, 146, 9), // "sliceAuto"
 QT_MOC_LITERAL(15, 156, 13), // "sliceAdaptive"
-QT_MOC_LITERAL(16, 170, 5) // "width"
+QT_MOC_LITERAL(16, 170, 5), // "width"
+QT_MOC_LITERAL(17, 176, 15), // "createGCodeFile"
+QT_MOC_LITERAL(18, 192, 8) // "fileName"
 
     },
     "GLWidget\0xRotationChanged\0\0angle\0"
     "yRotationChanged\0zRotationChanged\0"
     "setXRotation\0setYRotation\0setZRotation\0"
     "getStl\0QFile*\0file\0toggleWireframe\0"
-    "show\0sliceAuto\0sliceAdaptive\0width"
+    "show\0sliceAuto\0sliceAdaptive\0width\0"
+    "createGCodeFile\0fileName"
 };
 #undef QT_MOC_LITERAL
 
@@ -65,7 +68,7 @@ static const uint qt_meta_data_GLWidget[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -73,18 +76,19 @@ static const uint qt_meta_data_GLWidget[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   64,    2, 0x06 /* Public */,
-       4,    1,   67,    2, 0x06 /* Public */,
-       5,    1,   70,    2, 0x06 /* Public */,
+       1,    1,   69,    2, 0x06 /* Public */,
+       4,    1,   72,    2, 0x06 /* Public */,
+       5,    1,   75,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       6,    1,   73,    2, 0x0a /* Public */,
-       7,    1,   76,    2, 0x0a /* Public */,
-       8,    1,   79,    2, 0x0a /* Public */,
-       9,    1,   82,    2, 0x0a /* Public */,
-      12,    1,   85,    2, 0x0a /* Public */,
-      14,    0,   88,    2, 0x0a /* Public */,
-      15,    1,   89,    2, 0x0a /* Public */,
+       6,    1,   78,    2, 0x0a /* Public */,
+       7,    1,   81,    2, 0x0a /* Public */,
+       8,    1,   84,    2, 0x0a /* Public */,
+       9,    1,   87,    2, 0x0a /* Public */,
+      12,    1,   90,    2, 0x0a /* Public */,
+      14,    0,   93,    2, 0x0a /* Public */,
+      15,    1,   94,    2, 0x0a /* Public */,
+      17,    1,   97,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -99,6 +103,7 @@ static const uint qt_meta_data_GLWidget[] = {
     QMetaType::Void, QMetaType::Bool,   13,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Double,   16,
+    QMetaType::Void, QMetaType::QString,   18,
 
        0        // eod
 };
@@ -119,6 +124,7 @@ void GLWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 7: _t->toggleWireframe((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 8: _t->sliceAuto(); break;
         case 9: _t->sliceAdaptive((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 10: _t->createGCodeFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -187,13 +193,13 @@ int GLWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }

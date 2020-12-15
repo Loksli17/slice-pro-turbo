@@ -32,6 +32,7 @@ public:
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
     QDoubleSpinBox *SliceAdaptive;
+    QPushButton *saveGCode;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
@@ -78,6 +79,11 @@ public:
 
         verticalLayout->addWidget(SliceAdaptive);
 
+        saveGCode = new QPushButton(Widget);
+        saveGCode->setObjectName(QString::fromUtf8("saveGCode"));
+
+        verticalLayout->addWidget(saveGCode);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -103,6 +109,7 @@ public:
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
         SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
+        saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
 
