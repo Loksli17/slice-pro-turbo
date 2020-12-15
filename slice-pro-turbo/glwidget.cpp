@@ -59,7 +59,7 @@ QVector <poligone> PoligoneBase;
 float SlicerHeight;
 int offsetUpForLinePerimetr;
 bool HideSolid;
-float LayerHeight;
+float LayerHeight = 0.2;
 
 
 
@@ -128,6 +128,7 @@ void GLWidget::paintGL()
         glScalef(zoomScale, zoomScale, zoomScale);
         drawGrid();
 
+        //Отображение множетсва слоев после слайсинга модели (зеленый)
         glLineWidth(2);
         for (int j=0;j<OutLineLoop.size();j++){
             glBegin(GL_LINES);
@@ -153,6 +154,18 @@ void GLWidget::paintGL()
                 glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
         glEnd();
+
+        //Отображение плоскости слайсинга
+        glColor4f(0.1, 0.1, 0.5, 0.3);
+        glBegin(GL_POLYGON);
+            glNormal3f(0.0, 0.0, 1.0);
+            glVertex3f(GabariteMinX - 1, GabariteMinY - 1, SlicerHeight);
+            glVertex3f(GabariteMaxX + 1, GabariteMinY - 1, SlicerHeight);
+            glVertex3f(GabariteMaxX + 1, GabariteMaxY + 1, SlicerHeight);
+            glVertex3f(GabariteMinX - 1, GabariteMaxY + 1, SlicerHeight);
+        glEnd();
+
+
 
 //    glLineWidth(3);
 //    glBegin(GL_LINES);
@@ -229,8 +242,8 @@ void GLWidget::drawGrid()
     glColor4f(0.5, 0.5, 0.5, 1.0);
     glBegin(GL_LINES);
     for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
-        glVertex3f(i, 0, 20.0); glVertex3f(i, 0, -20.0);
-        glVertex3f(20.0, 0, i); glVertex3f(-20.0, 0, i);
+        glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
+        glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
     }
     glEnd();
 }
@@ -337,6 +350,14 @@ void GLWidget::setZRotation(int angle)
 void GLWidget::getStl(QFile* file)
 {
     triangleBase.clear();
+
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+    pointSeparation.clear();
+    pointSeparationID.clear();
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+
     int
         state       = 0,
         type        = 0,
@@ -438,20 +459,162 @@ void GLWidget::findGabarite()
         }
     }
 
-    GabariteMaxX=maxX;
-    GabariteMinX=minX;
-    GabariteMaxY=maxY;
-    GabariteMinY=minY;
-    GabariteMaxZ=maxZ;
-    GabariteMinZ=minZ;
+    GabariteMaxX = maxX;
+    GabariteMinX = minX;
+    GabariteMaxY = maxY;
+    GabariteMinY = minY;
+    GabariteMaxZ = maxZ;
+    GabariteMinZ = minZ;
+}
+
+void GLWidget::findSeparatePoint()
+{
+    int vert2;
+    pointSeparation.clear();
+    pointSeparationID.clear();
+
+    ///Основной цикл прохода по всем треугольниками модели
+    for(int trianN=0;trianN<triangleBase.size();trianN++){
+        ///Преобразование с определением к какой грани относится та или иная точка на трегуольнике
+        for (int vert1=0;vert1<3;vert1++){
+            if (vert1==0) vert2=1;
+            if (vert1==1) vert2=2;
+            if (vert1==2) vert2=0;
+            ///Оплетка для проверки факта парарельности треугольника секущей плоскости
+            if (triangleBase[trianN].p[vert1].Z == SlicerHeight) {
+//                    cout<<"Danger triangle pararell slisser plane "<<trianN<<endl;
+                pointSeparation.clear();
+                pointSeparationID.clear();
+                return;
+            }
+
+            ///Определение факта того что плоскость пересекает треугольник (она должна пересекать точно 2 грани, не может быть 1 или 3)
+            if ((triangleBase[trianN].p[vert1].Z<SlicerHeight && triangleBase[trianN].p[vert2].Z>SlicerHeight)||
+                (triangleBase[trianN].p[vert1].Z>SlicerHeight && triangleBase[trianN].p[vert2].Z<SlicerHeight)){
+                    float difX=triangleBase[trianN].p[vert2].X-triangleBase[trianN].p[vert1].X;
+                    float difY=triangleBase[trianN].p[vert2].Y-triangleBase[trianN].p[vert1].Y;
+                    float difZ=triangleBase[trianN].p[vert2].Z-triangleBase[trianN].p[vert1].Z;
+                    float t=(SlicerHeight-triangleBase[trianN].p[vert1].Z)/(difZ);
+
+                    if (pointSeparationID.size()>0){
+                        if (pointSeparationID[pointSeparationID.size()-1]==trianN &&
+                            (fabs(pointSeparation[pointSeparation.size()-1].X-(triangleBase[trianN].p[vert1].X+difX*t)))<0.001 &&
+                            (fabs(pointSeparation[pointSeparation.size()-1].Y-(triangleBase[trianN].p[vert1].Y+difY*t)))<0.001){
+                                pointSeparation.pop_back();
+                                pointSeparationID.pop_back();
+                                continue;
+                        }
+                    }
+                    point temp;
+                    temp.X=triangleBase[trianN].p[vert1].X+difX*t;
+                    temp.Y=triangleBase[trianN].p[vert1].Y+difY*t;
+                    temp.Z=triangleBase[trianN].p[vert1].Z+difZ*t;
+                    pointSeparation.push_back(temp);
+                    pointSeparationID.push_back(trianN);
+            }
+        }
+    }
+}
+
+void GLWidget::findSeparateLayerOutline()
+{
+    ///Строчки для поготовки к работе, очистка, создание базовой точки т т.д.
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+    point tempPoint;
+    int tempID;
+    int thisIDLine;
+    qDebug()<<pointSeparation.size() << "SIZE";
+    tempPoint.X=pointSeparation[0].X;
+    tempPoint.Y=pointSeparation[0].Y;
+    tempPoint.Z=pointSeparation[0].Z;
+    tempID=0;
+    thisIDLine=0;
+    OutLineSeparation.push_back(tempPoint);
+    OutLineSeparationID.push_back(thisIDLine);
+
+    ///Бесконечный цикл прохода по всем точкам пересечения плоскости с моделью
+    while (pointSeparationID.size() > 0){
+        for(int i=0;i<pointSeparation.size();i++){
+            if (fabs(pointSeparation[i].X-tempPoint.X)<0.001 &&
+                fabs(pointSeparation[i].Y-tempPoint.Y)<0.001 &&
+                fabs(pointSeparation[i].Z-tempPoint.Z)<0.001){
+                    for (int j=0;j<pointSeparation.size();j++){
+                        if ((pointSeparation[j].X!=pointSeparation[i].X ||
+                            pointSeparation[j].Y!=pointSeparation[i].Y ||
+                            pointSeparation[j].Z!=pointSeparation[i].Z) &&
+                            pointSeparationID[j]==pointSeparationID[i]){
+                                tempPoint.X=pointSeparation[j].X;
+                                tempPoint.Y=pointSeparation[j].Y;
+                                tempPoint.Z=pointSeparation[j].Z;
+                                OutLineSeparation.push_back(tempPoint);
+                                OutLineSeparationID.push_back(thisIDLine);
+                                tempID=pointSeparationID[i];
+
+                                ///Фильтрация получившегося констра на совпадение ID
+                                for(int k=0;k<pointSeparationID.size();k++){
+                                    if (pointSeparationID[k]==tempID){
+                                        pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
+                                        pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
+                                        break;
+                                    }
+                                }
+                                for(int k=0;k<pointSeparationID.size();k++){
+                                    if (pointSeparationID[k]==tempID){
+                                        pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
+                                        pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
+                                        break;
+                                    }
+                                }
+
+                                break;
+                        }
+                    }
+                    break;
+            }
+            ///Оплетка поиска количества контуров
+            if (i==pointSeparation.size()-1){
+                tempPoint.X=pointSeparation[0].X;
+                tempPoint.Y=pointSeparation[0].Y;
+                tempPoint.Z=pointSeparation[0].Z;
+                tempID=0;
+                OutLineSeparation.push_back(tempPoint);
+                OutLineSeparationID.push_back(thisIDLine+1);
+                thisIDLine++;
+            }
+        }
+    }
+
+    ///Дополнительная фильтрация массива контура для удаления лишних вершин в узле которой линия не изгибается
+    int thisPointStartLine=0;
+    while (thisPointStartLine<OutLineSeparation.size()-2) {
+        if (OutLineSeparationID[thisPointStartLine]!=OutLineSeparationID[thisPointStartLine+2]) {
+            thisPointStartLine+=2;
+        }
+        float dx1=fabs(OutLineSeparation[thisPointStartLine].X-OutLineSeparation[thisPointStartLine+1].X);
+        float dy1=fabs(OutLineSeparation[thisPointStartLine].Y-OutLineSeparation[thisPointStartLine+1].Y);
+        float dx2=fabs(OutLineSeparation[thisPointStartLine+1].X-OutLineSeparation[thisPointStartLine+2].X);
+        float dy2=fabs(OutLineSeparation[thisPointStartLine+1].Y-OutLineSeparation[thisPointStartLine+2].Y);
+
+        if ((dx1/dy1)==(dx2/dy2)){
+            OutLineSeparation[thisPointStartLine+1].X=OutLineSeparation[thisPointStartLine+2].X;
+            OutLineSeparation[thisPointStartLine+1].Y=OutLineSeparation[thisPointStartLine+2].Y;
+            OutLineSeparation[thisPointStartLine+1].Z=OutLineSeparation[thisPointStartLine+2].Z;
+            OutLineSeparation.erase(OutLineSeparation.begin()+thisPointStartLine+2,OutLineSeparation.begin()+thisPointStartLine+3);
+            OutLineSeparationID.erase(OutLineSeparationID.begin()+thisPointStartLine+2,OutLineSeparationID.begin()+thisPointStartLine+3);
+            thisPointStartLine=0;
+        }
+        else thisPointStartLine+=1;
+    }
+
+    offsetUpForLinePerimetr=OutLineSeparation.size();
+    countLoops=thisIDLine+1;
 }
 
 
 void GLWidget::sliceAuto()
 {
-
-
-    ///Подготовка к слайсингу и определение параметров слайсинга
+    //Подготовка к слайсингу и определение параметров слайсинга
     if (OutLineSeparation.size()>0){
 //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
     }
@@ -464,195 +627,22 @@ void GLWidget::sliceAuto()
     OutLineLoop.clear();
     OutLineLoopID.clear();
 
-    ///Цикл слайсинга с использованием базовой фунции слайсинга слоя
-    for (float height=LayerHeight/2;height<GabariteMaxZ;height+=LayerHeight){
-        SlicerHeight=height;
+    //Цикл слайсинга с использованием базовой фунции слайсинга слоя
+    for (float height = LayerHeight / 2; height < GabariteMaxZ; height += LayerHeight){
+        SlicerHeight = height;
 
         //findSeparatePoint
-        int vert2;
-        pointSeparation.clear();
-        pointSeparationID.clear();
-        ///Основной цикл прохода по всем треугольниками модели
-        for(int trianN=0;trianN<triangleBase.size();trianN++){
-            ///Преобразование с определением к какой грани относится та или иная точка на трегуольнике
-            for (int vert1=0;vert1<3;vert1++){
-                if (vert1==0) vert2=1;
-                if (vert1==1) vert2=2;
-                if (vert1==2) vert2=0;
-                ///Оплетка для проверки факта парарельности треугольника секущей плоскости
-                if (triangleBase[trianN].p[vert1].Z==SlicerHeight) {
-
-                    pointSeparation.clear();
-                    pointSeparationID.clear();
-                    return;
-                }
-
-                ///Определение факта того что плоскость пересекает треугольник (она должна пересекать точно 2 грани, не может быть 1 или 3)
-                if ((triangleBase[trianN].p[vert1].Z<SlicerHeight && triangleBase[trianN].p[vert2].Z>SlicerHeight)||
-                    (triangleBase[trianN].p[vert1].Z>SlicerHeight && triangleBase[trianN].p[vert2].Z<SlicerHeight)){
-                        float difX=triangleBase[trianN].p[vert2].X-triangleBase[trianN].p[vert1].X;
-                        float difY=triangleBase[trianN].p[vert2].Y-triangleBase[trianN].p[vert1].Y;
-                        float difZ=triangleBase[trianN].p[vert2].Z-triangleBase[trianN].p[vert1].Z;
-                        float t=(SlicerHeight-triangleBase[trianN].p[vert1].Z)/(difZ);
-                        if (pointSeparationID.size()>0){
-                            if (pointSeparationID[pointSeparationID.size()-1]==trianN &&
-                                (fabs(pointSeparation[pointSeparation.size()-1].X-(triangleBase[trianN].p[vert1].X+difX*t)))<0.001 &&
-                                (fabs(pointSeparation[pointSeparation.size()-1].Y-(triangleBase[trianN].p[vert1].Y+difY*t)))<0.001){
-                                    pointSeparation.pop_back();
-                                    pointSeparationID.pop_back();
-                                    continue;
-                            }
-                        }
-                        point temp;
-                        temp.X=triangleBase[trianN].p[vert1].X+difX*t;
-                        temp.Y=triangleBase[trianN].p[vert1].Y+difY*t;
-                        temp.Z=triangleBase[trianN].p[vert1].Z+difZ*t;
-                        pointSeparation.push_back(temp);
-                        pointSeparationID.push_back(trianN);
-                }
-            }
-        }
+        findSeparatePoint();
 
         //fingSeparatePoint
-        int vert22;
-        pointSeparation.clear();
-        pointSeparationID.clear();
-        ///Основной цикл прохода по всем треугольниками модели
-        for(int trianN=0;trianN<triangleBase.size();trianN++){
-            ///Преобразование с определением к какой грани относится та или иная точка на трегуольнике
-            for (int vert1=0; vert1<3; vert1++){
-                if (vert1==0) vert22=1;
-                if (vert1==1) vert22=2;
-                if (vert1==2) vert22=0;
-                ///Оплетка для проверки факта парарельности треугольника секущей плоскости
-                if (triangleBase[trianN].p[vert1].Z==SlicerHeight) {
-
-                    pointSeparation.clear();
-                    pointSeparationID.clear();
-                    return;
-                }
-
-                ///Определение факта того что плоскость пересекает треугольник (она должна пересекать точно 2 грани, не может быть 1 или 3)
-                if ((triangleBase[trianN].p[vert1].Z<SlicerHeight && triangleBase[trianN].p[vert22].Z>SlicerHeight)||
-                    (triangleBase[trianN].p[vert1].Z>SlicerHeight && triangleBase[trianN].p[vert22].Z<SlicerHeight)){
-                        float difX=triangleBase[trianN].p[vert22].X-triangleBase[trianN].p[vert1].X;
-                        float difY=triangleBase[trianN].p[vert22].Y-triangleBase[trianN].p[vert1].Y;
-                        float difZ=triangleBase[trianN].p[vert22].Z-triangleBase[trianN].p[vert1].Z;
-                        float t=(SlicerHeight-triangleBase[trianN].p[vert1].Z)/(difZ);
-                        if (pointSeparationID.size()>0){
-                            if (pointSeparationID[pointSeparationID.size()-1]==trianN &&
-                                (fabs(pointSeparation[pointSeparation.size()-1].X-(triangleBase[trianN].p[vert1].X+difX*t)))<0.001 &&
-                                (fabs(pointSeparation[pointSeparation.size()-1].Y-(triangleBase[trianN].p[vert1].Y+difY*t)))<0.001){
-                                    pointSeparationID.pop_back();
-                                    continue;
-                            }
-
-                        }
-                        point temp;
-                        temp.X=triangleBase[trianN].p[vert1].X+difX*t;
-                        temp.Y=triangleBase[trianN].p[vert1].Y+difY*t;
-                        temp.Z=triangleBase[trianN].p[vert1].Z+difZ*t;
-                        pointSeparation.push_back(temp);
-                        pointSeparationID.push_back(trianN);
-                }
-            }
-        }
-
 
         //findSeparateLayerOutline
-        OutLineSeparation.clear();
-        OutLineSeparationID.clear();
-        point tempPoint;
-        int tempID;
-        int thisIDLine;
-        tempPoint.X=pointSeparation[0].X;
-        tempPoint.Y=pointSeparation[0].Y;
-        tempPoint.Z=pointSeparation[0].Z;
-        tempID=0;
-        thisIDLine=0;
-        OutLineSeparation.push_back(tempPoint);
-        OutLineSeparationID.push_back(thisIDLine);
+        findSeparateLayerOutline();
 
-        ///Бесконечный цикл прохода по всем точкам пересечения плоскости с моделью
-        while (pointSeparationID.size()>0){
-            for(int i=0;i<pointSeparation.size();i++){
+        //findSeparateLayerOutline
 
-
-                if (fabs(pointSeparation[i].X-tempPoint.X)<0.001 &&
-                    fabs(pointSeparation[i].Y-tempPoint.Y)<0.001 &&
-                    fabs(pointSeparation[i].Z-tempPoint.Z)<0.001){
-                        for (int j=0;j<pointSeparation.size();j++){
-                            if ((pointSeparation[j].X!=pointSeparation[i].X ||
-                                pointSeparation[j].Y!=pointSeparation[i].Y ||
-                                pointSeparation[j].Z!=pointSeparation[i].Z) &&
-                                pointSeparationID[j]==pointSeparationID[i]){
-                                    tempPoint.X=pointSeparation[j].X;
-                                    tempPoint.Y=pointSeparation[j].Y;
-                                    tempPoint.Z=pointSeparation[j].Z;
-                                    OutLineSeparation.push_back(tempPoint);
-                                    OutLineSeparationID.push_back(thisIDLine);
-                                    tempID=pointSeparationID[i];
-
-                                    ///Фильтрация получившегося констра на совпадение ID
-                                    for(int k=0;k<pointSeparationID.size();k++){
-                                        if (pointSeparationID[k]==tempID){
-                                            pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
-                                            pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
-                                            break;
-                                        }
-                                    }
-                                    for(int k=0;k<pointSeparationID.size();k++){
-                                        if (pointSeparationID[k]==tempID){
-                                            pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
-                                            pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
-                                            break;
-                                        }
-                                    }
-                                    qDebug () << "NewTemp X=" << tempPoint.X;
-                                    break;
-                            }
-                        }
-                        break;
-                }
-                ///Оплетка поиска количества контуров
-                if (i==pointSeparation.size()-1){
-                    tempPoint.X=pointSeparation[0].X;
-                    tempPoint.Y=pointSeparation[0].Y;
-                    tempPoint.Z=pointSeparation[0].Z;
-                    tempID=0;
-                    OutLineSeparation.push_back(tempPoint);
-                    OutLineSeparationID.push_back(thisIDLine+1);
-                    thisIDLine++;
-                }
-            }
-        }
-
-        ///Дополнительная фильтрация массива контура для удаления лишних вершин в узле которой линия не изгибается
-        int thisPointStartLine=0;
-        while (thisPointStartLine<OutLineSeparation.size()-2) {
-            if (OutLineSeparationID[thisPointStartLine]!=OutLineSeparationID[thisPointStartLine+2]) {
-                thisPointStartLine+=2;
-            }
-            float dx1=fabs(OutLineSeparation[thisPointStartLine].X-OutLineSeparation[thisPointStartLine+1].X);
-            float dy1=fabs(OutLineSeparation[thisPointStartLine].Y-OutLineSeparation[thisPointStartLine+1].Y);
-            float dx2=fabs(OutLineSeparation[thisPointStartLine+1].X-OutLineSeparation[thisPointStartLine+2].X);
-            float dy2=fabs(OutLineSeparation[thisPointStartLine+1].Y-OutLineSeparation[thisPointStartLine+2].Y);
-            if ((dx1/dy1)==(dx2/dy2)){
-                OutLineSeparation[thisPointStartLine+1].X=OutLineSeparation[thisPointStartLine+2].X;
-                OutLineSeparation[thisPointStartLine+1].Y=OutLineSeparation[thisPointStartLine+2].Y;
-                OutLineSeparation[thisPointStartLine+1].Z=OutLineSeparation[thisPointStartLine+2].Z;
-                OutLineSeparation.erase(OutLineSeparation.begin()+thisPointStartLine+2,OutLineSeparation.begin()+thisPointStartLine+3);
-                OutLineSeparationID.erase(OutLineSeparationID.begin()+thisPointStartLine+2,OutLineSeparationID.begin()+thisPointStartLine+3);
-                thisPointStartLine=0;
-            }
-            else thisPointStartLine+=1;
-        }
-
-        offsetUpForLinePerimetr=OutLineSeparation.size();
-        countLoops=thisIDLine+1;
-
-        tempLoop=OutLineSeparation;
-        tempLoopID=OutLineSeparationID;
+        tempLoop = OutLineSeparation;
+        tempLoopID = OutLineSeparationID;
         OutLineLoop.push_back(tempLoop);
         OutLineLoopID.push_back(tempLoopID);
     }
@@ -660,7 +650,6 @@ void GLWidget::sliceAuto()
     OutLineSeparation.clear();
     OutLineSeparationID.clear();
 
-    SlicerHeight=tempSliceHight;
+    SlicerHeight = tempSliceHight;
     update();
-
 }

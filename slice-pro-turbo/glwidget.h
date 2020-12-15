@@ -45,6 +45,9 @@ private:
     void wireframe(bool show);
     void findGabarite();
 
+    void findSeparatePoint();
+    void findSeparateLayerOutline();
+
     int xRot;
     int yRot;
     int zRot;

@@ -1012,7 +1012,9 @@ debug/glwidget.o: ../slice-pro-turbo/glwidget.cpp ../slice-pro-turbo/glwidget.h 
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QDebug \
 		C:/Qt/5.15.2/mingw81_32/include/QtGui/QMouseEvent \
 		C:/Qt/5.15.2/mingw81_32/include/QtCore/QTextStream \
-		C:/Qt/5.15.2/mingw81_32/include/QtCore/QVector
+		C:/Qt/5.15.2/mingw81_32/include/QtCore/QVector \
+		C:/Qt/5.15.2/mingw81_32/include/QtGui/QVector3D \
+		C:/Qt/5.15.2/mingw81_32/include/QtGui/qvector3d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\glwidget.o ..\slice-pro-turbo\glwidget.cpp
 
 debug/main.o: ../slice-pro-turbo/main.cpp ../slice-pro-turbo/widget.h \
