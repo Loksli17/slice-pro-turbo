@@ -186,7 +186,19 @@ void GLWidget::paintGL()
 
     glLineWidth(1);
 
+    QString cameraRot = "Camera angle: x: " + QString::number(xRot)
+                        + ", y:  " + QString::number(yRot) + ", z: " + QString::number(zRot);
 
+    QString cameraPos = "Camera position: x: " + QString::number(xPos)
+                        + ", y:  " + QString::number(yPos);
+
+    QString zoom = "Zoom: " + QString::number(zoomScale);
+    QString triangles = "Triangles: " + QString::number(triangleBase.size());
+
+    renderText(5, 15, cameraRot);
+    renderText(5, 30, cameraPos);
+    renderText(5, 45, zoom);
+    renderText(5, 60, triangles);
 }
 
 
@@ -263,11 +275,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     int dy = event->y() - lastPos.y();
 
     if (event->buttons() == Qt::LeftButton) {
-        setXRotation(xRot + 8 * dy);
-        setYRotation(yRot + 8 * dx);
+        setXRotation(xRot + 16 * dy);
+        setYRotation(yRot + 16 * dx);
     } else if (event->buttons() == Qt::RightButton) {
-        setXRotation(xRot + 8 * dy);
-        setZRotation(zRot + 8 * dx);
+        setXRotation(xRot + 16 * dy);
+        setZRotation(zRot + 16 * dx);
     } else if (event->buttons() == Qt::MiddleButton) {
 //        xPos += dx / ((double)width() / 3.0);
 //        yPos -= dy / ((double)height() / 2.0);
@@ -323,6 +335,87 @@ void GLWidget::resetSliceState()
     OutLineSeparation.clear();
     OutLineSeparationID.clear();
     update();
+}
+
+void GLWidget::rotateBody(int axis)
+{
+    float
+        NewNormalX,
+        NewNormalY,
+        NewNormalZ;
+    float
+        NewPointX,
+        NewPointY,
+        NewPointZ;
+    float PointMidleX, PointMidleY, PointMidleZ;
+
+    float angle = M_PI / 4;
+
+    //Определение центра модели
+    PointMidleX = ((GabariteMaxX-GabariteMinX) / 2)+GabariteMinX;
+    PointMidleY = ((GabariteMaxY-GabariteMinY) / 2)+GabariteMinY;
+    PointMidleZ = ((GabariteMaxZ-GabariteMinZ) / 2)+GabariteMinZ;
+
+    //Цикл сдвижки кадой точки через матрицу поворота в 3D пространстве
+    for (int i=0;i<triangleBase.size();i++){
+        if (axis == 0){
+            NewNormalX =  triangleBase[i].Normal.X;
+            NewNormalY = triangleBase[i].Normal.Y * cos(angle)
+                         + triangleBase[i].Normal.Z * sin(angle);
+            NewNormalZ = -triangleBase[i].Normal.Y * sin(angle)
+                         + triangleBase[i].Normal.Z * cos(angle);
+        } else if (axis == 1){
+            NewNormalX = triangleBase[i].Normal.X * cos(angle)
+                         + triangleBase[i].Normal.Z * sin(angle);
+            NewNormalY =  triangleBase[i].Normal.Y;
+            NewNormalZ = -triangleBase[i].Normal.X * sin(angle)
+                         + triangleBase[i].Normal.Z * cos(angle);
+        } else if (axis == 2){
+            NewNormalX = triangleBase[i].Normal.X * cos(angle)
+                         - triangleBase[i].Normal.Y * sin(angle);
+            NewNormalY = triangleBase[i].Normal.X * sin(angle)
+                         + triangleBase[i].Normal.Y * cos(angle);
+            NewNormalZ =  triangleBase[i].Normal.Z;
+        }
+        //=/Дополнительное смещение нормалей модели для верного вычисления освещения модели
+        triangleBase[i].Normal.X = NewNormalX;
+        triangleBase[i].Normal.Y = NewNormalY;
+        triangleBase[i].Normal.Z = NewNormalZ;
+        for (int j = 0; j < 3; j++){
+            if (axis == 0){
+                NewPointX = triangleBase[i].p[j].X;
+
+                NewPointY = ((triangleBase[i].p[j].Y - PointMidleY) * cos(angle)
+                             + (triangleBase[i].p[j].Z - PointMidleZ) * sin(angle));
+
+                NewPointZ = (-1 * (triangleBase[i].p[j].Y - PointMidleY) * sin(angle)
+                             + (triangleBase[i].p[j].Z - PointMidleZ) * cos(angle));
+            }
+            if (axis == 1){
+                NewPointX = ((triangleBase[i].p[j].X - PointMidleX) * cos(angle)
+                             + (triangleBase[i].p[j].Z - PointMidleZ) * sin(angle));
+
+                NewPointY = triangleBase[i].p[j].Y;
+
+                NewPointZ = (-1 * (triangleBase[i].p[j].X - PointMidleY) * sin(angle)
+                             + (triangleBase[i].p[j].Z - PointMidleZ) * cos(angle));
+            }
+            if (axis == 2) {
+                NewPointX = ((triangleBase[i].p[j].X - PointMidleX) * cos(angle)
+                             - (triangleBase[i].p[j].Y - PointMidleY) * sin(angle));
+
+                NewPointY = ((triangleBase[i].p[j].X - PointMidleY) * sin(angle)
+                             + (triangleBase[i].p[j].Y - PointMidleY) * cos(angle));
+
+                NewPointZ = triangleBase[i].p[j].Z;
+            }
+            triangleBase[i].p[j].X = NewPointX;
+            triangleBase[i].p[j].Y = NewPointY;
+            triangleBase[i].p[j].Z = NewPointZ;
+        }
+    }
+    findGabarite();
+    resetSliceState();
 }
 
 

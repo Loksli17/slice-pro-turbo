@@ -13,9 +13,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glwidget.h"
@@ -31,10 +31,16 @@ public:
     QPushButton *pushButton_2;
     QPushButton *SliceAuto;
     QCheckBox *checkBox;
-    QDoubleSpinBox *SliceAdaptive;
+    QDoubleSpinBox *SliceAdaptiveSpinBox;
+    QPushButton *SliceAdaptive;
     QPushButton *saveGCode;
     QPushButton *ResetButton;
-    QSpacerItem *verticalSpacer;
+    QVBoxLayout *verticalLayout_4;
+    QGroupBox *groupBox;
+    QVBoxLayout *verticalLayout_2;
+    QPushButton *RotateX;
+    QPushButton *RotateY;
+    QPushButton *RotateZ;
     QPushButton *pushButton;
 
     void setupUi(QWidget *Widget)
@@ -71,12 +77,17 @@ public:
 
         verticalLayout->addWidget(checkBox);
 
-        SliceAdaptive = new QDoubleSpinBox(Widget);
+        SliceAdaptiveSpinBox = new QDoubleSpinBox(Widget);
+        SliceAdaptiveSpinBox->setObjectName(QString::fromUtf8("SliceAdaptiveSpinBox"));
+        SliceAdaptiveSpinBox->setMinimum(0.500000000000000);
+        SliceAdaptiveSpinBox->setMaximum(1.000000000000000);
+        SliceAdaptiveSpinBox->setSingleStep(0.050000000000000);
+        SliceAdaptiveSpinBox->setValue(0.500000000000000);
+
+        verticalLayout->addWidget(SliceAdaptiveSpinBox);
+
+        SliceAdaptive = new QPushButton(Widget);
         SliceAdaptive->setObjectName(QString::fromUtf8("SliceAdaptive"));
-        SliceAdaptive->setMinimum(1.000000000000000);
-        SliceAdaptive->setMaximum(5.000000000000000);
-        SliceAdaptive->setSingleStep(0.050000000000000);
-        SliceAdaptive->setValue(1.000000000000000);
 
         verticalLayout->addWidget(SliceAdaptive);
 
@@ -90,9 +101,32 @@ public:
 
         verticalLayout->addWidget(ResetButton);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
 
-        verticalLayout->addItem(verticalSpacer);
+        verticalLayout->addLayout(verticalLayout_4);
+
+        groupBox = new QGroupBox(Widget);
+        groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        verticalLayout_2 = new QVBoxLayout(groupBox);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        RotateX = new QPushButton(groupBox);
+        RotateX->setObjectName(QString::fromUtf8("RotateX"));
+
+        verticalLayout_2->addWidget(RotateX);
+
+        RotateY = new QPushButton(groupBox);
+        RotateY->setObjectName(QString::fromUtf8("RotateY"));
+
+        verticalLayout_2->addWidget(RotateY);
+
+        RotateZ = new QPushButton(groupBox);
+        RotateZ->setObjectName(QString::fromUtf8("RotateZ"));
+
+        verticalLayout_2->addWidget(RotateZ);
+
+
+        verticalLayout->addWidget(groupBox);
 
         pushButton = new QPushButton(Widget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
@@ -115,8 +149,13 @@ public:
         pushButton_2->setText(QCoreApplication::translate("Widget", "OpenFile", nullptr));
         SliceAuto->setText(QCoreApplication::translate("Widget", "Slice", nullptr));
         checkBox->setText(QCoreApplication::translate("Widget", "Wireframe", nullptr));
+        SliceAdaptive->setText(QCoreApplication::translate("Widget", "SliceAdaptive", nullptr));
         saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
         ResetButton->setText(QCoreApplication::translate("Widget", "Reset", nullptr));
+        groupBox->setTitle(QCoreApplication::translate("Widget", "GroupBox", nullptr));
+        RotateX->setText(QCoreApplication::translate("Widget", "RotateX", nullptr));
+        RotateY->setText(QCoreApplication::translate("Widget", "RotateY", nullptr));
+        RotateZ->setText(QCoreApplication::translate("Widget", "RotateZ", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Quit", nullptr));
     } // retranslateUi
 

@@ -20,7 +20,8 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(sliceAdaptive(double)), glWidget, SLOT(sliceAdaptive(double)));
     connect(this, SIGNAL(createGCodeFile(QString)), glWidget, SLOT(createGCodeFile(QString)));
     connect(this, SIGNAL(resetSlicing()), glWidget, SLOT(resetSliceState()));
-//    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
+    connect(this, SIGNAL(rotateBody(int)), glWidget, SLOT(rotateBody(int)));
+    //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 }
 
 Widget::~Widget()
@@ -57,14 +58,6 @@ void Widget::on_SliceAuto_clicked()
 }
 
 
-void Widget::on_SliceAdaptive_valueChanged(double arg1)
-{
-    qDebug() << arg1;
-    ui->widget->setFocus();
-    emit sliceAdaptive(arg1);
-}
-
-
 void Widget::on_saveGCode_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
@@ -79,4 +72,29 @@ void Widget::on_ResetButton_clicked()
 {
     ui->widget->setFocus();
     emit resetSlicing();
+}
+
+void Widget::on_RotateX_clicked()
+{
+    ui->widget->setFocus();
+    emit rotateBody(0);
+}
+
+void Widget::on_RotateY_clicked()
+{
+    ui->widget->setFocus();
+    emit rotateBody(1);
+}
+
+void Widget::on_RotateZ_clicked()
+{
+    ui->widget->setFocus();
+    emit rotateBody(2);
+}
+
+void Widget::on_SliceAdaptive_clicked()
+{
+    ui->widget->setFocus();
+    double val = ui->SliceAdaptiveSpinBox->value();
+    emit sliceAdaptive(val);
 }

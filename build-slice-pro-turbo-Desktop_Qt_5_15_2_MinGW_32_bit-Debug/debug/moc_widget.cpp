@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Widget_t {
-    QByteArrayData data[20];
-    char stringdata0[262];
+    QByteArrayData data[24];
+    char stringdata0[325];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,24 +44,29 @@ QT_MOC_LITERAL(8, 61, 13), // "sliceAdaptive"
 QT_MOC_LITERAL(9, 75, 5), // "width"
 QT_MOC_LITERAL(10, 81, 15), // "createGCodeFile"
 QT_MOC_LITERAL(11, 97, 12), // "resetSlicing"
-QT_MOC_LITERAL(12, 110, 23), // "on_pushButton_2_clicked"
-QT_MOC_LITERAL(13, 134, 19), // "on_checkBox_toggled"
-QT_MOC_LITERAL(14, 154, 7), // "checked"
-QT_MOC_LITERAL(15, 162, 20), // "on_SliceAuto_clicked"
-QT_MOC_LITERAL(16, 183, 29), // "on_SliceAdaptive_valueChanged"
-QT_MOC_LITERAL(17, 213, 4), // "arg1"
-QT_MOC_LITERAL(18, 218, 20), // "on_saveGCode_clicked"
-QT_MOC_LITERAL(19, 239, 22) // "on_ResetButton_clicked"
+QT_MOC_LITERAL(12, 110, 10), // "rotateBody"
+QT_MOC_LITERAL(13, 121, 4), // "axis"
+QT_MOC_LITERAL(14, 126, 23), // "on_pushButton_2_clicked"
+QT_MOC_LITERAL(15, 150, 19), // "on_checkBox_toggled"
+QT_MOC_LITERAL(16, 170, 7), // "checked"
+QT_MOC_LITERAL(17, 178, 20), // "on_SliceAuto_clicked"
+QT_MOC_LITERAL(18, 199, 20), // "on_saveGCode_clicked"
+QT_MOC_LITERAL(19, 220, 22), // "on_ResetButton_clicked"
+QT_MOC_LITERAL(20, 243, 18), // "on_RotateX_clicked"
+QT_MOC_LITERAL(21, 262, 18), // "on_RotateY_clicked"
+QT_MOC_LITERAL(22, 281, 18), // "on_RotateZ_clicked"
+QT_MOC_LITERAL(23, 300, 24) // "on_SliceAdaptive_clicked"
 
     },
     "Widget\0stlOpened\0\0QFile*\0file\0"
     "toggleWireframe\0show\0sliceAuto\0"
     "sliceAdaptive\0width\0createGCodeFile\0"
-    "resetSlicing\0on_pushButton_2_clicked\0"
-    "on_checkBox_toggled\0checked\0"
-    "on_SliceAuto_clicked\0on_SliceAdaptive_valueChanged\0"
-    "arg1\0on_saveGCode_clicked\0"
-    "on_ResetButton_clicked"
+    "resetSlicing\0rotateBody\0axis\0"
+    "on_pushButton_2_clicked\0on_checkBox_toggled\0"
+    "checked\0on_SliceAuto_clicked\0"
+    "on_saveGCode_clicked\0on_ResetButton_clicked\0"
+    "on_RotateX_clicked\0on_RotateY_clicked\0"
+    "on_RotateZ_clicked\0on_SliceAdaptive_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,28 +76,32 @@ static const uint qt_meta_data_Widget[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       6,       // signalCount
+       7,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   74,    2, 0x06 /* Public */,
-       5,    1,   77,    2, 0x06 /* Public */,
-       7,    0,   80,    2, 0x06 /* Public */,
-       8,    1,   81,    2, 0x06 /* Public */,
-      10,    1,   84,    2, 0x06 /* Public */,
-      11,    0,   87,    2, 0x06 /* Public */,
+       1,    1,   94,    2, 0x06 /* Public */,
+       5,    1,   97,    2, 0x06 /* Public */,
+       7,    0,  100,    2, 0x06 /* Public */,
+       8,    1,  101,    2, 0x06 /* Public */,
+      10,    1,  104,    2, 0x06 /* Public */,
+      11,    0,  107,    2, 0x06 /* Public */,
+      12,    1,  108,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      12,    0,   88,    2, 0x08 /* Private */,
-      13,    1,   89,    2, 0x08 /* Private */,
-      15,    0,   92,    2, 0x08 /* Private */,
-      16,    1,   93,    2, 0x08 /* Private */,
-      18,    0,   96,    2, 0x08 /* Private */,
-      19,    0,   97,    2, 0x08 /* Private */,
+      14,    0,  111,    2, 0x08 /* Private */,
+      15,    1,  112,    2, 0x08 /* Private */,
+      17,    0,  115,    2, 0x08 /* Private */,
+      18,    0,  116,    2, 0x08 /* Private */,
+      19,    0,  117,    2, 0x08 /* Private */,
+      20,    0,  118,    2, 0x08 /* Private */,
+      21,    0,  119,    2, 0x08 /* Private */,
+      22,    0,  120,    2, 0x08 /* Private */,
+      23,    0,  121,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -101,12 +110,16 @@ static const uint qt_meta_data_Widget[] = {
     QMetaType::Void, QMetaType::Double,    9,
     QMetaType::Void, QMetaType::QString,    4,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   13,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Bool,   14,
+    QMetaType::Void, QMetaType::Bool,   16,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Double,   17,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -125,12 +138,16 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 3: _t->sliceAdaptive((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 4: _t->createGCodeFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 5: _t->resetSlicing(); break;
-        case 6: _t->on_pushButton_2_clicked(); break;
-        case 7: _t->on_checkBox_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 8: _t->on_SliceAuto_clicked(); break;
-        case 9: _t->on_SliceAdaptive_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 6: _t->rotateBody((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->on_pushButton_2_clicked(); break;
+        case 8: _t->on_checkBox_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 9: _t->on_SliceAuto_clicked(); break;
         case 10: _t->on_saveGCode_clicked(); break;
         case 11: _t->on_ResetButton_clicked(); break;
+        case 12: _t->on_RotateX_clicked(); break;
+        case 13: _t->on_RotateY_clicked(); break;
+        case 14: _t->on_RotateZ_clicked(); break;
+        case 15: _t->on_SliceAdaptive_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -188,6 +205,13 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
                 return;
             }
         }
+        {
+            using _t = void (Widget::*)(int );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Widget::rotateBody)) {
+                *result = 6;
+                return;
+            }
+        }
     }
 }
 
@@ -220,13 +244,13 @@ int Widget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 16;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 16;
     }
     return _id;
 }
@@ -269,6 +293,13 @@ void Widget::createGCodeFile(QString _t1)
 void Widget::resetSlicing()
 {
     QMetaObject::activate(this, &staticMetaObject, 5, nullptr);
+}
+
+// SIGNAL 6
+void Widget::rotateBody(int _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

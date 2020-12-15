@@ -48,18 +48,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="SliceAdaptive">
+      <widget class="QDoubleSpinBox" name="SliceAdaptiveSpinBox">
        <property name="minimum">
-        <double>1.000000000000000</double>
+        <double>0.500000000000000</double>
        </property>
        <property name="maximum">
-        <double>5.000000000000000</double>
+        <double>1.000000000000000</double>
        </property>
        <property name="singleStep">
         <double>0.050000000000000</double>
        </property>
        <property name="value">
-        <double>1.000000000000000</double>
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="SliceAdaptive">
+       <property name="text">
+        <string>SliceAdaptive</string>
        </property>
       </widget>
      </item>
@@ -78,17 +85,37 @@
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+      <layout class="QVBoxLayout" name="verticalLayout_4"/>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>GroupBox</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="RotateX">
+          <property name="text">
+           <string>RotateX</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="RotateY">
+          <property name="text">
+           <string>RotateY</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="RotateZ">
+          <property name="text">
+           <string>RotateZ</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton">

@@ -24,12 +24,19 @@ private slots:
     void on_checkBox_toggled(bool checked);
 
     void on_SliceAuto_clicked();
-
-    void on_SliceAdaptive_valueChanged(double arg1);
+    ;
 
     void on_saveGCode_clicked();
 
     void on_ResetButton_clicked();
+
+    void on_RotateX_clicked();
+
+    void on_RotateY_clicked();
+
+    void on_RotateZ_clicked();
+
+    void on_SliceAdaptive_clicked();
 
 signals:
     void stlOpened(QFile* file);
@@ -38,6 +45,7 @@ signals:
     void sliceAdaptive(double width);
     void createGCodeFile(QString file);
     void resetSlicing();
+    void rotateBody(int axis);
 
 private:
     Ui::Widget *ui;
