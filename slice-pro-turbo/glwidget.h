@@ -59,6 +59,7 @@ private:
     void findSeparateLayerOutline();
 
     void intersectionDraw();
+    void setInnerPointsGridDraw();
 
 
     int xRot;

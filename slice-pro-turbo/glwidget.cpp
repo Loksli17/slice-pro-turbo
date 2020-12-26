@@ -149,6 +149,15 @@ void GLWidget::paintGL()
             glEnd();
         }
 
+        // Нужен вектор векторов внутренних точек слоя
+//        glPointSize(4);
+//        glBegin(GL_POINTS);
+//            glColor4f(1.0, 0.0, 1.0, 1.0);
+//            for (int i = 0; i < InnerPoints.size(); i++) {
+//                glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
+//            }
+//        glEnd();
+
         //строим модель
 
         if (wireframeFlag) {
@@ -171,6 +180,7 @@ void GLWidget::paintGL()
 
         //Отображение плоскости слайсинга
         glColor4f(0.1, 0.1, 0.5, 0.3);
+        glEnable(GL_CULL_FACE);
         glBegin(GL_POLYGON);
             glNormal3f(0.0, 0.0, 1.0);
             glVertex3f(GabariteMinX - 1, GabariteMinY - 1, SlicerHeight);
@@ -288,9 +298,9 @@ void GLWidget::drawGrid()
     glDisable(GL_LIGHTING);
     glColor4f(0.0, 0.0, 0.0, 1.0);
     glBegin(GL_LINES);
-        for (GLfloat i = -20.0; i <= 20.0; i += 2.0) {
-            glVertex3f(i, 0, 20.0); glVertex3f( i, 0, -20.0);
-            glVertex3f(20.0, 0, i); glVertex3f( -20.0, 0, i);
+        for (GLfloat i = -30.0; i <= 30.0; i += 2.0) {
+            glVertex3f(i, 0, 30.0); glVertex3f( i, 0, -30.0);
+            glVertex3f(30.0, 0, i); glVertex3f( -30.0, 0, i);
         }
     glEnd();
     glEnable(GL_LIGHTING);
@@ -758,6 +768,7 @@ void GLWidget::sliceAuto()
         //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
     }
 
+    InnerPoints.clear();
     LayerHeight = 0.2;
 
     ///Отчистка слоев и запоминание текущей высоты слайсинга
@@ -777,6 +788,9 @@ void GLWidget::sliceAuto()
 
         //findSeparateLayerOutline
         findSeparateLayerOutline();
+
+        // making inner points on each layer
+//        setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -799,7 +813,7 @@ float OffsetByLine(point P1, point P2, point O){
 
 void GLWidget::sliceAdaptive(double width)
 {
-
+    InnerPoints.clear();
     LayerHeight = width;
 
     if(width == 0)
@@ -826,12 +840,18 @@ void GLWidget::sliceAdaptive(double width)
         SlicerHeight = height;
         findSeparatePoint();
         findSeparateLayerOutline();
+
+        // making inner points on each layer
+        setInnerPointsGridDraw();
+
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
 
         SlicerHeight = height + LayerHeight;
         findSeparatePoint();
         findSeparateLayerOutline();
+//        setInnerPointsGridDraw();
+
         tempLoop2 = OutLineSeparation;
         tempLoopID2 = OutLineSeparationID;
 
@@ -936,6 +956,20 @@ void GLWidget::intersectionDraw()
     }
 }
 
+void GLWidget::setInnerPointsGridDraw()
+{
+//    InnerPoints.clear();
+    point tmp;
+    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
+        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+            tmp.X = dx;
+            tmp.Y = dy;
+            tmp.Z = SlicerHeight;
+            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
+        }
+    }
+}
+
 
 float GLWidget::atanTrueDegree(float x, float y)
 {
@@ -975,14 +1009,6 @@ bool GLWidget::findPointInLoop(float inX, float inY)
 void GLWidget::setInnerPointsGrid()
 {
     InnerPoints.clear();
-    point tmp;
-    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
-        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
-            tmp.X = dx;
-            tmp.Y = dy;
-            tmp.Z = SlicerHeight;
-            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
-        }
-    }
+    setInnerPointsGridDraw();
 }
 
