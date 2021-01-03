@@ -54,7 +54,7 @@ QVector <int>OutLineSeparationID;
 QVector <QVector <point> > OutLineLoop;
 QVector <QVector <int> > OutLineLoopID;
 int countLoops;
-QVector <point> InnerPoints;
+QVector<QVector <point> > InnerPoints;
 QVector <point2D> MeabyPoint;
 QVector <poligone> PoligoneBase;
 
@@ -138,12 +138,12 @@ void GLWidget::paintGL()
         drawGrid();
 
         //Отображение множетсва слоев после слайсинга модели (зеленый)
-        glLineWidth(2);
+        glLineWidth(1);
         for (int j = 0; j < OutLineLoop.size(); j++) {
             glBegin(GL_LINES);
                 glColor4f(0.0, 1.0, 0.0, 1.0);
                 glNormal3f(0.0, 0.0, 1.0);
-                for (int i=0;i<OutLineLoop.at(j).size() - 1; i++){
+                for (int i = 0; i < OutLineLoop.at(j).size() - 1; i++) {
                     if (OutLineLoopID.at(j).at(i+1) == OutLineLoopID.at(j).at(i)){
                         glVertex3f(OutLineLoop.at(j).at(i).X, OutLineLoop.at(j).at(i).Y,OutLineLoop.at(j).at(i).Z);
                         glVertex3f(OutLineLoop.at(j).at(i + 1).X, OutLineLoop.at(j).at(i + 1).Y,OutLineLoop.at(j).at(i + 1).Z);
@@ -153,6 +153,16 @@ void GLWidget::paintGL()
         }
 
         // Нужен вектор векторов внутренних точек слоя
+        glPointSize(4);
+        for (int i = 0; i < InnerPoints.size(); i++) {
+            glBegin(GL_POINTS);
+                glColor4f(1.0, 0.0, 1.0, 1.0);
+                QVector<point> temp = InnerPoints[i];
+                for (int j = 0; j < temp.size(); j++) {
+                    glVertex3f(temp[j].X, temp[j].Y, temp[j].Z);
+                }
+            glEnd();
+        }
 //        glPointSize(4);
 //        glBegin(GL_POINTS);
 //            glColor4f(1.0, 0.0, 1.0, 1.0);
@@ -208,16 +218,16 @@ void GLWidget::paintGL()
                 }
             glEnd();
 
-            //Отображение точек в процессе подготовки к заливке сеткой вороного
-            glPointSize(4);
-            glBegin(GL_POINTS);
-                glColor4f(1.0, 0.0, 1.0, 1.0);
-                qDebug() << "size Voronov: " << InnerPoints.size();
-                for (int i = 0; i < InnerPoints.size(); i++) {
-                    qDebug() << "point Voronov" << InnerPoints[i].X;
-                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
-                }
-            glEnd();
+//            //Отображение точек в процессе подготовки к заливке сеткой вороного
+//            glPointSize(4);
+//            glBegin(GL_POINTS);
+//                glColor4f(1.0, 0.0, 1.0, 1.0);
+//                qDebug() << "size Voronov: " << InnerPoints.size();
+//                for (int i = 0; i < InnerPoints.size(); i++) {
+//                    qDebug() << "point Voronov" << InnerPoints[i].X;
+//                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
+//                }
+//            glEnd();
         }
         glEnable(GL_LIGHTING);
     glPopMatrix();
@@ -397,7 +407,7 @@ void GLWidget::rotateBody(int axis)
     PointMidleZ = ((GabariteMaxZ - GabariteMinZ) / 2) + GabariteMinZ;
 
     //Цикл сдвижки кадой точки через матрицу поворота в 3D пространстве
-    for (int i=0;i<triangleBase.size();i++){
+    for (int i = 0; i < triangleBase.size(); i++) {
         if (axis == 0){
             NewNormalX =  triangleBase[i].Normal.X;
             NewNormalY = triangleBase[i].Normal.Y * cos(angle)
@@ -679,7 +689,7 @@ void GLWidget::findSeparateLayerOutline()
 
     //Бесконечный цикл прохода по всем точкам пересечения плоскости с моделью
     while (pointSeparationID.size() > 0){
-        for(int i=0;i<pointSeparation.size();i++){
+        for (int i = 0; i < pointSeparation.size(); i++) {
             if (fabs(pointSeparation[i].X-tempPoint.X)<0.001 &&
                 fabs(pointSeparation[i].Y-tempPoint.Y)<0.001 &&
                 fabs(pointSeparation[i].Z-tempPoint.Z)<0.001){
@@ -696,17 +706,17 @@ void GLWidget::findSeparateLayerOutline()
                                 tempID=pointSeparationID[i];
 
                                 ///Фильтрация получившегося констра на совпадение ID
-                                for(int k=0;k<pointSeparationID.size();k++){
-                                    if (pointSeparationID[k]==tempID){
+                                for (int k = 0; k < pointSeparationID.size(); k++) {
+                                    if (pointSeparationID[k] == tempID) {
                                         pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
                                         pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
                                         break;
                                     }
                                 }
-                                for(int k=0;k<pointSeparationID.size();k++){
-                                    if (pointSeparationID[k]==tempID){
-                                        pointSeparation.erase(pointSeparation.begin()+k,pointSeparation.begin()+k+1);
-                                        pointSeparationID.erase(pointSeparationID.begin()+k,pointSeparationID.begin()+k+1);
+                                for (int k = 0; k < pointSeparationID.size(); k++) {
+                                    if (pointSeparationID[k] == tempID) {
+                                        pointSeparation.erase(pointSeparation.begin() + k, pointSeparation.begin() + k + 1);
+                                        pointSeparationID.erase(pointSeparationID.begin() + k,pointSeparationID.begin() + k + 1);
                                         break;
                                     }
                                 }
@@ -789,7 +799,7 @@ void GLWidget::sliceAuto()
         findSeparateLayerOutline();
 
         // making inner points on each layer
-//        setInnerPointsGridDraw();
+        setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -801,6 +811,7 @@ void GLWidget::sliceAuto()
     OutLineSeparationID.clear();
 
     SlicerHeight = tempSliceHight;
+    qDebug() << "AHAHAHAHAHA";
     update();
 }
 
@@ -848,7 +859,9 @@ void GLWidget::sliceAdaptive(double width)
         SlicerHeight = height + LayerHeight;
         findSeparatePoint();
         findSeparateLayerOutline();
-        // setInnerPointsGridDraw();
+
+        // huh
+        //setInnerPointsGridDraw();
 
         tempLoop2 = OutLineSeparation;
         tempLoopID2 = OutLineSeparationID;
@@ -962,15 +975,26 @@ void GLWidget::intersectionDraw()
 void GLWidget::setInnerPointsGridDraw()
 {
 //    InnerPoints.clear();
+//    point tmp;
+//    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
+//        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+//            tmp.X = dx;
+//            tmp.Y = dy;
+//            tmp.Z = SlicerHeight;
+//            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
+//        }
+//    }
+    QVector <point> temp;
     point tmp;
     for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
         for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
-            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
+            if (findPointInLoop(dx, dy)) temp.push_back(tmp);
         }
     }
+    InnerPoints.push_back(temp);
 }
 
 
