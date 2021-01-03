@@ -1,7 +1,7 @@
 #include "glwidget.h"
 #include "GL/glu.h"
 #include "GL/glut.h"
-#include "windows.h"
+
 #include <math.h>
 #include <QDebug>
 #include <QFile>
