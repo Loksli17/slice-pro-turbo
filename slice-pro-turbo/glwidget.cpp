@@ -66,6 +66,11 @@ float LayerHeight = 0.2;
 bool showIntersectionFlag = false;
 bool wireframeFlag = false;
 
+
+//diagramm Voronov
+QVector <QVector <poligone>> digramVoronov;
+
+
 GLWidget::GLWidget(QWidget *parent)
 {
     setFocusPolicy(Qt::StrongFocus);
@@ -1008,5 +1013,10 @@ void GLWidget::setInnerPointsGrid()
 {
     InnerPoints.clear();
     setInnerPointsGridDraw();
+}
+
+
+void GLWidget::createDiagramVoronov(){
+
 }
 

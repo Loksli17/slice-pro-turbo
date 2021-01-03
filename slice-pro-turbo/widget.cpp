@@ -24,6 +24,7 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(rotateBody(int)),          glWidget, SLOT(rotateBody(int)));
     connect(this, SIGNAL(intersection(bool)),       glWidget, SLOT(intersection(bool)));
     connect(this, SIGNAL(setGridInIntersection()),  glWidget, SLOT(setInnerPointsGrid()));
+    connect(this, SIGNAL(createDiagramVoronov()),   glWidget, SLOT(createDiagramVoronov()));
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 
     connect(glWidget, SIGNAL(showMessage(QString)),         this, SLOT(showMessage(QString)));
@@ -131,4 +132,9 @@ void Widget::disableIntersection()
 void Widget::showMessage(QString text)
 {
     QMessageBox::warning(this, "Ошибка", text);
+}
+
+void Widget::on_drawGrid_clicked()
+{
+    emit createDiagramVoronov();
 }

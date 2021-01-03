@@ -41,6 +41,7 @@ public:
     QPushButton *SliceAdaptive;
     QPushButton *saveGCode;
     QPushButton *ResetButton;
+    QPushButton *drawGrid;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QPushButton *RotateX;
@@ -126,6 +127,11 @@ public:
 
         verticalLayout->addWidget(ResetButton);
 
+        drawGrid = new QPushButton(Widget);
+        drawGrid->setObjectName(QString::fromUtf8("drawGrid"));
+
+        verticalLayout->addWidget(drawGrid);
+
         groupBox = new QGroupBox(Widget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         verticalLayout_2 = new QVBoxLayout(groupBox);
@@ -185,6 +191,7 @@ public:
         SliceAdaptive->setText(QCoreApplication::translate("Widget", "SliceAdaptive", nullptr));
         saveGCode->setText(QCoreApplication::translate("Widget", "GCode", nullptr));
         ResetButton->setText(QCoreApplication::translate("Widget", "Reset", nullptr));
+        drawGrid->setText(QCoreApplication::translate("Widget", "create diagram of Voronov", nullptr));
         groupBox->setTitle(QCoreApplication::translate("Widget", "GroupBox", nullptr));
         RotateX->setText(QCoreApplication::translate("Widget", "RotateX", nullptr));
         RotateY->setText(QCoreApplication::translate("Widget", "RotateY", nullptr));

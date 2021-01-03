@@ -44,6 +44,8 @@ private slots:
     void disableIntersection();
     void showMessage(QString text);
 
+    void on_drawGrid_clicked();
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
@@ -54,6 +56,7 @@ signals:
     void rotateBody(int axis);
     void intersection(bool checked);
     void setGridInIntersection();
+    void createDiagramVoronov();
 
 private:
     Ui::Widget *ui;

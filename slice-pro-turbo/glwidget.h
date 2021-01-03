@@ -65,6 +65,7 @@ private:
     void setInnerPointsGridDraw();
 
     void resetState();
+    void createDiagramVoronov();
 
 
     int xRot;

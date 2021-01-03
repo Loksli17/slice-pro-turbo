@@ -107,6 +107,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="drawGrid">
+           <property name="text">
+            <string>create diagram of Voronov</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="groupBox">
            <property name="title">
             <string>GroupBox</string>
