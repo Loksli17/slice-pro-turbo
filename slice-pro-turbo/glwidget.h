@@ -50,6 +50,9 @@ signals:
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
 
+    void disableIntersection();
+    void showMessage(QString text);
+
 private:
     void normalizeAngle(int *angle);
     void wireframe(bool show);

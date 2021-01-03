@@ -54,7 +54,7 @@ QVector <int>OutLineSeparationID;
 QVector <QVector <point> > OutLineLoop;
 QVector <QVector <int> > OutLineLoopID;
 int countLoops;
-QVector <point>InnerPoints;
+QVector <point> InnerPoints;
 QVector <point2D> MeabyPoint;
 QVector <poligone> PoligoneBase;
 
@@ -65,7 +65,6 @@ float LayerHeight = 0.2;
 
 bool showIntersectionFlag = false;
 bool wireframeFlag = false;
-
 
 GLWidget::GLWidget(QWidget *parent)
 {
@@ -307,14 +306,12 @@ void GLWidget::drawGrid()
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-//    setFocus();
     lastPos = event->pos();
 }
 
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-//    setFocus();
     int dx = event->x() - lastPos.x();
     int dy = event->y() - lastPos.y();
 
@@ -364,19 +361,17 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
 void GLWidget::resetSliceState()
 {
-//    triangleBase.clear();
-    qDebug() << "Hmm";
-//    OutLineLoop.clear();
-//    OutLineLoopID.clear();
-//    pointSeparation.clear();
-//    pointSeparationID.clear();
-//    OutLineSeparation.clear();
-//    OutLineSeparationID.clear();
+    resetState();
     update();
 }
 
 void GLWidget::rotateBody(int axis)
 {
+    if (triangleBase.size() == 0) {
+        emit showMessage("Хде модель");
+        return;
+    }
+
     float
         NewNormalX,
         NewNormalY,
@@ -478,6 +473,7 @@ void GLWidget::setZRotation(int angle)
 void GLWidget::resetState()
 {
     showIntersectionFlag = false;
+    emit disableIntersection();
     triangleBase.clear();
     qDebug() << "kek 1";
     OutLineLoop.clear();
@@ -662,7 +658,7 @@ void GLWidget::findSeparatePoint()
 
 void GLWidget::findSeparateLayerOutline()
 {
-    ///Строчки для поготовки к работе, очистка, создание базовой точки т т.д.
+    //Строчки для поготовки к работе, очистка, создание базовой точки т т.д.
     OutLineSeparation.clear();
     OutLineSeparationID.clear();
     point tempPoint;
@@ -677,7 +673,7 @@ void GLWidget::findSeparateLayerOutline()
     OutLineSeparation.push_back(tempPoint);
     OutLineSeparationID.push_back(thisIDLine);
 
-    ///Бесконечный цикл прохода по всем точкам пересечения плоскости с моделью
+    //Бесконечный цикл прохода по всем точкам пересечения плоскости с моделью
     while (pointSeparationID.size() > 0){
         for(int i=0;i<pointSeparation.size();i++){
             if (fabs(pointSeparation[i].X-tempPoint.X)<0.001 &&
@@ -729,7 +725,7 @@ void GLWidget::findSeparateLayerOutline()
         }
     }
 
-    ///Дополнительная фильтрация массива контура для удаления лишних вершин в узле которой линия не изгибается
+    //Дополнительная фильтрация массива контура для удаления лишних вершин в узле которой линия не изгибается
     int thisPointStartLine = 0;
     while (thisPointStartLine < OutLineSeparation.size() - 2) {
         if (OutLineSeparationID[thisPointStartLine] != OutLineSeparationID[thisPointStartLine + 2]) {
@@ -757,6 +753,11 @@ void GLWidget::findSeparateLayerOutline()
 
 void GLWidget::sliceAuto()
 {
+    if (triangleBase.size() == 0) {
+        emit showMessage("Хде модель");
+        return;
+    }
+
     //Подготовка к слайсингу и определение параметров слайсинга
     if (OutLineSeparation.size() > 0) {
         //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
@@ -807,10 +808,9 @@ float OffsetByLine(point P1, point P2, point O){
 
 void GLWidget::sliceAdaptive(double width)
 {
+    if (triangleBase.size() == 0) return;
     InnerPoints.clear();
     LayerHeight = width;
-
-    if(width == 0)
 
     ///Подготовка к слайсингу и определение параметров слайсинга
     if (OutLineSeparation.size()>0){
@@ -892,6 +892,10 @@ float LenghtOfLine(point a, point b){
 
 void GLWidget::createGCodeFile(QString fileName)
 {
+    if (triangleBase.size() == 0) {
+        emit showMessage("Хде модель");
+        return;
+    }
     QFile gcodeFile(fileName);
     gcodeFile.open(QIODevice::WriteOnly);
 
@@ -936,6 +940,7 @@ void GLWidget::createGCodeFile(QString fileName)
 
 void GLWidget::intersection(bool checked)
 {
+    if (triangleBase.size() == 0) return;
     showIntersectionFlag = checked;
     intersectionDraw();
 }

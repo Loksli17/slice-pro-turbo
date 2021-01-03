@@ -25,6 +25,11 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(intersection(bool)),       glWidget, SLOT(intersection(bool)));
     connect(this, SIGNAL(setGridInIntersection()),  glWidget, SLOT(setInnerPointsGrid()));
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
+
+    connect(glWidget, SIGNAL(showMessage(QString)),         this, SLOT(showMessage(QString)));
+    connect(glWidget, SIGNAL(disableIntersection()), this, SLOT(disableIntersection()));
+//    ui->checkBox->setC
+
 }
 
 Widget::~Widget()
@@ -116,4 +121,14 @@ void Widget::on_pushButton_3_clicked()
 {
     ui->widget->setFocus();
     emit setGridInIntersection();
+}
+
+void Widget::disableIntersection()
+{
+    ui->intersection->setChecked(false);
+}
+
+void Widget::showMessage(QString text)
+{
+    QMessageBox::warning(this, "Ошибка", text);
 }

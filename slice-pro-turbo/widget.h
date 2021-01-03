@@ -41,6 +41,9 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void disableIntersection();
+    void showMessage(QString text);
+
 signals:
     void stlOpened(QFile* file);
     void toggleWireframe(bool show);
