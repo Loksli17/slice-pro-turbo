@@ -61,6 +61,8 @@ private:
     void intersectionDraw();
     void setInnerPointsGridDraw();
 
+    void resetState();
+
 
     int xRot;
     int yRot;
