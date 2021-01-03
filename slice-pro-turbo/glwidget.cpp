@@ -208,7 +208,9 @@ void GLWidget::paintGL()
             glPointSize(4);
             glBegin(GL_POINTS);
                 glColor4f(1.0, 0.0, 1.0, 1.0);
+                qDebug() << "size Voronov: " << InnerPoints.size();
                 for (int i = 0; i < InnerPoints.size(); i++) {
+                    qDebug() << "point Voronov" << InnerPoints[i].X;
                     glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
                 }
             glEnd();
@@ -528,9 +530,6 @@ void GLWidget::getStl(QFile* file)
                       form.Normal.Y = points[1];
                       form.Normal.Z = points[0];
                       triangleBase.push_back(form);
-                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
-                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
-                      qDebug() << triangleBase[triangleBase.size() - 1].p[type - 2].X;
                   }else if(type > 1){
                       triangleBase[triangleBase.size() - 1].p[type - 2].X = points[2];
                       triangleBase[triangleBase.size() - 1].p[type - 2].Y = points[1];
