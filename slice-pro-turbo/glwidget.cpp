@@ -491,20 +491,14 @@ void GLWidget::resetState()
 {
     showIntersectionFlag = false;
     emit disableIntersection();
+
     triangleBase.clear();
-    qDebug() << "kek 1";
     OutLineLoop.clear();
-    qDebug() << "kek 2";
     OutLineLoopID.clear();
-    qDebug() << "kek 3";
     pointSeparation.clear();
-    qDebug() << "kek 4";
     pointSeparationID.clear();
-    qDebug() << "kek 5";
     OutLineSeparation.clear();
-    qDebug() << "kek 6";
     OutLineSeparationID.clear();
-    qDebug() << "kek 7";
     InnerPoints.clear();
     MeabyPoint.clear();
     PoligoneBase.clear();
@@ -823,7 +817,11 @@ float OffsetByLine(point P1, point P2, point O){
 
 void GLWidget::sliceAdaptive(double width)
 {
-    if (triangleBase.size() == 0) return;
+    if (triangleBase.size() == 0) {
+        emit showMessage("Хде модель");
+        return;
+    }
+
     InnerPoints.clear();
     LayerHeight = width;
 
