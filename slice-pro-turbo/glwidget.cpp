@@ -1048,5 +1048,10 @@ void GLWidget::setInnerPointsGrid()
 
 void GLWidget::createDiagramVoronov(){
 
+    for(int i = 0; i < InnerPoints.size(); i++){
+        for(int j = 0; j < InnerPoints[i].size(); j++){
+
+        }
+    }
 }
 
