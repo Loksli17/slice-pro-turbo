@@ -94,6 +94,7 @@ void GLWidget::initializeGL()
     glClearColor(0.45, 0.45, 0.45, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
+    glEnable(GL_LINE_SMOOTH);
 
     // Настройки глута - нужны для верного отображения
     glEnable(GL_DEPTH_TEST);
@@ -955,8 +956,15 @@ void GLWidget::createGCodeFile(QString fileName)
 
 void GLWidget::intersection(bool checked)
 {
-    if (triangleBase.size() == 0) return;
+    if (triangleBase.size() == 0) {
+        emit showMessage("Хде модель");
+        return;
+    }
+
     showIntersectionFlag = checked;
+
+    SlicerHeight = LayerHeight / 2;
+
     intersectionDraw();
 }
 
