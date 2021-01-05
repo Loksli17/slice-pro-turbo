@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GLWidget_t {
-    QByteArrayData data[28];
-    char stringdata0[310];
+    QByteArrayData data[29];
+    char stringdata0[331];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -59,7 +59,8 @@ QT_MOC_LITERAL(23, 254, 10), // "rotateBody"
 QT_MOC_LITERAL(24, 265, 4), // "axis"
 QT_MOC_LITERAL(25, 270, 12), // "intersection"
 QT_MOC_LITERAL(26, 283, 7), // "checked"
-QT_MOC_LITERAL(27, 291, 18) // "setInnerPointsGrid"
+QT_MOC_LITERAL(27, 291, 18), // "setInnerPointsGrid"
+QT_MOC_LITERAL(28, 310, 20) // "createDiagramVoronov"
 
     },
     "GLWidget\0xRotationChanged\0\0angle\0"
@@ -70,7 +71,7 @@ QT_MOC_LITERAL(27, 291, 18) // "setInnerPointsGrid"
     "show\0sliceAuto\0sliceAdaptive\0width\0"
     "createGCodeFile\0fileName\0resetSliceState\0"
     "rotateBody\0axis\0intersection\0checked\0"
-    "setInnerPointsGrid"
+    "setInnerPointsGrid\0createDiagramVoronov"
 };
 #undef QT_MOC_LITERAL
 
@@ -80,7 +81,7 @@ static const uint qt_meta_data_GLWidget[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -88,25 +89,26 @@ static const uint qt_meta_data_GLWidget[] = {
        5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   99,    2, 0x06 /* Public */,
-       4,    1,  102,    2, 0x06 /* Public */,
-       5,    1,  105,    2, 0x06 /* Public */,
-       6,    0,  108,    2, 0x06 /* Public */,
-       7,    1,  109,    2, 0x06 /* Public */,
+       1,    1,  104,    2, 0x06 /* Public */,
+       4,    1,  107,    2, 0x06 /* Public */,
+       5,    1,  110,    2, 0x06 /* Public */,
+       6,    0,  113,    2, 0x06 /* Public */,
+       7,    1,  114,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    1,  112,    2, 0x0a /* Public */,
-      10,    1,  115,    2, 0x0a /* Public */,
-      11,    1,  118,    2, 0x0a /* Public */,
-      12,    1,  121,    2, 0x0a /* Public */,
-      15,    1,  124,    2, 0x0a /* Public */,
-      17,    0,  127,    2, 0x0a /* Public */,
-      18,    1,  128,    2, 0x0a /* Public */,
-      20,    1,  131,    2, 0x0a /* Public */,
-      22,    0,  134,    2, 0x0a /* Public */,
-      23,    1,  135,    2, 0x0a /* Public */,
-      25,    1,  138,    2, 0x0a /* Public */,
-      27,    0,  141,    2, 0x0a /* Public */,
+       9,    1,  117,    2, 0x0a /* Public */,
+      10,    1,  120,    2, 0x0a /* Public */,
+      11,    1,  123,    2, 0x0a /* Public */,
+      12,    1,  126,    2, 0x0a /* Public */,
+      15,    1,  129,    2, 0x0a /* Public */,
+      17,    0,  132,    2, 0x0a /* Public */,
+      18,    1,  133,    2, 0x0a /* Public */,
+      20,    1,  136,    2, 0x0a /* Public */,
+      22,    0,  139,    2, 0x0a /* Public */,
+      23,    1,  140,    2, 0x0a /* Public */,
+      25,    1,  143,    2, 0x0a /* Public */,
+      27,    0,  146,    2, 0x0a /* Public */,
+      28,    0,  147,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -127,6 +129,7 @@ static const uint qt_meta_data_GLWidget[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   24,
     QMetaType::Void, QMetaType::Bool,   26,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -155,6 +158,7 @@ void GLWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 14: _t->rotateBody((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 15: _t->intersection((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 16: _t->setInnerPointsGrid(); break;
+        case 17: _t->createDiagramVoronov(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -237,13 +241,13 @@ int GLWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 17)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 17;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 17)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 17;
+        _id -= 18;
     }
     return _id;
 }

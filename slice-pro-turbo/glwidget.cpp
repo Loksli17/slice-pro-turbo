@@ -1038,7 +1038,17 @@ void GLWidget::setInnerPointsGrid()
 }
 
 
+/*
+float createParabol(float yFocus, float xFocus, float L){
+    return (pow((x - xFocus), 2) + pow(yFocus, 2) - pow(L, 2)) / (2 * (yFocus - L));
+}
+*/
+
+
 void GLWidget::createDiagramVoronov(){
+
+    QVector<point2D> circleEvent;
+    QVector<point2D> siteEvent;
 
     for(int i = 0; i < InnerPoints.size(); i++){
         for(int j = 0; j < InnerPoints[i].size(); j++){
