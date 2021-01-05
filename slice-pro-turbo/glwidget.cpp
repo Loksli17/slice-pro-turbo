@@ -54,7 +54,8 @@ QVector <int>OutLineSeparationID;
 QVector <QVector <point> > OutLineLoop;
 QVector <QVector <int> > OutLineLoopID;
 int countLoops;
-QVector<QVector <point> > InnerPoints;
+//QVector<QVector <point> > InnerPoints;
+QVector<point> InnerPoints;
 QVector <point2D> MeabyPoint;
 QVector <poligone> PoligoneBase;
 
@@ -154,16 +155,16 @@ void GLWidget::paintGL()
         }
 
         // Нужен вектор векторов внутренних точек слоя
-        glPointSize(4);
-        for (int i = 0; i < InnerPoints.size(); i++) {
-            glBegin(GL_POINTS);
-                glColor4f(1.0, 0.0, 1.0, 1.0);
-                QVector<point> temp = InnerPoints[i];
-                for (int j = 0; j < temp.size(); j++) {
-                    glVertex3f(temp[j].X, temp[j].Y, temp[j].Z);
-                }
-            glEnd();
-        }
+//        glPointSize(4);
+//        for (int i = 0; i < InnerPoints.size(); i++) {
+//            glBegin(GL_POINTS);
+//                glColor4f(1.0, 0.0, 1.0, 1.0);
+//                QVector<point> temp = InnerPoints[i];
+//                for (int j = 0; j < temp.size(); j++) {
+//                    glVertex3f(temp[j].X, temp[j].Y, temp[j].Z);
+//                }
+//            glEnd();
+//        }
 //        glPointSize(4);
 //        glBegin(GL_POINTS);
 //            glColor4f(1.0, 0.0, 1.0, 1.0);
@@ -219,16 +220,16 @@ void GLWidget::paintGL()
                 }
             glEnd();
 
-//            //Отображение точек в процессе подготовки к заливке сеткой вороного
-//            glPointSize(4);
-//            glBegin(GL_POINTS);
-//                glColor4f(1.0, 0.0, 1.0, 1.0);
+            //Отображение точек в процессе подготовки к заливке сеткой вороного
+            glPointSize(4);
+            glBegin(GL_POINTS);
+                glColor4f(1.0, 0.0, 1.0, 1.0);
 //                qDebug() << "size Voronov: " << InnerPoints.size();
-//                for (int i = 0; i < InnerPoints.size(); i++) {
+                for (int i = 0; i < InnerPoints.size(); i++) {
 //                    qDebug() << "point Voronov" << InnerPoints[i].X;
-//                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
-//                }
-//            glEnd();
+                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
+                }
+            glEnd();
         }
         glEnable(GL_LIGHTING);
     glPopMatrix();
@@ -794,7 +795,7 @@ void GLWidget::sliceAuto()
         findSeparateLayerOutline();
 
         // making inner points on each layer
-        setInnerPointsGridDraw();
+        //setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -823,6 +824,8 @@ void GLWidget::sliceAdaptive(double width)
         return;
     }
 
+
+
     InnerPoints.clear();
     LayerHeight = width;
 
@@ -850,7 +853,7 @@ void GLWidget::sliceAdaptive(double width)
         findSeparateLayerOutline();
 
         // making inner points on each layer
-        setInnerPointsGridDraw();
+        //setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -980,27 +983,27 @@ void GLWidget::intersectionDraw()
 
 void GLWidget::setInnerPointsGridDraw()
 {
-//    InnerPoints.clear();
-//    point tmp;
-//    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
-//        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
-//            tmp.X = dx;
-//            tmp.Y = dy;
-//            tmp.Z = SlicerHeight;
-//            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
-//        }
-//    }
-    QVector <point> temp;
+    InnerPoints.clear();
     point tmp;
     for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
         for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
-            if (findPointInLoop(dx, dy)) temp.push_back(tmp);
+            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
         }
     }
-    InnerPoints.push_back(temp);
+//    QVector <point> temp;
+//    point tmp;
+//    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
+//        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+//            tmp.X = dx;
+//            tmp.Y = dy;
+//            tmp.Z = SlicerHeight;
+//            if (findPointInLoop(dx, dy)) temp.push_back(tmp);
+//        }
+//    }
+//    InnerPoints.push_back(temp);
 }
 
 
@@ -1049,9 +1052,9 @@ void GLWidget::setInnerPointsGrid()
 void GLWidget::createDiagramVoronov(){
 
     for(int i = 0; i < InnerPoints.size(); i++){
-        for(int j = 0; j < InnerPoints[i].size(); j++){
+//        for(int j = 0; j < InnerPoints[i].size(); j++){
 
-        }
+//        }
     }
 }
 
