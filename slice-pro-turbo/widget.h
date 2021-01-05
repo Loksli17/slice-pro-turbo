@@ -62,5 +62,7 @@ private:
     Ui::Widget *ui;
     QStatusBar *bar = new QStatusBar(this);
     GLWidget *glWidget;
+
+    QString fileName;
 };
 #endif // WIDGET_H

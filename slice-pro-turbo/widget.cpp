@@ -40,8 +40,11 @@ Widget::~Widget()
 
 void Widget::on_pushButton_2_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Открытый файл", QDir::homePath(), tr("STL-files (*.stl)"));
-    QFile   file(fileName);
+    QString filePath = QFileDialog::getOpenFileName(this, "Открытый файл", QDir::homePath(), tr("STL-files (*.stl)"));
+    QFile   file(filePath);
+
+    QStringList lst = filePath.split('/');
+    fileName = lst[lst.count() - 1];
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "title", "Файл не был открыт");

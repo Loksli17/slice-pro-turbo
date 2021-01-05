@@ -44,6 +44,7 @@ public slots:
     void intersection(bool checked);
 
     void setInnerPointsGrid();
+    void createDiagramVoronov();
 
 signals:
     void xRotationChanged(int angle);
@@ -65,7 +66,6 @@ private:
     void setInnerPointsGridDraw();
 
     void resetState();
-    void createDiagramVoronov();
 
 
     int xRot;
