@@ -29,8 +29,6 @@ Widget::Widget(QWidget *parent)
 
     connect(glWidget, SIGNAL(showMessage(QString)),         this, SLOT(showMessage(QString)));
     connect(glWidget, SIGNAL(disableIntersection()), this, SLOT(disableIntersection()));
-//    ui->checkBox->setC
-
 }
 
 Widget::~Widget()
@@ -47,9 +45,9 @@ void Widget::on_pushButton_2_clicked()
     fileName = lst[lst.count() - 1];
 
     if(!file.open(QFile::ReadOnly | QFile::Text)){
-        QMessageBox::warning(this, "title", "Файл не был открыт");
+        QMessageBox::warning(this, "Ошибка", "Файл не был открыт");
         return;
-    } else QMessageBox::information(this, "../", "Файл: " + fileName + " был открыт");
+    } else QMessageBox::information(this, "Успех", "Файл: " + fileName + " был открыт");
 
     ui->widget->setFocus();
     emit stlOpened(&file);
