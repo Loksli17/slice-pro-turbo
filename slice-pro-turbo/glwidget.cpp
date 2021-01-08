@@ -391,6 +391,13 @@ void GLWidget::rotateBody(int axis)
         return;
     }
 
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+    pointSeparation.clear();
+    pointSeparationID.clear();
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+
     float
         NewNormalX,
         NewNormalY,
@@ -768,6 +775,8 @@ void GLWidget::sliceAuto()
         return;
     }
 
+    emit disableIntersection();
+
     //Подготовка к слайсингу и определение параметров слайсинга
     if (OutLineSeparation.size() > 0) {
         //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
@@ -824,7 +833,7 @@ void GLWidget::sliceAdaptive(double width)
         return;
     }
 
-
+    emit disableIntersection();
 
     InnerPoints.clear();
     LayerHeight = width;
