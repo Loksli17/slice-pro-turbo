@@ -993,7 +993,16 @@ void GLWidget::createGCodeFile(QString fileName)
                 out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X + centX << " Y" << OutLineLoop.at(j).at(i).Y + centY << " E" << (LenghtOfLine(OutLineLoop.at(j).at(i), OutLineLoop.at(j).at(i - 1)) / 63.697) << Qt::endl;
             }
         }
+
         out << "G1 F1200 X" << OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX << " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
+
+        out << "G0 X" << edgesForDrawing[j][0].start.X + centX << " Y" << edgesForDrawing[j][0].start.Y + centY << Qt::endl;
+        out << "G1 F1200 X" << edgesForDrawing[j][0].end.X + centX << " Y" << edgesForDrawing[j][0].end.Y + centY << " E0.1" << Qt::endl;
+
+        for(int i = 1; i < edgesForDrawing[j].size(); i++){
+            out << "G1 F1200 X" << edgesForDrawing[j][i].start.X + centX << " Y" << edgesForDrawing[j][i].start.Y + centY << " E0.1" << Qt::endl;
+            out << "G1 F1200 X" << edgesForDrawing[j][i].end.X + centX << " Y" << edgesForDrawing[j][i].end.Y + centY << " E0.1" << Qt::endl;
+        }
     }
 
     gcodeFile.close();
