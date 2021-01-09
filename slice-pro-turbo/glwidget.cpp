@@ -1061,6 +1061,7 @@ void GLWidget::setInnerPointsGridDraw()
 }
 
 
+
 float GLWidget::atanTrueDegree(float x, float y)
 {
     return (atan2(y, x) * 180 / M_PI) < 0 ? ((atan2(y, x) * 180 / M_PI) + 360)
