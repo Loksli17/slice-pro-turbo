@@ -194,6 +194,21 @@ void GLWidget::paintGL()
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
+        glDisable(GL_LIGHTING);
+        glLineWidth(1);
+        glColor4f(0.9, 0.9, 0.9, 1);
+        for (int i = 0; i < edgesForDrawing.size(); i++) {
+            for (int j = 0; j < edgesForDrawing[i].size(); j++) {
+                glBegin(GL_LINES);
+                //                    qDebug() << edgesForDrawing[i][j].start.X << edgesForDrawing[i][j].start.Y << edgesForDrawing[i][j].start.Z;
+                glVertex3f(edgesForDrawing[i][j].start.X, edgesForDrawing[i][j].start.Y, edgesForDrawing[i][j].start.Z);
+                glVertex3f(edgesForDrawing[i][j].end.X, edgesForDrawing[i][j].end.Y, edgesForDrawing[i][j].end.Z);
+                glEnd();
+            }
+        }
+        glEnable(GL_LIGHTING);
+
+        glDepthMask(false);
         glBegin(GL_TRIANGLES);
             glColor4f(0.8, 0.8, 0.1, 0.8);
             for (int i = 0; i < triangleBase.size(); i++){
@@ -203,6 +218,7 @@ void GLWidget::paintGL()
                 glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
         glEnd();
+        glDepthMask(true);
 
         if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -232,20 +248,6 @@ void GLWidget::paintGL()
                     }
                 }
             glEnd();
-        }
-        glEnable(GL_LIGHTING);
-
-        glDisable(GL_LIGHTING);
-        glLineWidth(1);
-        glColor4f(0.9, 0.9, 0.9, 1);
-        for (int i = 0; i < edgesForDrawing.size(); i++) {
-            for (int j = 0; j < edgesForDrawing[i].size(); j++) {
-                glBegin(GL_LINES);
-//                    qDebug() << edgesForDrawing[i][j].start.X << edgesForDrawing[i][j].start.Y << edgesForDrawing[i][j].start.Z;
-                    glVertex3f(edgesForDrawing[i][j].start.X, edgesForDrawing[i][j].start.Y, edgesForDrawing[i][j].start.Z);
-                    glVertex3f(edgesForDrawing[i][j].end.X, edgesForDrawing[i][j].end.Y, edgesForDrawing[i][j].end.Z);
-                glEnd();
-            }
         }
         glEnable(GL_LIGHTING);
 
@@ -372,8 +374,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
     QPoint numDegrees = event->angleDelta();
-    if (numDegrees.y() < 0) zoomScale /= 1.5;
-    if (numDegrees.y() > 0) zoomScale *= 1.5;
+    if (numDegrees.y() < 0) zoomScale /= 1.2;
+    if (numDegrees.y() > 0) zoomScale *= 1.2;
 
     update();
 }
@@ -485,7 +487,6 @@ void GLWidget::rotateBody(int axis)
     intersectionDraw();
 }
 
-
 void GLWidget::setXRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -494,7 +495,6 @@ void GLWidget::setXRotation(int angle)
         emit xRotationChanged(angle);
     }
 }
-
 
 void GLWidget::setYRotation(int angle)
 {
@@ -505,7 +505,6 @@ void GLWidget::setYRotation(int angle)
     }
 }
 
-
 void GLWidget::setZRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -514,7 +513,6 @@ void GLWidget::setZRotation(int angle)
         emit zRotationChanged(angle);
     }
 }
-
 
 void GLWidget::resetState()
 {
@@ -597,7 +595,6 @@ void GLWidget::toggleWireframe(bool show)
 {
     wireframe(show);
 }
-
 
 void GLWidget::normalizeAngle(int *angle)
 {
@@ -787,7 +784,6 @@ void GLWidget::findSeparateLayerOutline()
     offsetUpForLinePerimetr = OutLineSeparation.size();
     countLoops = thisIDLine + 1;
 }
-
 
 void GLWidget::sliceAuto()
 {
@@ -1009,7 +1005,6 @@ void GLWidget::intersection(bool checked)
     intersectionDraw();
 }
 
-
 void GLWidget::intersectionDraw()
 {
     if(showIntersectionFlag){
@@ -1025,21 +1020,33 @@ void GLWidget::setInnerPointsGridDraw()
     QVector <point> temp;
     point tmp;
 
-    int GridSize = 5;
-    int limit    = 5;
+    float GridSize = 5.0f;
+//    float limit    = 1.0f;
 
-    bool flag = false;
+//    bool flag = false;
 
-    for (float dx = GabariteMinX - 1; dx < GabariteMaxX + 1; dx += GridSize) {
-        for (float dy = GabariteMinY - 1; dy < GabariteMaxY + 1; dy += GridSize) {
+    for (float dx = GabariteMinX - 1.0f; dx < GabariteMaxX + 1.0f; dx += GridSize) {
+//        if(!flag){
+//        GridSize = 20.0f;
+//        }
+//        flag = false;
 
-//            for(int i = 0; i < OutLineSeparation.size(); i++){
-//                float deltaX = OutLineSeparation[i].X - dx;
+//        for(int i = 0; i < OutLineSeparation.size(); i++){
+//            float deltaX = OutLineSeparation[i].X - dx;
+//            if (fabs(deltaX) < limit){
+//                GridSize = 5.0f;
+//                break;
+//            }
+
+//        }
+
+        for (float dy = GabariteMinY - 1.0f; dy < GabariteMaxY + 1.0f; dy += GridSize) {
+//            GridSize = 20.0f;
+
+//            for(int i = 0; i < OutLineSeparation.size(); i++) {
 //                float deltaY = OutLineSeparation[i].Y - dy;
-
-//                if((deltaX < -limit) && (deltaX > limit) && (deltaY < -limit) && (deltaY > limit)){
-//                    GridSize = 2;
-//                    flag = true;
+//                if (fabs(deltaY) < limit){
+//                    GridSize = 5.0f;
 //                    break;
 //                }
 
@@ -1048,16 +1055,11 @@ void GLWidget::setInnerPointsGridDraw()
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
+//            qDebug() << "GridSize kek:" << GridSize;
             if (findPointInLoop(dx, dy)) temp.push_back(tmp);
-
-            if(!flag){
-                GridSize = 5;
-            }
-            flag = false;
         }
     }
     InnerPoints.push_back(temp);
-//    SetInnerPointsRand();
 }
 
 
