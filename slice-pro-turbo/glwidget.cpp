@@ -1024,13 +1024,36 @@ void GLWidget::setInnerPointsGridDraw()
 {
     QVector <point> temp;
     point tmp;
-    int GridSize = 2;
+
+    int GridSize = 5;
+    int limit    = 5;
+
+    bool flag = false;
+
     for (float dx = GabariteMinX - 1; dx < GabariteMaxX + 1; dx += GridSize) {
         for (float dy = GabariteMinY - 1; dy < GabariteMaxY + 1; dy += GridSize) {
+
+//            for(int i = 0; i < OutLineSeparation.size(); i++){
+//                float deltaX = OutLineSeparation[i].X - dx;
+//                float deltaY = OutLineSeparation[i].Y - dy;
+
+//                if((deltaX < -limit) && (deltaX > limit) && (deltaY < -limit) && (deltaY > limit)){
+//                    GridSize = 2;
+//                    flag = true;
+//                    break;
+//                }
+
+//            }
+
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
             if (findPointInLoop(dx, dy)) temp.push_back(tmp);
+
+            if(!flag){
+                GridSize = 5;
+            }
+            flag = false;
         }
     }
     InnerPoints.push_back(temp);
