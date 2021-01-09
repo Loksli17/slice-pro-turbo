@@ -9,8 +9,14 @@
 #include <QTextStream>
 #include <QVector3D>
 #include <QVector>
+#include <algorithm>
 
-#define GridSize 5
+#include "vector2.h"
+#include "triangle.h"
+#include "delaunay.h"
+
+#define GridSize 2
+#define maxInnerRandPoint 100
 
 struct point{
     float X;
@@ -32,6 +38,13 @@ struct point2D{
 struct poligone{
     QVector <point2D> StackCorners;
 };
+
+struct edge{
+    point start;
+    point end;
+};
+
+point2D TempBasePoint;
 
 struct state{
     bool grid;
@@ -55,7 +68,7 @@ QVector <QVector <point> > OutLineLoop;
 QVector <QVector <int> > OutLineLoopID;
 int countLoops;
 //QVector<QVector <point> > InnerPoints;
-QVector<point> InnerPoints;
+QVector <point> InnerPoints;
 QVector <point2D> MeabyPoint;
 QVector <poligone> PoligoneBase;
 
@@ -70,6 +83,8 @@ bool wireframeFlag = false;
 
 //diagramm Voronov
 QVector <QVector <poligone>> digramVoronov;
+
+QVector<edge> edgesForDrawing;
 
 
 GLWidget::GLWidget(QWidget *parent)
@@ -232,7 +247,45 @@ void GLWidget::paintGL()
             glEnd();
         }
         glEnable(GL_LIGHTING);
+
+        ///Отображение точек в процессе подготовки к заливке сеткой вороного
+        glPointSize(4);
+        glBegin(GL_POINTS);
+            glColor4f(0,0,1,1);
+            for (int i=0;i<InnerPoints.size();i++){
+                glVertex3f(InnerPoints[i].X,InnerPoints[i].Y,InnerPoints[i].Z);
+            }
+        glEnd();
+
+        ///Переопределение первой точки вывода заливки
+        glPointSize(8);
+        glBegin(GL_POINTS);
+            glColor4f(0,0,1,1);
+            if (InnerPoints.size()>0) glVertex3f(InnerPoints[0].X,InnerPoints[0].Y,InnerPoints[0].Z);
+        glEnd();
+
+//        ///Отображение точек после процесса подогтовки к разбиению вороного ( виснет)
+//        glPointSize(6);
+//        glBegin(GL_POINTS);
+//            glColor4f(1,1,1,1);
+//            for (int i=0;i<MeabyPoint.size();i++){
+//                glVertex3f(MeabyPoint[i].x,MeabyPoint[i].y,SlicerHeight);
+//            }
+//        glEnd();
+
+        glLineWidth(2);
+//        glBegin(GL_LINES);
+            glColor4f(10, 20, 16, 1);
+            for(int i = 0; i < edgesForDrawing.size(); i++){
+                glBegin(GL_LINES);
+                    glVertex3f(edgesForDrawing[i].start.X, edgesForDrawing[i].start.Y, edgesForDrawing[i].start.Z);
+                    glVertex3f(edgesForDrawing[i].end.X, edgesForDrawing[i].end.Y, edgesForDrawing[i].end.Z);
+                glEnd();
+            }
+//        glEnd();
+
     glPopMatrix();
+
 
     // Отрисовка оси координат поверх всего
     drawOrigin();
@@ -985,8 +1038,8 @@ void GLWidget::setInnerPointsGridDraw()
 {
     InnerPoints.clear();
     point tmp;
-    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
-        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+    for (float dx = GabariteMinX - 1; dx <= GabariteMaxX + 1; dx += GridSize) {
+        for (float dy = GabariteMinY - 1; dy <= GabariteMaxY + 1; dy += GridSize) {
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
@@ -1004,6 +1057,7 @@ void GLWidget::setInnerPointsGridDraw()
 //        }
 //    }
 //    InnerPoints.push_back(temp);
+//    SetInnerPointsRand();
 }
 
 
@@ -1042,6 +1096,19 @@ bool GLWidget::findPointInLoop(float inX, float inY)
 }
 
 
+void GLWidget::SetInnerPointsRand(){
+    InnerPoints.clear();
+    point tmp;
+    if (OutLineSeparation.size()<2) return;
+    while (InnerPoints.size()<maxInnerRandPoint){
+        tmp.X=(((float)rand()/(float)(RAND_MAX)) * fabs(GabariteMaxX-GabariteMinX))+GabariteMinX;
+        tmp.Y=(((float)rand()/(float)(RAND_MAX)) * fabs(GabariteMaxY-GabariteMinY))+GabariteMinY;
+        tmp.Z=SlicerHeight;
+        if (findPointInLoop(tmp.X,tmp.Y)) InnerPoints.push_back(tmp);
+    }
+}
+
+
 void GLWidget::setInnerPointsGrid()
 {
     InnerPoints.clear();
@@ -1049,22 +1116,38 @@ void GLWidget::setInnerPointsGrid()
 }
 
 
-/*
-float createParabol(float yFocus, float xFocus, float L){
-    return (pow((x - xFocus), 2) + pow(yFocus, 2) - pow(L, 2)) / (2 * (yFocus - L));
-}
-*/
-
-
 void GLWidget::createDiagramVoronov(){
 
-    QVector<point2D> circleEvent;
-    QVector<point2D> siteEvent;
+    std::vector<dt::Vector2<float>> points;
+
+    if(!InnerPoints.size()){
+        return;
+    }
 
     for(int i = 0; i < InnerPoints.size(); i++){
-//        for(int j = 0; j < InnerPoints[i].size(); j++){
-
-//        }
+        points.push_back(dt::Vector2<float>{InnerPoints[i].X, InnerPoints[i].Y});
     }
+
+    dt::Delaunay<float> triangulation;
+    const std::vector<dt::Triangle<float>> triangles = triangulation.triangulate(points);
+    std::vector<dt::Edge<float>> edges = triangulation.getEdges();
+
+    edgesForDrawing.clear();
+
+    for(int i = 0; i < edges.size(); i++){
+        edge tmp;
+
+        tmp.start.X = edges[i].v->x;
+        tmp.start.Y = edges[i].v->y;
+        tmp.start.Z = InnerPoints[0].Z;
+
+        tmp.end.X = edges[i].w->x;
+        tmp.end.Y = edges[i].w->y;
+        tmp.end.Z = InnerPoints[0].Z;
+
+        edgesForDrawing.push_back(tmp);
+    }
+
+    update();
 }
 
