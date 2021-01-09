@@ -15,7 +15,7 @@
 #include "triangle.h"
 #include "delaunay.h"
 
-#define GridSize 5
+//#define GridSize 2
 #define maxInnerRandPoint 100
 
 struct point{
@@ -232,17 +232,6 @@ void GLWidget::paintGL()
                     }
                 }
             glEnd();
-
-            //Отображение точек в процессе подготовки к заливке сеткой вороного
-//            glPointSize(4);
-//            glBegin(GL_POINTS);
-//                glColor4f(1.0, 0.0, 1.0, 1.0);
-////                qDebug() << "size Voronov: " << InnerPoints.size();
-//                for (int i = 0; i < InnerPoints.size(); i++) {
-////                    qDebug() << "point Voronov" << InnerPoints[i].X;
-//                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
-//                }
-//            glEnd();
         }
         glEnable(GL_LIGHTING);
 
@@ -853,7 +842,6 @@ void GLWidget::sliceAuto()
     update();
 }
 
-
 float OffsetByLine(point P1, point P2, point O){
     float h = ((P2.X - P1.X) * (O.Y - P1.Y) - (P2.Y - P1.Y) * (O.X - P1.X)) / (float) sqrt((float) pow((P2.X - P1.X) + (P2.Y - P1.Y), 2));
     return h < 0 ? -h : h;
@@ -996,14 +984,6 @@ void GLWidget::createGCodeFile(QString fileName)
 
         out << "G1 F1200 X" << OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX << " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
 
-//        out << "G0 X" << edgesForDrawing[j][0].start.X + centX << " Y" << edgesForDrawing[j][0].start.Y + centY << Qt::endl;
-//        out << "G1 F1200 X" << edgesForDrawing[j][0].end.X + centX << " Y" << edgesForDrawing[j][0].end.Y + centY << " E0.1" << Qt::endl;
-
-//        for(int i = 1; i < edgesForDrawing[j].size(); i++){
-//            out << "G1 F1200 X" << edgesForDrawing[j][i].start.X + centX << " Y" << edgesForDrawing[j][i].start.Y + centY << " E0.1" << Qt::endl;
-//            out << "G1 F1200 X" << edgesForDrawing[j][i].end.X + centX << " Y" << edgesForDrawing[j][i].end.Y + centY << " E0.1" << Qt::endl;
-//        }
-
         out << ";TYPE:INNER-FILLING" << Qt::endl;
         for (int i = 0; i < edgesForDrawing[j].size(); i++) {
             out << "G0 X" << edgesForDrawing[j][i].start.X + centX << " Y" << edgesForDrawing[j][i].start.Y + centY << Qt::endl;
@@ -1036,25 +1016,17 @@ void GLWidget::intersectionDraw()
         findSeparatePoint();
         findSeparateLayerOutline();
         InnerPoints.clear();
+        edgesForDrawing.clear();
     }
 }
 
 void GLWidget::setInnerPointsGridDraw()
 {
-//    InnerPoints.clear();
-//    point tmp;
-//    for (float dx = GabariteMinX - 1; dx <= GabariteMaxX + 1; dx += GridSize) {
-//        for (float dy = GabariteMinY - 1; dy <= GabariteMaxY + 1; dy += GridSize) {
-//            tmp.X = dx;
-//            tmp.Y = dy;
-//            tmp.Z = SlicerHeight;
-//            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
-//        }
-//    }
     QVector <point> temp;
     point tmp;
-    for (float dx = GabariteMinX - GridSize; dx < GabariteMaxX + GridSize; dx += GridSize) {
-        for (float dy = GabariteMinY - GridSize; dy < GabariteMaxY + GridSize; dy += GridSize) {
+    int GridSize = 2;
+    for (float dx = GabariteMinX - 1; dx < GabariteMaxX + 1; dx += GridSize) {
+        for (float dy = GabariteMinY - 1; dy < GabariteMaxY + 1; dy += GridSize) {
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
