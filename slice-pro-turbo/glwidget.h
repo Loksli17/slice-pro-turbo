@@ -6,6 +6,8 @@
 #include <QString>
 #include <QFile>
 
+#define BIG_GRID 8
+#define SMALL_GRID 4
 
 class GLWidget : public QGLWidget
 {
@@ -54,6 +56,7 @@ signals:
     void disableIntersection();
     void showMessage(QString text);
     void showStatusBarMessage(QString text);
+    void removeFileName();
 
 private:
     void normalizeAngle(int *angle);
@@ -69,7 +72,7 @@ private:
 
     void resetState();
 
-
+    int GridSize = BIG_GRID;
     int xRot;
     int yRot;
     int zRot;
@@ -77,6 +80,8 @@ private:
     double yPos;
     double zoomScale;
     QPoint lastPos;
+
+    bool showModel = true;
 
     //Fonts
     QFont *fontText;

@@ -28,8 +28,15 @@ Widget::Widget(QWidget *parent)
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 
     connect(glWidget, SIGNAL(showMessage(QString)),  this, SLOT(showMessage(QString)));
+    connect(glWidget, SIGNAL(removeFileName()),  this, SLOT(removeFileName()));
     connect(glWidget, SIGNAL(disableIntersection()), this, SLOT(disableIntersection()));
     connect(glWidget, SIGNAL(showStatusBarMessage(QString)), this, SLOT(showStatusBarMessage(QString)));
+
+    ui->groupBox->setDisabled(true);
+    ui->groupBox_2->setDisabled(true);
+//    ui->groupBox_3->setDisabled(true);
+    ui->SliceAdaptiveSpinBox->setDisabled(true);
+    ui->checkBox->setDisabled(true);
 }
 
 Widget::~Widget()
@@ -55,6 +62,12 @@ void Widget::on_pushButton_2_clicked()
 
     bar->showMessage(fileName + " was opened successfully", 2000);
     ui->FileName->setText(fileName);
+
+    ui->groupBox->setDisabled(false);
+    ui->groupBox_2->setDisabled(false);
+//    ui->groupBox_3->setDisabled(false);
+    ui->SliceAdaptiveSpinBox->setDisabled(false);
+    ui->checkBox->setDisabled(false);
 }
 
 
@@ -119,6 +132,16 @@ void Widget::on_intersection_toggled(bool checked)
 {
     ui->widget->setFocus();
     emit intersection(checked);
+}
+
+void Widget::removeFileName()
+{
+    ui->FileName->setText("File not open");
+    ui->groupBox->setDisabled(true);
+    ui->groupBox_2->setDisabled(true);
+//    ui->groupBox_3->setDisabled(true);
+    ui->SliceAdaptiveSpinBox->setDisabled(true);
+    ui->checkBox->setDisabled(true);
 }
 
 //void Widget::on_pushButton_3_clicked()

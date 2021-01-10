@@ -108,7 +108,7 @@ GLWidget::GLWidget(QWidget *parent)
 /// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
-    glClearColor(0.85, 0.85, 0.85, 1.0);
+    glClearColor(0.45, 0.45, 0.45, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glEnable(GL_LINE_SMOOTH);
@@ -235,17 +235,20 @@ void GLWidget::paintGL()
         }
 
         //строим модель
-        glDepthMask(false);
-        glBegin(GL_TRIANGLES);
-        glColor4f(0.8, 0.8, 0.1, 0.8);
-        for (int i = 0; i < triangleBase.size(); i++){
-            glNormal3f(triangleBase[i].Normal.X, triangleBase[i].Normal.Y, triangleBase[i].Normal.Z);
-            glVertex3f(triangleBase[i].p[0].X,   triangleBase[i].p[0].Y,   triangleBase[i].p[0].Z);
-            glVertex3f(triangleBase[i].p[1].X,   triangleBase[i].p[1].Y,   triangleBase[i].p[1].Z);
-            glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
+        if (showModel) {
+            glDepthMask(false);
+            glBegin(GL_TRIANGLES);
+            glColor4f(0.8, 0.8, 0.1, 0.8);
+            for (int i = 0; i < triangleBase.size(); i++){
+                glNormal3f(triangleBase[i].Normal.X, triangleBase[i].Normal.Y, triangleBase[i].Normal.Z);
+                glVertex3f(triangleBase[i].p[0].X,   triangleBase[i].p[0].Y,   triangleBase[i].p[0].Z);
+                glVertex3f(triangleBase[i].p[1].X,   triangleBase[i].p[1].Y,   triangleBase[i].p[1].Z);
+                glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
+            }
+            glEnd();
+            glDepthMask(true);
         }
-        glEnd();
-        glDepthMask(true);
+
 
         if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glPopMatrix();
@@ -392,6 +395,9 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         setYRotation(yRot);
         setZRotation(zRot);
     }
+    if (event->key() == Qt::Key_X) {
+        showModel = !showModel;
+    }
     update();
 }
 
@@ -527,6 +533,8 @@ void GLWidget::resetState()
     InnerPoints.clear();
     MeabyPoint.clear();
     PoligoneBase.clear();
+
+    emit removeFileName();
 }
 
 //полученние данных с файла и отрисовка модели
@@ -879,7 +887,7 @@ void GLWidget::sliceAdaptive(double width)
         findSeparateLayerOutline();
 
         // making inner points on each layer
-        setInnerPointsGridDraw();
+//        setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -917,10 +925,14 @@ void GLWidget::sliceAdaptive(double width)
             OutLineLoop.push_back(tempLoop2);
             OutLineLoopID.push_back(tempLoopID2);
             //supsees=true;
+            GridSize = BIG_GRID;
         } else {
             OutLineLoop.push_back(tempLoop);
             OutLineLoopID.push_back(tempLoopID);
+            GridSize = SMALL_GRID;
         }
+
+        setInnerPointsGridDraw();
     }
 
     OutLineSeparation.clear();
@@ -1021,7 +1033,7 @@ void GLWidget::setInnerPointsGridDraw()
     QVector <point> temp;
     point tmp;
 
-    float GridSize = 5.0f;
+//    float GridSize = 5.0f;
 //    float limit    = 1.0f;
 
 //    bool flag = false;

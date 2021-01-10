@@ -41,6 +41,7 @@ private slots:
 
 //    void on_pushButton_3_clicked();
 
+    void removeFileName();
     void disableIntersection();
     void showMessage(QString text);
     void showStatusBarMessage(QString text);
