@@ -38,8 +38,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-win32:CONFIG(release, debug|release): LIBS += -L"C:/Qt/5.15.2/mingw81_32/lib/" -lglut32
-else:win32:CONFIG(debug, debug|release): LIBS += -L"C:/Qt/5.15.2/mingw81_32/lib/" -lglut32
+RESOURCES += \
+    res.qrc
 
-INCLUDEPATH += C:/Qt/5.15.2/mingw81_32/include
-DEPENDPATH += C:/Qt/5.15.2/mingw81_32/include
+win32:CONFIG(release, debug|release): LIBS += -LC:/Qt/5.15.2/mingw81_64/lib/ -lfreeglut
+else:win32:CONFIG(debug, debug|release): LIBS += -LC:/Qt/5.15.2/mingw81_64/lib/ -lfreeglut
+
+INCLUDEPATH += C:/Qt/5.15.2/mingw81_64/include
+DEPENDPATH += C:/Qt/5.15.2/mingw81_64/include
