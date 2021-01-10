@@ -6,156 +6,719 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>989</width>
-    <height>753</height>
+    <width>1192</width>
+    <height>823</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Slicer TurboMaxHiTechProSpeedUpUltraHighMegaUltra Remastered HD Collection Championship Edition Featuring Dante &amp; Knuckles from Devil May Cry series, with new Funky Mode</string>
+   <string>Vlice</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/logo-3.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/logo-3.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#Widget {
+	background-color: #FAFAFA;
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_4">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <widget class="QLabel" name="FileName">
+       <property name="font">
+        <font>
+         <family>Roboto Light</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel#FileName {
+	margin-left: 90px;
+	padding-bottom: 12px;
+}</string>
+       </property>
+       <property name="text">
+        <string>File not open</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="GLWidget" name="widget" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="font">
+          <font>
+           <family>Roboto Light</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton_2 {
+	margin-bottom: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#pushButton_2:hover {
+	background-color: #6584ED;
+}</string>
+         </property>
+         <property name="text">
+          <string>Open file</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <widget class="QPushButton" name="ResetButton">
+         <property name="font">
+          <font>
+           <family>Roboto Light</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#ResetButton {
+	margin-bottom: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#ResetButton:hover {
+	background-color: #6584ED;
+}</string>
+         </property>
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="font">
+          <font>
+           <family>Roboto Light</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton {
+	margin-bottom: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#pushButton:hover {
+	background-color: #6584ED;
+}</string>
+         </property>
+         <property name="text">
+          <string>Quit</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="messageLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>OpenFile</string>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QGroupBox" name="groupBox_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>338</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>348</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto Light</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QGroupBox#groupBox_2 {
+	border: none;
+	padding-top: 16px;
+}
+</string>
+             </property>
+             <property name="title">
+              <string>tools</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QPushButton" name="SliceAuto">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#SliceAuto {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#SliceAuto:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/slice.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/slice.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="SliceAdaptive">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#SliceAdaptive {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#SliceAdaptive:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/aslice.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/aslice.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="drawGrid">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#drawGrid {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#drawGrid:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/voronov.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/voronov.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="saveGCode">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Create g-code</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#saveGCode {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#saveGCode:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/gcode.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/gcode.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>238</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>250</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto Light</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QGroupBox#groupBox {
+	border: none;
+	padding-top: 16px;
+}
+</string>
+             </property>
+             <property name="title">
+              <string>rotate</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QPushButton" name="RotateX">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#RotateX {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#RotateX:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/x.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/x.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RotateY">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#RotateY {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#RotateY:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/y.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/y.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="RotateZ">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#RotateZ {
+	border-radius: 6px;
+	background-color: #DEDEDE;
+}
+
+QPushButton#RotateZ:hover {
+	background-color: #6584ED;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/z.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/z.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>152</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>164</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QGroupBox#groupBox_3 {
+	border: none;
+}</string>
+             </property>
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QCheckBox" name="intersection">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/intersection-2.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/intersection-2.png</iconset>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QCheckBox:checkBox::indicator {
+	width: 16px;
+	height: 16px;
+	border: 2px;
+	border-color: #DEDEDE;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/wireframe.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/wireframe.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="SliceAdaptiveSpinBox">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Roboto Light</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QDoubleSpinBox#SliceAdaptiveSpinBox {
+	border-radius: 4px;
+	border-width: 3;
+	border-color: #DEDEDE;
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::up-button {
+    border: 0px;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::down-button {
+    border: 0px;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::up-arrow {
+	image: url(:/img/image/arrow-up.png);
+    width: 6px;
+    height: 6px;
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::down-arrow {
+	image: url(:/img/image/arrow-down.png);
+    width: 6px;
+    height: 6px;
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::up-button:hover {
+	background-color: rgba(0, 0, 0, .5);
+}
+
+QDoubleSpinBox#SliceAdaptiveSpinBox::down-button:hover {
+	background-color: rgba(0, 0, 0, .5);
+}</string>
+                </property>
+                <property name="minimum">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.050000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.500000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="HelpAction">
+                <property name="minimumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>64</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#HelpAction {
+	border-radius: 6px;
+	background-color: #6584ED;
+}
+
+QPushButton#HelpAction:hover {
+	background-color: #B5C4F8;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/help.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/help.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>42</width>
+                  <height>42</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="SliceAuto">
-           <property name="text">
-            <string>Slice</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="text">
-            <string>Wireframe</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="intersection">
-           <property name="text">
-            <string>Intersection</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_3">
-           <property name="text">
-            <string>SetInnerGrid</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QDoubleSpinBox" name="SliceAdaptiveSpinBox">
-           <property name="minimum">
-            <double>0.500000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.050000000000000</double>
-           </property>
-           <property name="value">
-            <double>0.500000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="SliceAdaptive">
-           <property name="text">
-            <string>SliceAdaptive</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="saveGCode">
-           <property name="text">
-            <string>GCode</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ResetButton">
-           <property name="text">
-            <string>Reset</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="drawGrid">
-           <property name="text">
-            <string>create diagram of Voronov</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>GroupBox</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QPushButton" name="RotateX">
-              <property name="text">
-               <string>RotateX</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="RotateY">
-              <property name="text">
-               <string>RotateY</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="RotateZ">
-              <property name="text">
-               <string>RotateZ</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>Quit</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="GLWidget" name="widget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="messageLayout"/>
      </item>
     </layout>
    </item>
