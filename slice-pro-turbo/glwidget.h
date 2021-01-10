@@ -64,6 +64,7 @@ private:
 
     void intersectionDraw();
     void setInnerPointsGridDraw();
+    void SetInnerPointsRand();
 
     void resetState();
 

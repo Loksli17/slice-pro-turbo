@@ -9,8 +9,14 @@
 #include <QTextStream>
 #include <QVector3D>
 #include <QVector>
+#include <algorithm>
 
-#define GridSize 5
+#include "vector2.h"
+#include "triangle.h"
+#include "delaunay.h"
+
+//#define GridSize 2
+#define maxInnerRandPoint 100
 
 struct point{
     float X;
@@ -33,6 +39,13 @@ struct poligone{
     QVector <point2D> StackCorners;
 };
 
+struct edge{
+    point start;
+    point end;
+};
+
+point2D TempBasePoint;
+
 struct state{
     bool grid;
 };
@@ -54,8 +67,8 @@ QVector <int>OutLineSeparationID;
 QVector <QVector <point> > OutLineLoop;
 QVector <QVector <int> > OutLineLoopID;
 int countLoops;
-//QVector<QVector <point> > InnerPoints;
-QVector<point> InnerPoints;
+QVector<QVector <point> > InnerPoints;
+//QVector <point> InnerPoints;
 QVector <point2D> MeabyPoint;
 QVector <poligone> PoligoneBase;
 
@@ -70,6 +83,9 @@ bool wireframeFlag = false;
 
 //diagramm Voronov
 QVector <QVector <poligone>> digramVoronov;
+
+//QVector<edge> edgesForDrawing;
+QVector<QVector<edge> > edgesForDrawing;
 
 
 GLWidget::GLWidget(QWidget *parent)
@@ -139,7 +155,8 @@ void GLWidget::paintGL()
         glScalef(zoomScale, zoomScale, zoomScale);
         drawGrid();
 
-        //Отображение множетсва слоев после слайсинга модели (зеленый)
+        // Отображение множетсва слоев после слайсинга модели (зеленый)
+        glDisable(GL_LIGHTING);
         glLineWidth(1);
         for (int j = 0; j < OutLineLoop.size(); j++) {
             glBegin(GL_LINES);
@@ -153,8 +170,10 @@ void GLWidget::paintGL()
                 }
             glEnd();
         }
+        glEnable(GL_LIGHTING);
 
         // Нужен вектор векторов внутренних точек слоя
+       // glDisable(GL_LIGHTING);
 //        glPointSize(4);
 //        for (int i = 0; i < InnerPoints.size(); i++) {
 //            glBegin(GL_POINTS);
@@ -165,13 +184,7 @@ void GLWidget::paintGL()
 //                }
 //            glEnd();
 //        }
-//        glPointSize(4);
-//        glBegin(GL_POINTS);
-//            glColor4f(1.0, 0.0, 1.0, 1.0);
-//            for (int i = 0; i < InnerPoints.size(); i++) {
-//                glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
-//            }
-//        glEnd();
+       // glEnable(GL_LIGHTING);
 
         //строим модель
 
@@ -181,6 +194,21 @@ void GLWidget::paintGL()
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
+        glDisable(GL_LIGHTING);
+        glLineWidth(1);
+        glColor4f(0.9, 0.9, 0.9, 1);
+        for (int i = 0; i < edgesForDrawing.size(); i++) {
+            for (int j = 0; j < edgesForDrawing[i].size(); j++) {
+                glBegin(GL_LINES);
+                //                    qDebug() << edgesForDrawing[i][j].start.X << edgesForDrawing[i][j].start.Y << edgesForDrawing[i][j].start.Z;
+                glVertex3f(edgesForDrawing[i][j].start.X, edgesForDrawing[i][j].start.Y, edgesForDrawing[i][j].start.Z);
+                glVertex3f(edgesForDrawing[i][j].end.X, edgesForDrawing[i][j].end.Y, edgesForDrawing[i][j].end.Z);
+                glEnd();
+            }
+        }
+        glEnable(GL_LIGHTING);
+
+        glDepthMask(false);
         glBegin(GL_TRIANGLES);
             glColor4f(0.8, 0.8, 0.1, 0.8);
             for (int i = 0; i < triangleBase.size(); i++){
@@ -190,6 +218,7 @@ void GLWidget::paintGL()
                 glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
         glEnd();
+        glDepthMask(true);
 
         if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -215,24 +244,15 @@ void GLWidget::paintGL()
                 for (int i = 0; i < offsetUpForLinePerimetr - 1;i++){
                     if (OutLineSeparationID[i + 1] == OutLineSeparationID[i]){
                         glVertex3f(OutLineSeparation[i].X,OutLineSeparation[i].Y,OutLineSeparation[i].Z);
-                        glVertex3f(OutLineSeparation[i + 1].X,OutLineSeparation[i+1].Y,OutLineSeparation[i + 1].Z);
+                        glVertex3f(OutLineSeparation[i + 1].X,OutLineSeparation[i + 1].Y,OutLineSeparation[i + 1].Z);
                     }
-                }
-            glEnd();
-
-            //Отображение точек в процессе подготовки к заливке сеткой вороного
-            glPointSize(4);
-            glBegin(GL_POINTS);
-                glColor4f(1.0, 0.0, 1.0, 1.0);
-//                qDebug() << "size Voronov: " << InnerPoints.size();
-                for (int i = 0; i < InnerPoints.size(); i++) {
-//                    qDebug() << "point Voronov" << InnerPoints[i].X;
-                    glVertex3f(InnerPoints[i].X, InnerPoints[i].Y, InnerPoints[i].Z);
                 }
             glEnd();
         }
         glEnable(GL_LIGHTING);
+
     glPopMatrix();
+
 
     // Отрисовка оси координат поверх всего
     drawOrigin();
@@ -354,8 +374,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
     QPoint numDegrees = event->angleDelta();
-    if (numDegrees.y() < 0) zoomScale /= 1.5;
-    if (numDegrees.y() > 0) zoomScale *= 1.5;
+    if (numDegrees.y() < 0) zoomScale /= 1.2;
+    if (numDegrees.y() > 0) zoomScale *= 1.2;
 
     update();
 }
@@ -390,6 +410,15 @@ void GLWidget::rotateBody(int axis)
         emit showMessage("Хде модель");
         return;
     }
+
+    OutLineLoop.clear();
+    OutLineLoopID.clear();
+    pointSeparation.clear();
+    pointSeparationID.clear();
+    OutLineSeparation.clear();
+    OutLineSeparationID.clear();
+    edgesForDrawing.clear();
+    InnerPoints.clear();
 
     float
         NewNormalX,
@@ -458,7 +487,6 @@ void GLWidget::rotateBody(int axis)
     intersectionDraw();
 }
 
-
 void GLWidget::setXRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -467,7 +495,6 @@ void GLWidget::setXRotation(int angle)
         emit xRotationChanged(angle);
     }
 }
-
 
 void GLWidget::setYRotation(int angle)
 {
@@ -478,7 +505,6 @@ void GLWidget::setYRotation(int angle)
     }
 }
 
-
 void GLWidget::setZRotation(int angle)
 {
     normalizeAngle(&angle);
@@ -488,12 +514,12 @@ void GLWidget::setZRotation(int angle)
     }
 }
 
-
 void GLWidget::resetState()
 {
     showIntersectionFlag = false;
     emit disableIntersection();
 
+    edgesForDrawing.clear();
     triangleBase.clear();
     OutLineLoop.clear();
     OutLineLoopID.clear();
@@ -569,7 +595,6 @@ void GLWidget::toggleWireframe(bool show)
 {
     wireframe(show);
 }
-
 
 void GLWidget::normalizeAngle(int *angle)
 {
@@ -674,7 +699,7 @@ void GLWidget::findSeparateLayerOutline()
     point tempPoint;
     int tempID;
     int thisIDLine;
-    qDebug() << pointSeparation.size() << "SIZE";
+    //qDebug() << pointSeparation.size() << "SIZE";
     tempPoint.X = pointSeparation[0].X;
     tempPoint.Y = pointSeparation[0].Y;
     tempPoint.Z = pointSeparation[0].Z;
@@ -760,7 +785,6 @@ void GLWidget::findSeparateLayerOutline()
     countLoops = thisIDLine + 1;
 }
 
-
 void GLWidget::sliceAuto()
 {
     if (triangleBase.size() == 0) {
@@ -768,12 +792,15 @@ void GLWidget::sliceAuto()
         return;
     }
 
+    emit disableIntersection();
+
     //Подготовка к слайсингу и определение параметров слайсинга
     if (OutLineSeparation.size() > 0) {
         //        cout<<"Count vertex = "<<OutLineSeparation.size()<<endl;
     }
 
     InnerPoints.clear();
+    edgesForDrawing.clear();
     LayerHeight = 0.2;
 
     ///Отчистка слоев и запоминание текущей высоты слайсинга
@@ -795,7 +822,7 @@ void GLWidget::sliceAuto()
         findSeparateLayerOutline();
 
         // making inner points on each layer
-        //setInnerPointsGridDraw();
+        setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -811,7 +838,6 @@ void GLWidget::sliceAuto()
     update();
 }
 
-
 float OffsetByLine(point P1, point P2, point O){
     float h = ((P2.X - P1.X) * (O.Y - P1.Y) - (P2.Y - P1.Y) * (O.X - P1.X)) / (float) sqrt((float) pow((P2.X - P1.X) + (P2.Y - P1.Y), 2));
     return h < 0 ? -h : h;
@@ -824,9 +850,10 @@ void GLWidget::sliceAdaptive(double width)
         return;
     }
 
-
+    emit disableIntersection();
 
     InnerPoints.clear();
+    edgesForDrawing.clear();
     LayerHeight = width;
 
     ///Подготовка к слайсингу и определение параметров слайсинга
@@ -853,7 +880,7 @@ void GLWidget::sliceAdaptive(double width)
         findSeparateLayerOutline();
 
         // making inner points on each layer
-        //setInnerPointsGridDraw();
+        setInnerPointsGridDraw();
 
         tempLoop = OutLineSeparation;
         tempLoopID = OutLineSeparationID;
@@ -883,7 +910,7 @@ void GLWidget::sliceAdaptive(double width)
             if (minDelta < minDeltaOnLoop) minDeltaOnLoop = minDelta;
         }
 
-        qDebug() << "Adaptive = "<<minDeltaOnLoop;
+        //qDebug() << "Adaptive = "<<minDeltaOnLoop;
 
         //Собственно тут принимается решение когда делать слой одинаковым. Если величина отклооения меньше 0.001 мм. То делать слой в 2 раза больше
         if (minDeltaOnLoop <= 0.00001) {
@@ -950,7 +977,14 @@ void GLWidget::createGCodeFile(QString fileName)
                 out << "G1 F1200 X" << OutLineLoop.at(j).at(i).X + centX << " Y" << OutLineLoop.at(j).at(i).Y + centY << " E" << (LenghtOfLine(OutLineLoop.at(j).at(i), OutLineLoop.at(j).at(i - 1)) / 63.697) << Qt::endl;
             }
         }
+
         out << "G1 F1200 X" << OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).X + centX << " Y" <<OutLineLoop.at(j).at(OutLineLoop.at(j).size() - 1).Y+centY << " E0.1" << Qt::endl;
+
+        out << ";TYPE:INNER-FILLING" << Qt::endl;
+        for (int i = 0; i < edgesForDrawing[j].size(); i++) {
+            out << "G0 X" << edgesForDrawing[j][i].start.X + centX << " Y" << edgesForDrawing[j][i].start.Y + centY << Qt::endl;
+            out << "G1 F1200 X" << edgesForDrawing[j][i].end.X + centX << " Y" << edgesForDrawing[j][i].end.Y + centY << " E0.1" << Qt::endl;
+        }
     }
 
     gcodeFile.close();
@@ -971,40 +1005,63 @@ void GLWidget::intersection(bool checked)
     intersectionDraw();
 }
 
-
 void GLWidget::intersectionDraw()
 {
     if(showIntersectionFlag){
         findSeparatePoint();
         findSeparateLayerOutline();
         InnerPoints.clear();
+        edgesForDrawing.clear();
     }
 }
 
 void GLWidget::setInnerPointsGridDraw()
 {
-    InnerPoints.clear();
+    QVector <point> temp;
     point tmp;
-    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
-        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
+
+    float GridSize = 5.0f;
+//    float limit    = 1.0f;
+
+//    bool flag = false;
+
+    for (float dx = GabariteMinX - 1.0f; dx < GabariteMaxX + 1.0f; dx += GridSize) {
+//        if(!flag){
+//        GridSize = 20.0f;
+//        }
+//        flag = false;
+
+//        for(int i = 0; i < OutLineSeparation.size(); i++){
+//            float deltaX = OutLineSeparation[i].X - dx;
+//            if (fabs(deltaX) < limit){
+//                GridSize = 5.0f;
+//                break;
+//            }
+
+//        }
+
+        for (float dy = GabariteMinY - 1.0f; dy < GabariteMaxY + 1.0f; dy += GridSize) {
+//            GridSize = 20.0f;
+
+//            for(int i = 0; i < OutLineSeparation.size(); i++) {
+//                float deltaY = OutLineSeparation[i].Y - dy;
+//                if (fabs(deltaY) < limit){
+//                    GridSize = 5.0f;
+//                    break;
+//                }
+
+//            }
+
             tmp.X = dx;
             tmp.Y = dy;
             tmp.Z = SlicerHeight;
-            if (findPointInLoop(dx, dy)) InnerPoints.push_back(tmp);
+//            qDebug() << "GridSize kek:" << GridSize;
+            if (findPointInLoop(dx, dy)) temp.push_back(tmp);
         }
     }
-//    QVector <point> temp;
-//    point tmp;
-//    for (float dx = GabariteMinX + GridSize / 2; dx < GabariteMaxX; dx += GridSize) {
-//        for (float dy = GabariteMinY + GridSize / 2; dy < GabariteMaxY; dy += GridSize) {
-//            tmp.X = dx;
-//            tmp.Y = dy;
-//            tmp.Z = SlicerHeight;
-//            if (findPointInLoop(dx, dy)) temp.push_back(tmp);
-//        }
-//    }
-//    InnerPoints.push_back(temp);
+    InnerPoints.push_back(temp);
 }
+
 
 
 float GLWidget::atanTrueDegree(float x, float y)
@@ -1042,6 +1099,19 @@ bool GLWidget::findPointInLoop(float inX, float inY)
 }
 
 
+//void GLWidget::SetInnerPointsRand(){
+//    InnerPoints.clear();
+//    point tmp;
+//    if (OutLineSeparation.size()<2) return;
+//    while (InnerPoints.size()<maxInnerRandPoint){
+//        tmp.X=(((float)rand()/(float)(RAND_MAX)) * fabs(GabariteMaxX-GabariteMinX))+GabariteMinX;
+//        tmp.Y=(((float)rand()/(float)(RAND_MAX)) * fabs(GabariteMaxY-GabariteMinY))+GabariteMinY;
+//        tmp.Z=SlicerHeight;
+//        if (findPointInLoop(tmp.X,tmp.Y)) InnerPoints.push_back(tmp);
+//    }
+//}
+
+
 void GLWidget::setInnerPointsGrid()
 {
     InnerPoints.clear();
@@ -1049,22 +1119,43 @@ void GLWidget::setInnerPointsGrid()
 }
 
 
-/*
-float createParabol(float yFocus, float xFocus, float L){
-    return (pow((x - xFocus), 2) + pow(yFocus, 2) - pow(L, 2)) / (2 * (yFocus - L));
-}
-*/
-
-
 void GLWidget::createDiagramVoronov(){
+    edgesForDrawing.clear();
 
-    QVector<point2D> circleEvent;
-    QVector<point2D> siteEvent;
-
-    for(int i = 0; i < InnerPoints.size(); i++){
-//        for(int j = 0; j < InnerPoints[i].size(); j++){
-
-//        }
+    if(!InnerPoints.size()){
+        //qDebug() << "HA LOLKEK NO ARRAY";
+        return;
     }
+
+    for (int i = 0; i < InnerPoints.size(); i++) {
+        std::vector<dt::Vector2<float>> points;
+
+        for(int j = 0; j < InnerPoints[i].size(); j++){
+            points.push_back(dt::Vector2<float>{InnerPoints[i][j].X, InnerPoints[i][j].Y});
+        }
+
+        dt::Delaunay<float> triangulation;
+        const std::vector<dt::Triangle<float>> triangles = triangulation.triangulate(points);
+        std::vector<dt::Edge<float>> edges = triangulation.getEdges();
+
+        QVector<edge> temp;
+
+        for(int j = 0; j < edges.size(); j++){
+            edge tmp;
+
+            tmp.start.X = edges[j].v->x;
+            tmp.start.Y = edges[j].v->y;
+            tmp.start.Z = InnerPoints[i][0].Z;
+
+            tmp.end.X = edges[j].w->x;
+            tmp.end.Y = edges[j].w->y;
+            tmp.end.Z = InnerPoints[i][0].Z;
+
+            temp.push_back(tmp);
+        }
+        edgesForDrawing.push_back(temp);
+    }
+
+    update();
 }
 

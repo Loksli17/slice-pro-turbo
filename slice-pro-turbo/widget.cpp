@@ -137,5 +137,6 @@ void Widget::showMessage(QString text)
 
 void Widget::on_drawGrid_clicked()
 {
+    ui->widget->setFocus();
     emit createDiagramVoronov();
 }
