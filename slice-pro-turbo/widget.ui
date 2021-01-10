@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vlice</string>
+   <string>Slicer Turbo</string>
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
