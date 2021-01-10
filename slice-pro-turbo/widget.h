@@ -62,7 +62,7 @@ signals:
 private:
     Ui::Widget *ui;
     QStatusBar *bar = new QStatusBar(this);
-    GLWidget *glWidget;
+    GLWidget   *glWidget;
 
     QString fileName;
 };

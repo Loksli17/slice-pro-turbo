@@ -66,6 +66,9 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Open file</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton#pushButton_2 {
 	margin-bottom: 12px;
@@ -92,6 +95,9 @@ QPushButton#pushButton_2:hover {
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Reset</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton#ResetButton {
 	margin-bottom: 12px;
@@ -117,6 +123,9 @@ QPushButton#ResetButton:hover {
            <family>Roboto Light</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="toolTip">
+          <string>Exit application</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton#pushButton {
@@ -199,6 +208,9 @@ QPushButton#pushButton:hover {
                   <height>64</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Basic slicing</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#SliceAuto {
 	border-radius: 6px;
@@ -241,6 +253,9 @@ QPushButton#SliceAuto:hover {
                   <height>64</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Adaptive slicing</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#SliceAdaptive {
 	border-radius: 6px;
@@ -282,6 +297,9 @@ QPushButton#SliceAdaptive:hover {
                   <width>64</width>
                   <height>64</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>Generate inner filling</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#drawGrid {
@@ -407,6 +425,9 @@ QPushButton#saveGCode:hover {
                   <height>64</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Rotate on X axis</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#RotateX {
 	border-radius: 6px;
@@ -449,6 +470,9 @@ QPushButton#RotateX:hover {
                   <height>64</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string>Rotate on Y axis</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#RotateY {
 	border-radius: 6px;
@@ -490,6 +514,9 @@ QPushButton#RotateY:hover {
                   <width>64</width>
                   <height>64</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>Rotate on Z axis</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#RotateZ {
@@ -564,6 +591,9 @@ QPushButton#RotateZ:hover {
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
+                <property name="toolTip">
+                 <string>Toggle wireframe</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QCheckBox:checkBox::indicator {
 	width: 16px;
@@ -603,6 +633,9 @@ QPushButton#RotateZ:hover {
                   <family>Roboto Light</family>
                   <pointsize>12</pointsize>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string>Layer height</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QDoubleSpinBox#SliceAdaptiveSpinBox {
@@ -668,6 +701,9 @@ QDoubleSpinBox#SliceAdaptiveSpinBox::down-button:hover {
                   <width>64</width>
                   <height>64</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>HELP</string>
                 </property>
                 <property name="layoutDirection">
                  <enum>Qt::LeftToRight</enum>
