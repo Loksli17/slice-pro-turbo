@@ -186,41 +186,18 @@ void GLWidget::paintGL()
 //        }
        // glEnable(GL_LIGHTING);
 
-        //строим модель
-
-        if (wireframeFlag) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        } else {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        }
-
         glDisable(GL_LIGHTING);
         glLineWidth(1);
         glColor4f(0.9, 0.9, 0.9, 1);
         for (int i = 0; i < edgesForDrawing.size(); i++) {
             for (int j = 0; j < edgesForDrawing[i].size(); j++) {
                 glBegin(GL_LINES);
-                //                    qDebug() << edgesForDrawing[i][j].start.X << edgesForDrawing[i][j].start.Y << edgesForDrawing[i][j].start.Z;
-                glVertex3f(edgesForDrawing[i][j].start.X, edgesForDrawing[i][j].start.Y, edgesForDrawing[i][j].start.Z);
-                glVertex3f(edgesForDrawing[i][j].end.X, edgesForDrawing[i][j].end.Y, edgesForDrawing[i][j].end.Z);
+                    glVertex3f(edgesForDrawing[i][j].start.X, edgesForDrawing[i][j].start.Y, edgesForDrawing[i][j].start.Z);
+                    glVertex3f(edgesForDrawing[i][j].end.X, edgesForDrawing[i][j].end.Y, edgesForDrawing[i][j].end.Z);
                 glEnd();
             }
         }
         glEnable(GL_LIGHTING);
-
-        glDepthMask(false);
-        glBegin(GL_TRIANGLES);
-            glColor4f(0.8, 0.8, 0.1, 0.8);
-            for (int i = 0; i < triangleBase.size(); i++){
-                glNormal3f(triangleBase[i].Normal.X, triangleBase[i].Normal.Y, triangleBase[i].Normal.Z);
-                glVertex3f(triangleBase[i].p[0].X,   triangleBase[i].p[0].Y,   triangleBase[i].p[0].Z);
-                glVertex3f(triangleBase[i].p[1].X,   triangleBase[i].p[1].Y,   triangleBase[i].p[1].Z);
-                glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
-            }
-        glEnd();
-        glDepthMask(true);
-
-        if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         //Отображение плоскости слайсинга
         glColor4f(0.1, 0.1, 0.5, 0.3);
@@ -251,6 +228,26 @@ void GLWidget::paintGL()
         }
         glEnable(GL_LIGHTING);
 
+        if (wireframeFlag) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
+        //строим модель
+        glDepthMask(false);
+        glBegin(GL_TRIANGLES);
+        glColor4f(0.8, 0.8, 0.1, 0.8);
+        for (int i = 0; i < triangleBase.size(); i++){
+            glNormal3f(triangleBase[i].Normal.X, triangleBase[i].Normal.Y, triangleBase[i].Normal.Z);
+            glVertex3f(triangleBase[i].p[0].X,   triangleBase[i].p[0].Y,   triangleBase[i].p[0].Z);
+            glVertex3f(triangleBase[i].p[1].X,   triangleBase[i].p[1].Y,   triangleBase[i].p[1].Z);
+            glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
+        }
+        glEnd();
+        glDepthMask(true);
+
+        if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glPopMatrix();
 
 
