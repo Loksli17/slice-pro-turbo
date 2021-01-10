@@ -34,7 +34,6 @@ Widget::Widget(QWidget *parent)
 
     ui->groupBox->setDisabled(true);
     ui->groupBox_2->setDisabled(true);
-//    ui->groupBox_3->setDisabled(true);
     ui->SliceAdaptiveSpinBox->setDisabled(true);
     ui->checkBox->setDisabled(true);
 }
