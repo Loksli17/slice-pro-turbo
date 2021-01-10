@@ -2,5 +2,19 @@
     <qresource prefix="/img">
         <file>image/arrow-down.png</file>
         <file>image/arrow-up.png</file>
+        <file>image/aslice.png</file>
+        <file>image/gcode.png</file>
+        <file>image/grid.png</file>
+        <file>image/help.png</file>
+        <file>image/intersection.png</file>
+        <file>image/logo.png</file>
+        <file>image/logo-2.png</file>
+        <file>image/logo-3.png</file>
+        <file>image/slice.png</file>
+        <file>image/voronov.png</file>
+        <file>image/wireframe.png</file>
+        <file>image/x.png</file>
+        <file>image/y.png</file>
+        <file>image/z.png</file>
     </qresource>
 </RCC>

@@ -14,8 +14,8 @@
    <string>Vlice</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/logo-3.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/logo-3.png</iconset>
+   <iconset resource="res.qrc">
+    <normaloff>:/img/image/logo-3.png</normaloff>:/img/image/logo-3.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#Widget {
@@ -213,8 +213,8 @@ QPushButton#SliceAuto:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/slice.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/slice.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/slice.png</normaloff>:/img/image/slice.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -255,8 +255,8 @@ QPushButton#SliceAdaptive:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/aslice.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/aslice.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/aslice.png</normaloff>:/img/image/aslice.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -297,8 +297,8 @@ QPushButton#drawGrid:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/voronov.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/voronov.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/voronov.png</normaloff>:/img/image/voronov.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -342,8 +342,8 @@ QPushButton#saveGCode:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/gcode.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/gcode.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/gcode.png</normaloff>:/img/image/gcode.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -421,8 +421,8 @@ QPushButton#RotateX:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/x.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/x.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/x.png</normaloff>:/img/image/x.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -463,8 +463,8 @@ QPushButton#RotateY:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/y.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/y.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/y.png</normaloff>:/img/image/y.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -505,8 +505,8 @@ QPushButton#RotateZ:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/z.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/z.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/z.png</normaloff>:/img/image/z.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -551,8 +551,8 @@ QPushButton#RotateZ:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/intersection-2.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/intersection-2.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/intersection.png</normaloff>:/img/image/intersection.png</iconset>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -576,8 +576,8 @@ QPushButton#RotateZ:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/wireframe.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/wireframe.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/wireframe.png</normaloff>:/img/image/wireframe.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -686,8 +686,8 @@ QPushButton#HelpAction:hover {
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/help.png</normaloff>C:/Users/r6a19/OneDrive/Рабочий стол/vlice/help.png</iconset>
+                 <iconset resource="res.qrc">
+                  <normaloff>:/img/image/help.png</normaloff>:/img/image/help.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -732,7 +732,9 @@ QPushButton#HelpAction:hover {
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushButton</sender>
