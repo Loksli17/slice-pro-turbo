@@ -39,10 +39,11 @@ private slots:
 
     void on_intersection_toggled(bool checked);
 
-    void on_pushButton_3_clicked();
+//    void on_pushButton_3_clicked();
 
     void disableIntersection();
     void showMessage(QString text);
+    void showStatusBarMessage(QString text);
 
     void on_drawGrid_clicked();
 

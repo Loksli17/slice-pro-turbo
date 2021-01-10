@@ -27,8 +27,9 @@ Widget::Widget(QWidget *parent)
     connect(this, SIGNAL(createDiagramVoronov()),   glWidget, SLOT(createDiagramVoronov()));
     //    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(getInt(int)));
 
-    connect(glWidget, SIGNAL(showMessage(QString)),         this, SLOT(showMessage(QString)));
+    connect(glWidget, SIGNAL(showMessage(QString)),  this, SLOT(showMessage(QString)));
     connect(glWidget, SIGNAL(disableIntersection()), this, SLOT(disableIntersection()));
+    connect(glWidget, SIGNAL(showStatusBarMessage(QString)), this, SLOT(showStatusBarMessage(QString)));
 }
 
 Widget::~Widget()
@@ -53,6 +54,7 @@ void Widget::on_pushButton_2_clicked()
     emit stlOpened(&file);
 
     bar->showMessage(fileName + " was opened successfully", 2000);
+    ui->FileName->setText(fileName);
 }
 
 
@@ -119,11 +121,11 @@ void Widget::on_intersection_toggled(bool checked)
     emit intersection(checked);
 }
 
-void Widget::on_pushButton_3_clicked()
-{
-    ui->widget->setFocus();
-    emit setGridInIntersection();
-}
+//void Widget::on_pushButton_3_clicked()
+//{
+//    ui->widget->setFocus();
+//    emit setGridInIntersection();
+//}
 
 void Widget::disableIntersection()
 {
@@ -133,6 +135,11 @@ void Widget::disableIntersection()
 void Widget::showMessage(QString text)
 {
     QMessageBox::warning(this, "Ошибка", text);
+}
+
+void Widget::showStatusBarMessage(QString text)
+{
+    bar->showMessage(text, 2000);
 }
 
 void Widget::on_drawGrid_clicked()

@@ -53,6 +53,7 @@ signals:
 
     void disableIntersection();
     void showMessage(QString text);
+    void showStatusBarMessage(QString text);
 
 private:
     void normalizeAngle(int *angle);

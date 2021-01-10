@@ -108,7 +108,7 @@ GLWidget::GLWidget(QWidget *parent)
 /// Initialization method, initializes lighting and stuff
 void GLWidget::initializeGL()
 {
-    glClearColor(0.45, 0.45, 0.45, 1.0);
+    glClearColor(0.85, 0.85, 0.85, 1.0);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glEnable(GL_LINE_SMOOTH);
@@ -831,7 +831,9 @@ void GLWidget::sliceAuto()
     OutLineSeparationID.clear();
 
     SlicerHeight = tempSliceHight;
-    qDebug() << "AHAHAHAHAHA";
+
+    emit showStatusBarMessage("Model was sliced successfully");
+
     update();
 }
 
@@ -925,6 +927,8 @@ void GLWidget::sliceAdaptive(double width)
     OutLineSeparationID.clear();
 
     SlicerHeight = tempSliceHight;
+
+    emit showStatusBarMessage("Model was sliced successfully");
 }
 
 
@@ -1152,6 +1156,8 @@ void GLWidget::createDiagramVoronov(){
         }
         edgesForDrawing.push_back(temp);
     }
+
+    emit showStatusBarMessage("Inner filling generated successfully");
 
     update();
 }
