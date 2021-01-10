@@ -277,7 +277,8 @@ Makefile: ../slice-pro-turbo/slice-pro-turbo.pro C:/Qt/5.15.2/mingw81_32/mkspecs
 		C:/Qt/5.15.2/mingw81_32/lib/Qt5Gui.prl \
 		C:/Qt/5.15.2/mingw81_32/lib/Qt5Core.prl \
 		C:/Qt/5.15.2/mingw81_32/lib/qtmain.prl \
-		C:/Qt/5.15.2/mingw81_32/mkspecs/features/build_pass.prf
+		C:/Qt/5.15.2/mingw81_32/mkspecs/features/build_pass.prf \
+		../slice-pro-turbo/res.qrc
 	$(QMAKE) -o Makefile ..\slice-pro-turbo\slice-pro-turbo.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt/5.15.2/mingw81_32/mkspecs/features/spec_pre.prf:
 C:/Qt/5.15.2/mingw81_32/mkspecs/qdevice.pri:
@@ -487,6 +488,7 @@ C:/Qt/5.15.2/mingw81_32/lib/Qt5Gui.prl:
 C:/Qt/5.15.2/mingw81_32/lib/Qt5Core.prl:
 C:/Qt/5.15.2/mingw81_32/lib/qtmain.prl:
 C:/Qt/5.15.2/mingw81_32/mkspecs/features/build_pass.prf:
+../slice-pro-turbo/res.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\slice-pro-turbo\slice-pro-turbo.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

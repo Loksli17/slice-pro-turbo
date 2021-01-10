@@ -43,3 +43,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L"C:/Qt/5.15.2/mingw81_32/lib/
 
 INCLUDEPATH += C:/Qt/5.15.2/mingw81_32/include
 DEPENDPATH += C:/Qt/5.15.2/mingw81_32/include
+
+RESOURCES += \
+    res.qrc

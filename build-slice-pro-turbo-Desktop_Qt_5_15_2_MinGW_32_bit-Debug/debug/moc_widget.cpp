@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Widget_t {
     QByteArrayData data[33];
-    char stringdata0[486];
+    char stringdata0[483];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -60,11 +60,11 @@ QT_MOC_LITERAL(24, 318, 18), // "on_RotateY_clicked"
 QT_MOC_LITERAL(25, 337, 18), // "on_RotateZ_clicked"
 QT_MOC_LITERAL(26, 356, 24), // "on_SliceAdaptive_clicked"
 QT_MOC_LITERAL(27, 381, 23), // "on_intersection_toggled"
-QT_MOC_LITERAL(28, 405, 23), // "on_pushButton_3_clicked"
-QT_MOC_LITERAL(29, 429, 19), // "disableIntersection"
-QT_MOC_LITERAL(30, 449, 11), // "showMessage"
-QT_MOC_LITERAL(31, 461, 4), // "text"
-QT_MOC_LITERAL(32, 466, 19) // "on_drawGrid_clicked"
+QT_MOC_LITERAL(28, 405, 19), // "disableIntersection"
+QT_MOC_LITERAL(29, 425, 11), // "showMessage"
+QT_MOC_LITERAL(30, 437, 4), // "text"
+QT_MOC_LITERAL(31, 442, 20), // "showStatusBarMessage"
+QT_MOC_LITERAL(32, 463, 19) // "on_drawGrid_clicked"
 
     },
     "Widget\0stlOpened\0\0QFile*\0file\0"
@@ -77,8 +77,8 @@ QT_MOC_LITERAL(32, 466, 19) // "on_drawGrid_clicked"
     "on_saveGCode_clicked\0on_ResetButton_clicked\0"
     "on_RotateX_clicked\0on_RotateY_clicked\0"
     "on_RotateZ_clicked\0on_SliceAdaptive_clicked\0"
-    "on_intersection_toggled\0on_pushButton_3_clicked\0"
-    "disableIntersection\0showMessage\0text\0"
+    "on_intersection_toggled\0disableIntersection\0"
+    "showMessage\0text\0showStatusBarMessage\0"
     "on_drawGrid_clicked"
 };
 #undef QT_MOC_LITERAL
@@ -120,9 +120,9 @@ static const uint qt_meta_data_Widget[] = {
       26,    0,  166,    2, 0x08 /* Private */,
       27,    1,  167,    2, 0x08 /* Private */,
       28,    0,  170,    2, 0x08 /* Private */,
-      29,    0,  171,    2, 0x08 /* Private */,
-      30,    1,  172,    2, 0x08 /* Private */,
-      32,    0,  175,    2, 0x08 /* Private */,
+      29,    1,  171,    2, 0x08 /* Private */,
+      31,    1,  174,    2, 0x08 /* Private */,
+      32,    0,  177,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -148,8 +148,8 @@ static const uint qt_meta_data_Widget[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,   15,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   31,
+    QMetaType::Void, QMetaType::QString,   30,
+    QMetaType::Void, QMetaType::QString,   30,
     QMetaType::Void,
 
        0        // eod
@@ -181,9 +181,9 @@ void Widget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 17: _t->on_RotateZ_clicked(); break;
         case 18: _t->on_SliceAdaptive_clicked(); break;
         case 19: _t->on_intersection_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 20: _t->on_pushButton_3_clicked(); break;
-        case 21: _t->disableIntersection(); break;
-        case 22: _t->showMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 20: _t->disableIntersection(); break;
+        case 21: _t->showMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 22: _t->showStatusBarMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 23: _t->on_drawGrid_clicked(); break;
         default: ;
         }
