@@ -199,34 +199,8 @@ void GLWidget::paintGL()
         }
         glEnable(GL_LIGHTING);
 
-        //Отображение плоскости слайсинга
-        glColor4f(0.1, 0.1, 0.5, 0.3);
-        glDisable(GL_CULL_FACE);
-        glBegin(GL_POLYGON);
-            glNormal3f(0.0, 0.0, 1.0);
-            glVertex3f(GabariteMinX - 1, GabariteMinY - 1, SlicerHeight);
-            glVertex3f(GabariteMaxX + 1, GabariteMinY - 1, SlicerHeight);
-            glVertex3f(GabariteMaxX + 1, GabariteMaxY + 1, SlicerHeight);
-            glVertex3f(GabariteMinX - 1, GabariteMaxY + 1, SlicerHeight);
-        glEnd();
-        glEnable(GL_CULL_FACE);
-        glDisable(GL_LIGHTING);
 
-        if(showIntersectionFlag){
-            glClear(GL_DEPTH_BUFFER_BIT);
-            glLineWidth(4.5);
-            glBegin(GL_LINES);
-                glColor4f(1.0, 0.0, 0.0, 1.0);
-                glNormal3f(0.0, 0.0, 1.0);
-                for (int i = 0; i < offsetUpForLinePerimetr - 1;i++){
-                    if (OutLineSeparationID[i + 1] == OutLineSeparationID[i]){
-                        glVertex3f(OutLineSeparation[i].X,OutLineSeparation[i].Y,OutLineSeparation[i].Z);
-                        glVertex3f(OutLineSeparation[i + 1].X,OutLineSeparation[i + 1].Y,OutLineSeparation[i + 1].Z);
-                    }
-                }
-            glEnd();
-        }
-        glEnable(GL_LIGHTING);
+
 
         if (wireframeFlag) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -234,9 +208,25 @@ void GLWidget::paintGL()
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
+        glDepthMask(false);
+        //Отображение плоскости слайсинга
+        glColor4f(0.1, 0.1, 0.5, 0.3);
+        glDisable(GL_CULL_FACE);
+        glBegin(GL_POLYGON);
+        glNormal3f(0.0, 0.0, 1.0);
+        glVertex3f(GabariteMinX - 1, GabariteMinY - 1, SlicerHeight);
+        glVertex3f(GabariteMaxX + 1, GabariteMinY - 1, SlicerHeight);
+        glVertex3f(GabariteMaxX + 1, GabariteMaxY + 1, SlicerHeight);
+        glVertex3f(GabariteMinX - 1, GabariteMaxY + 1, SlicerHeight);
+        glEnd();
+        glEnable(GL_CULL_FACE);
+
+
+
+
         //строим модель
         if (showModel) {
-            glDepthMask(false);
+
             glBegin(GL_TRIANGLES);
             glColor4f(0.8, 0.8, 0.1, 0.8);
             for (int i = 0; i < triangleBase.size(); i++){
@@ -246,11 +236,29 @@ void GLWidget::paintGL()
                 glVertex3f(triangleBase[i].p[2].X,   triangleBase[i].p[2].Y,   triangleBase[i].p[2].Z);
             }
             glEnd();
-            glDepthMask(true);
-        }
 
+        }
+        glDepthMask(true);
 
         if (wireframeFlag) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+        glDisable(GL_LIGHTING);
+        if(showIntersectionFlag){
+            glClear(GL_DEPTH_BUFFER_BIT);
+            glLineWidth(4.5);
+            glBegin(GL_LINES);
+            glColor4f(1.0, 0.0, 0.0, 1.0);
+            glNormal3f(0.0, 0.0, 1.0);
+            for (int i = 0; i < offsetUpForLinePerimetr - 1;i++){
+                if (OutLineSeparationID[i + 1] == OutLineSeparationID[i]){
+                    glVertex3f(OutLineSeparation[i].X,OutLineSeparation[i].Y,OutLineSeparation[i].Z);
+                    glVertex3f(OutLineSeparation[i + 1].X,OutLineSeparation[i + 1].Y,OutLineSeparation[i + 1].Z);
+                }
+            }
+            glEnd();
+        }
+        glEnable(GL_LIGHTING);
+
     glPopMatrix();
 
 
@@ -410,7 +418,7 @@ void GLWidget::resetSliceState()
 void GLWidget::rotateBody(int axis)
 {
     if (triangleBase.size() == 0) {
-        emit showMessage("Хде модель");
+        emit showMessage("No model loaded");
         return;
     }
 
@@ -793,7 +801,7 @@ void GLWidget::findSeparateLayerOutline()
 void GLWidget::sliceAuto()
 {
     if (triangleBase.size() == 0) {
-        emit showMessage("Хде модель");
+        emit showMessage("No model loaded");
         return;
     }
 
@@ -853,7 +861,7 @@ float OffsetByLine(point P1, point P2, point O){
 void GLWidget::sliceAdaptive(double width)
 {
     if (triangleBase.size() == 0) {
-        emit showMessage("Хде модель");
+        emit showMessage("No model loaded");
         return;
     }
 
@@ -952,7 +960,7 @@ float LenghtOfLine(point a, point b){
 void GLWidget::createGCodeFile(QString fileName)
 {
     if (triangleBase.size() == 0) {
-        emit showMessage("Хде модель");
+        emit showMessage("No model loaded");
         return;
     }
     QFile gcodeFile(fileName);
@@ -1007,7 +1015,7 @@ void GLWidget::createGCodeFile(QString fileName)
 void GLWidget::intersection(bool checked)
 {
     if (triangleBase.size() == 0) {
-        emit showMessage("Хде модель");
+        emit showMessage("No model loaded");
         return;
     }
 

@@ -572,7 +572,7 @@ QPushButton#RotateZ:hover {
               <item>
                <widget class="QCheckBox" name="intersection">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
                  <string/>

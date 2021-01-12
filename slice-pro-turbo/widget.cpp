@@ -36,6 +36,7 @@ Widget::Widget(QWidget *parent)
     ui->groupBox_2->setDisabled(true);
     ui->SliceAdaptiveSpinBox->setDisabled(true);
     ui->checkBox->setDisabled(true);
+    ui->intersection->setDisabled(true);
 }
 
 Widget::~Widget()
@@ -67,6 +68,7 @@ void Widget::on_pushButton_2_clicked()
 //    ui->groupBox_3->setDisabled(false);
     ui->SliceAdaptiveSpinBox->setDisabled(false);
     ui->checkBox->setDisabled(false);
+    ui->intersection->setDisabled(false);
 }
 
 
@@ -141,6 +143,7 @@ void Widget::removeFileName()
 //    ui->groupBox_3->setDisabled(true);
     ui->SliceAdaptiveSpinBox->setDisabled(true);
     ui->checkBox->setDisabled(true);
+    ui->intersection->setDisabled(true);
 }
 
 //void Widget::on_pushButton_3_clicked()
